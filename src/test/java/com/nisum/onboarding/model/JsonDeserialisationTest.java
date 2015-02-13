@@ -1,0 +1,39 @@
+package com.nisum.onboarding.model;
+
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+
+public class JsonDeserialisationTest {
+
+	private MappingJackson2HttpMessageConverter converter;
+
+	@Before
+	public void setUp() {
+		converter = new MappingJackson2HttpMessageConverter();
+	}
+
+	@After
+	public void tearDown() {
+		converter = null;
+	}
+
+	@Test
+	public void allClassesUsedByOurControllersShouldBeDeserialisableByJackson() throws Exception {
+		assertCanBeMapped(Participant.class);
+		assertCanBeMapped(Program.class);
+		assertCanBeMapped(ProgramTask.class);
+	}
+
+	private void assertCanBeMapped(Class<?> classToTest) {
+		String message = classToTest.getSimpleName()
+				+ " is not deserialisable, check the swallowed exception in StdDeserializerProvider.hasValueDeserializerFor";
+		assertThat(message, converter.canRead(classToTest, MediaType.APPLICATION_JSON), is(true));
+	}
+
+}

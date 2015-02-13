@@ -1,0 +1,41 @@
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'eclipse-wtp'
+
+version = '1.0'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+eclipseJdt << {
+    File f = file('.settings/org.eclipse.core.resources.prefs')
+    f.write('eclipse.preferences.version=1\n')
+    f.append('encoding/<project>=UTF-8')
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+	compile 'jstl:jstl:1.2'
+	compile 'org.apache.tiles:tiles-jsp:3.0.5'
+	compile 'org.apache.tiles:tiles-servlet:3.0.5'
+	compile 'org.apache.tiles:tiles-template:3.0.5'
+	compile 'com.fasterxml.jackson.core:jackson-databind:2.5.1'
+	compile 'com.fasterxml.jackson.core:jackson-core:2.5.1'
+	compile 'org.hibernate:hibernate-core:4.3.8.Final'
+	compile 'org.slf4j:slf4j-log4j12:1.7.10'
+	compile 'org.springframework:spring-context:4.1.4.RELEASE'
+	compile 'org.springframework:spring-core:4.1.4.RELEASE'
+	compile 'org.springframework:spring-orm:4.1.4.RELEASE'
+	compile 'org.springframework:spring-web:4.1.4.RELEASE'
+	compile 'org.springframework:spring-webmvc:4.1.4.RELEASE'
+	compile 'postgresql:postgresql:9.1-901-1.jdbc4'
+	providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+    providedCompile 'javax.servlet.jsp:javax.servlet.jsp-api:2.3.1'
+    testCompile 'org.mockito:mockito-core:1.+'
+    testCompile 'junit:junit:4.11'
+}

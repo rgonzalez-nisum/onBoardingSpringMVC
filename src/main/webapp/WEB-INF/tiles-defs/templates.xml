@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+
+    <definition name="default" template="/WEB-INF/templates/template-default.jsp">
+    	<put-attribute name="title" value="Nisum On-Boarding" type="string"/>
+        <put-attribute name="header" value="/WEB-INF/templates/header.jsp" />
+        <put-attribute name="content" value="/WEB-INF/templates/content.jsp"/>
+        <put-attribute name="footer" value="/WEB-INF/templates/footer.jsp" />
+    </definition>
+    
+    <definition name="index" extends="default">
+        <put-attribute name="title" value="Nisum On-Boarding" />
+        <put-attribute name="content" value="/WEB-INF/views/index.jsp"/>
+    </definition>
+    
+    <definition name="subtitled" extends="default" template="/WEB-INF/templates/template-subtitled.jsp">
+    	<put-attribute name="subtitle" value="Subtitle" type="string"/>
+    </definition>
+    
+    <definition name="participant/all-participants" extends="subtitled">
+        <put-attribute name="title" value="Nisum On-Boarding: Participants" />
+        <put-attribute name="subtitle" value="Participants"/>
+        <put-attribute name="content" value="/WEB-INF/views/participant/all-participants.jsp"/>
+    </definition>
+    
+    <definition name="participant/new-participant" extends="subtitled">
+        <put-attribute name="title" value="Nisum On-Boarding: Participant Registration" />
+        <put-attribute name="subtitle" value="Registration"/>
+        <put-attribute name="content" value="/WEB-INF/views/participant/new-participant.jsp"/>
+    </definition>
+    
+</tiles-definitions>

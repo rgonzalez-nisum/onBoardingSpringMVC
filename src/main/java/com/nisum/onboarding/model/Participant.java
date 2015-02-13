@@ -94,4 +94,8 @@ public class Participant implements Serializable {
 		this.email = email;
 	}
 
+	@Override
+	public String toString() {
+		return "Participant [id=" + id + ", name=" + name + ", lastname=" + lastname + ", position=" + position + ", email=" + email + "]";
+	}
 }

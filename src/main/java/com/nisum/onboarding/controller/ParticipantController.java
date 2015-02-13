@@ -12,15 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.nisum.onboarding.dao.ParticipantDao;
+import com.nisum.onboarding.exception.ParticipantException;
 import com.nisum.onboarding.model.Participant;
+import com.nisum.onboarding.service.ParticipantService;
 
 @Controller
 @RequestMapping("/participants")
 public class ParticipantController {
 
 	@Autowired
-	private ParticipantDao participantDao;
+	private ParticipantService participantService;
 	
 	@RequestMapping(value="/register", method = RequestMethod.GET)
 	public String registerParticipantPage(ModelMap modelMap) {
@@ -32,7 +33,8 @@ public class ParticipantController {
 	@RequestMapping(value="/register", method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Participant registerParticipant(@RequestBody Participant participant) throws Exception {
-		return participantDao.save(participant);
+		participantService.save(participant);
+		return participant;
 	}
 	
 	@RequestMapping(value="", method=RequestMethod.GET)
@@ -55,7 +57,14 @@ public class ParticipantController {
 	}
 	
 	private List<Participant> allParticipants() {
-		return participantDao.findAll();
+		List<Participant> participants = new ArrayList<Participant>();
+		
+		try {
+			participants = participantService.findAll();
+		} catch (ParticipantException e) {
+		}
+		
+		return participants;
 	}
 	
 

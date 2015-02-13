@@ -41,7 +41,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 		try {
 			participantDao.save(participant);
 		} catch (Exception e) {
-			String message = "An exception has been thrown while finding participant by ID";
+			String message = "An exception has been thrown while saving " + participant;
 			LOG.error(message, e);
 			throw new ParticipantException(message, e);
 		}
@@ -53,7 +53,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 		try {
 			participantDao.update(participant);
 		} catch (Exception e) {
-			String message = "An exception has been thrown while updating participant";
+			String message = "An exception has been thrown while updating " + participant;
 			LOG.error(message, e);
 			throw new ParticipantException(message, e);
 		}
@@ -65,7 +65,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 		try {
 			participantDao.delete(participant);
 		} catch (Exception e) {
-			String message = "An exception has been thrown while deleting participant";
+			String message = "An exception has been thrown while deleting " + participant;
 			LOG.error(message, e);
 			throw new ParticipantException(message, e);
 		}
@@ -89,7 +89,7 @@ public class ParticipantServiceImpl implements ParticipantService {
 		try {
 			return findById(id);
 		} catch (Exception e) {
-			String message = "An exception has been thrown while finding participant by ID";
+			String message = "An exception has been thrown while finding participant by ID=" + id;
 			LOG.error(message, e);
 			throw new ParticipantException(message, e);
 		}

@@ -10,4 +10,10 @@
 	    </property>
 	</bean>
 	
+	<bean id="participantService" class="com.nisum.onboarding.service.impl.ParticipantServiceImpl">
+	    <property name="participantDao">
+	        <ref bean="participantDao" />
+	    </property>
+	</bean>
+	
 </beans>

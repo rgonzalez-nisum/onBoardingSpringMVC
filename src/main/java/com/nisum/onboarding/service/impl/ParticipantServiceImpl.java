@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nisum.onboarding.dao.ParticipantDao;
-import com.nisum.onboarding.exception.ParticipantException;
+import com.nisum.onboarding.exception.BeanException;
 import com.nisum.onboarding.model.Participant;
 import com.nisum.onboarding.service.ParticipantService;
 
@@ -37,61 +37,85 @@ public class ParticipantServiceImpl implements ParticipantService {
 
 	@Override
 	@Transactional
-	public void save(Participant participant) throws ParticipantException {
+	public void save(Participant participant) throws BeanException {
 		try {
 			participantDao.save(participant);
 		} catch (Exception e) {
 			String message = "An exception has been thrown while saving " + participant;
 			LOG.error(message, e);
-			throw new ParticipantException(message, e);
+			throw new BeanException(message, e);
 		}
 	}
 
 	@Override
 	@Transactional
-	public void update(Participant participant) throws ParticipantException {
+	public void update(Participant participant) throws BeanException {
 		try {
 			participantDao.update(participant);
 		} catch (Exception e) {
 			String message = "An exception has been thrown while updating " + participant;
 			LOG.error(message, e);
-			throw new ParticipantException(message, e);
+			throw new BeanException(message, e);
 		}
 	}
 
 	@Override
 	@Transactional
-	public void delete(Participant participant) throws ParticipantException {
+	public void delete(Participant participant) throws BeanException {
 		try {
 			participantDao.delete(participant);
 		} catch (Exception e) {
 			String message = "An exception has been thrown while deleting " + participant;
 			LOG.error(message, e);
-			throw new ParticipantException(message, e);
+			throw new BeanException(message, e);
 		}
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Participant> findAll() throws ParticipantException {
+	public List<Participant> findAll() throws BeanException {
 		try {
 			return participantDao.findAll();
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding all participants";
 			LOG.error(message, e);
-			throw new ParticipantException(message, e);
+			throw new BeanException(message, e);
 		}
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Participant findById(Long id) throws ParticipantException {
+	public Participant findById(Long id) throws BeanException {
 		try {
 			return findById(id);
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding participant by ID=" + id;
 			LOG.error(message, e);
-			throw new ParticipantException(message, e);
+			throw new BeanException(message, e);
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Participant findByEmail(String email) throws BeanException {
+		try {
+			return findByEmail(email);
+		} catch (Exception e) {
+			String message = "An exception has been thrown while finding participant by Email=" + email;
+			LOG.error(message, e);
+			throw new BeanException(message, e);
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Participant> findByNameOrLastname(String nameOrLastname) throws BeanException {
+		try {
+			return findByNameOrLastname(nameOrLastname);
+		} catch (Exception e) {
+			String message = "An exception has been thrown while finding participant by Name or Lastname=" + nameOrLastname;
+			LOG.error(message, e);
+			throw new BeanException(message, e);
 		}
 	}
 

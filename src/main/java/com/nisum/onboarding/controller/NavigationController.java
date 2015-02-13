@@ -13,4 +13,9 @@ public class NavigationController {
 		return new ModelAndView("index");
 	}
 	
+	@RequestMapping(value={"test"}, method=RequestMethod.GET)
+	public ModelAndView testPage() {
+		return new ModelAndView("test");
+	}
+	
 }

@@ -2,19 +2,13 @@ package com.nisum.onboarding.service;
 
 import java.util.List;
 
-import com.nisum.onboarding.exception.ParticipantException;
+import com.nisum.onboarding.exception.BeanException;
 import com.nisum.onboarding.model.Participant;
 
-public interface ParticipantService {
+public interface ParticipantService extends GenericService<Participant, Long> {
 
-	public void save(Participant participant) throws ParticipantException;
+	public Participant findByEmail(String email) throws BeanException;
 	
-	public void update(Participant participant) throws ParticipantException;
-	
-	public void delete(Participant participant) throws ParticipantException;
-	
-	public List<Participant> findAll() throws ParticipantException;
-	
-	public Participant findById(Long id) throws ParticipantException;
+	public List<Participant> findByNameOrLastname(String nameOrLastname) throws BeanException;
 	
 }

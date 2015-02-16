@@ -35,6 +35,12 @@ public abstract class GenericDaoImpl<T, ID extends Serializable> extends Hiberna
 	public void delete(T persistentObject) {
 		getHibernateTemplate().delete(persistentObject);
 	}
+	
+	@Override
+	public void deleteById(ID id) {
+		T persistentObject = getHibernateTemplate().load(persistentClass, id);
+		delete(persistentObject);
+	}
 
 	@Override
 	@Transactional(readOnly = true)

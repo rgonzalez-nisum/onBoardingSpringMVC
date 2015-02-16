@@ -11,6 +11,8 @@ public interface GenericDao<T, ID extends Serializable> {
 	
 	public void delete(T persistentObject);
 	
+	public void deleteById(ID id);
+	
 	public List<T> findAll();
 	
 	public T findById(ID id);

@@ -13,6 +13,8 @@ public interface GenericService<T, ID extends Serializable> {
 	
 	public void delete(T t) throws BeanException;
 	
+	public void deleteById(ID id) throws BeanException;
+	
 	public List<T> findAll() throws BeanException;
 	
 	public T findById(ID id) throws BeanException;

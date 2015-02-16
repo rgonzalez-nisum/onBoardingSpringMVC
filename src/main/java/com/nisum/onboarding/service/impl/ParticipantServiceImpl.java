@@ -70,6 +70,18 @@ public class ParticipantServiceImpl implements ParticipantService {
 			throw new BeanException(message, e);
 		}
 	}
+	
+	@Override
+	@Transactional
+	public void deleteById(Long id) throws BeanException {
+		try {
+			participantDao.deleteById(id);
+		} catch (Exception e) {
+			String message = "An exception has been thrown while deleting participant ID " + id;
+			LOG.error(message, e);
+			throw new BeanException(message, e);
+		}
+	}
 
 	@Override
 	@Transactional(readOnly = true)

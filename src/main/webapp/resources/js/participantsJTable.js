@@ -2,24 +2,13 @@
  * Javascript to manage the JTable
  */
 $(document).ready(function() {
-	if (typeof jQuery == 'undefined') {  
-	    console.log("jQuery NOT LOADED")
-	} else {
-		console.log("jQuery LOADED")
-	}
-	
-	if (typeof jtable == 'undefined') {  
-	    console.log("jtable NOT LOADED")
-	} else {
-		console.log("jtable LOADED")
-	}
-	
     //setup the jtable that will display the results
     $('#participantTableContainer').jtable({
         title: 'Participants',
-        selecting: true, //Enable selecting 
-        paging: false, //Enable paging
-        sorting: true, //Enable sorting
+        defaultDateFormat: 'yyyy-mm-dd',
+        selecting: true,
+        sorting: true,
+        multiSorting: true,
         actions: {
             listAction: 'participants/getAllParticipants',
             createAction: 'participants/addParticipant',
@@ -32,14 +21,15 @@ $(document).ready(function() {
                 key: true,
                 list: true,
                 create: false,
-                edit: false
+                edit: false,
+                visibility: 'hidden'
             },
             name: {
-                title: 'Name',
+                title: 'Name'
                 //width: '30%'
             },
             lastname: {
-                title: 'Last name',
+                title: 'Last name'
                 //width: '15%'
             },
             position: {
@@ -47,7 +37,7 @@ $(document).ready(function() {
                 options: 'participants/positions'
             },
             email: {
-                title: 'E-mail',
+                title: 'E-mail'
                 //width: '25%'
             }
         },
@@ -61,6 +51,6 @@ $(document).ready(function() {
             $('#participantTableContainer').jtable('load');
         }
     });
-//    $('#participantTableContainer').jtable('load');              
+    $('#participantTableContainer').jtable('load');              
                 
 });

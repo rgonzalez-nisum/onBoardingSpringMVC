@@ -1,8 +1,4 @@
-/* 
- * Javascript to manage the JTable
- */
 $(document).ready(function() {
-    //setup the jtable that will display the results
     $('#participantTableContainer').jtable({
         title: 'Participants',
         defaultDateFormat: 'yyyy-mm-dd',
@@ -41,16 +37,12 @@ $(document).ready(function() {
                 //width: '25%'
             }
         },
-        //Register to selectionChanged event to hanlde events                                     
         recordAdded: function(event, data){
-            //after record insertion, reload the records
             $('#participantTableContainer').jtable('load');
         },
         recordUpdated: function(event, data){
-            //after record updation, reload the records
             $('#participantTableContainer').jtable('load');
         }
     });
     $('#participantTableContainer').jtable('load');              
-                
 });

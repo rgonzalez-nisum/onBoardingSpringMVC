@@ -43,9 +43,6 @@ public class Participant implements Serializable {
 	@Column(name = "email", unique = true, nullable = false, length = 50)
 	private String email;
 
-//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "participant")
-//	private Set<Program> programs = new HashSet<Program>(0);
-
 	public Participant() {
 	}
 
@@ -96,14 +93,6 @@ public class Participant implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-//	public Set<Program> getPrograms() {
-//		return programs;
-//	}
-//
-//	public void setPrograms(Set<Program> programs) {
-//		this.programs = programs;
-//	}
 
 	@Override
 	public String toString() {

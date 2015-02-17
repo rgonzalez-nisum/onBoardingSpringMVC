@@ -1,4 +1,4 @@
-/* @IMPORT url("table.css"); */
+@IMPORT url("menu.css");
 
 body {
 	margin: 0;
@@ -9,56 +9,21 @@ body {
 
 .header {
 	background: #EFEFEF url(../images/headerBg.jpg) repeat-x left bottom;
-	min-height: 84px;
+	min-height: 80px;
 	-webkit-box-shadow: 0px 2px 3px #222;
 	-moz-box-shadow: 0px 2px 3px #222;
 }
 
 .header #logo {
+	float: left;
 	margin: 9px 0 0 9px;
 	height: 66px;
 }
 
-.header #title-box {
-	float: right;
-	height: 60px;
-	background: rgba(44,141,224); /*#2CABE0*/
-	background-color: rgba(44,141,224,0.7);
-	margin: 12px 9px; 
-	-webkit-box-shadow: inset 0px 2px 3px #555;
-	-moz-box-shadow: inset 0px 2px 3px #555;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-}
-
-.header #title {
-	margin: 0;
-	color: white;
-	text-shadow: 0px 2px 3px #555;
-	text-align: center;
-	font-size: 30px;
-	padding: 12px 15px;
-}
-
-.subtitle {
-	width: 100%;
-	background: rgba(44,141,224); /*#2CABE0*/
-	background-color: rgba(44,141,224,0.7);
-	margin: 20px 0px;
-	padding: 10px 0px;
-	color: white;
-	font-size: 20px;
-	font-weight: bold;
-	text-align: center;
-	text-shadow: 0px 2px 3px #555;
-	-webkit-box-shadow: 0px 2px 3px #222;
-	-moz-box-shadow: 0px 2px 3px #222;
-}
-
 .footer {
 	background: #EFEFEF url(../images/footerBg.jpg) repeat-x left top;
-	min-height: 20px;
-	padding: 10px 20px;
+	min-height: 10px;
+	padding: 10px;
 	overflow: hidden;
 	position: fixed;
 	bottom: 0;

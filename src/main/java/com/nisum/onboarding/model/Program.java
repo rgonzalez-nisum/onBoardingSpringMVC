@@ -41,7 +41,7 @@ public class Program implements Serializable {
 	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "participant_id", nullable = false)
 	private Participant participant;
 

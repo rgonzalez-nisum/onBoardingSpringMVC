@@ -27,7 +27,7 @@ public class JsonDeserialisationTest {
 	public void allClassesUsedByOurControllersShouldBeDeserialisableByJackson() throws Exception {
 		assertCanBeMapped(Participant.class);
 		assertCanBeMapped(Program.class);
-		assertCanBeMapped(ProgramTask.class);
+		assertCanBeMapped(Task.class);
 	}
 
 	private void assertCanBeMapped(Class<?> classToTest) {

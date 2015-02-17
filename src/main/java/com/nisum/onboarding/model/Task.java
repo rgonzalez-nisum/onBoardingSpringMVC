@@ -15,8 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
@@ -48,11 +46,9 @@ public class Task implements Serializable {
 	@Column(name = "taskDay")
 	private Integer taskDay;
 
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "started", nullable = false, length = 29)
 	private Timestamp started;
 
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "ended", nullable = false, length = 29)
 	private Timestamp ended;
 

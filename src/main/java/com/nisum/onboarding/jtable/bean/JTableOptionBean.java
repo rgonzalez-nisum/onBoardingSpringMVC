@@ -1,23 +1,23 @@
-package com.nisum.onboarding.dto.bean;
+package com.nisum.onboarding.jtable.bean;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class JsonJTableOptionBean implements JsonJTableBean {
+public class JTableOptionBean {
 
 	@JsonProperty("DisplayText")
 	private String displayText;
-
+	
 	@JsonProperty("Value")
 	private String value;
 
-	public JsonJTableOptionBean(String displayTextAndValue) {
-		this.displayText = displayTextAndValue;
-		this.value = displayTextAndValue;
+	public JTableOptionBean(String displayTextAndValue) {
+		setDisplayText(displayTextAndValue);
+		setValue(displayTextAndValue);
 	}
 	
-	public JsonJTableOptionBean(String displayText, String value) {
-		this.displayText = displayText;
-		this.value = value;
+	public JTableOptionBean(String displayText, String value) {
+		setDisplayText(displayText);
+		setValue(value);
 	}
 
 	public String getDisplayText() {

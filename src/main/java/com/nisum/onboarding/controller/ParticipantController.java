@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.nisum.onboarding.dto.bean.JsonJTableOptionBean;
-import com.nisum.onboarding.dto.bean.JsonJTableParticipantBean;
-import com.nisum.onboarding.dto.response.JsonJTableOptionListResponse;
-import com.nisum.onboarding.dto.response.JsonJTableParticipantListResponse;
-import com.nisum.onboarding.dto.response.JsonJTableParticipantResponse;
+import com.nisum.onboarding.jtable.bean.JTableOptionBean;
+import com.nisum.onboarding.jtable.response.impl.JTableOptionListResponseImpl;
+import com.nisum.onboarding.jtable.response.impl.JTableParticipantListResponse;
+import com.nisum.onboarding.jtable.response.impl.JTableParticipantResponse;
 import com.nisum.onboarding.model.Participant;
 import com.nisum.onboarding.service.ParticipantService;
 
@@ -35,42 +34,39 @@ public class ParticipantController {
 
 	@RequestMapping(value = "/getAllParticipants", method = RequestMethod.POST)
 	@ResponseBody
-	public JsonJTableParticipantListResponse getAllParticipants(String jtSorting) {
-		JsonJTableParticipantListResponse response;
+	public JTableParticipantListResponse getAllParticipants(String jtSorting) {
+		JTableParticipantListResponse response;
 
 		try {
-			List<JsonJTableParticipantBean> participants = participantToJsonJTableParticipantBean(participantService
-					.findAll());
-			response = new JsonJTableParticipantListResponse("OK", participants,
-					participants.size());
+			List<Participant> participants = participantService.findAll();
+			response = new JTableParticipantListResponse("OK", participants, participants.size());
 		} catch (Exception e) {
-			response = new JsonJTableParticipantListResponse("ERROR", e.getMessage());
+			response = new JTableParticipantListResponse("ERROR", e.getMessage());
 		}
 
 		return response;
 	}
 
 	@RequestMapping(value = "/positions", method = RequestMethod.POST)
-	public @ResponseBody JsonJTableOptionListResponse getPositions() {
-		List<JsonJTableOptionBean> positions = allPositions();
-		return new JsonJTableOptionListResponse("OK", positions);
+	public @ResponseBody JTableOptionListResponseImpl getPositions() {
+		List<JTableOptionBean> positions = allPositions();
+		return new JTableOptionListResponseImpl("OK", positions);
 	}
 
 	@RequestMapping(value = "/addParticipant", method = RequestMethod.POST)
 	@ResponseBody
-	public JsonJTableParticipantResponse addParticipant(@ModelAttribute JsonJTableParticipantBean participantBean, BindingResult result) {
-		JsonJTableParticipantResponse jsonJtableResponse;
+	public JTableParticipantResponse addParticipant(@ModelAttribute Participant participant, BindingResult result) {
 		if (result.hasErrors()) {
-			jsonJtableResponse = new JsonJTableParticipantResponse("ERROR", "Form invalid");
+			return new JTableParticipantResponse("ERROR", "Form invalid");
 		}
 
-		Participant participant = jsonJTableParticipantBeanToParticipant(participantBean);
-
+		JTableParticipantResponse jsonJtableResponse;
+		
 		try {
 			participantService.save(participant);
-			jsonJtableResponse = new JsonJTableParticipantResponse("OK", participant);
+			jsonJtableResponse = new JTableParticipantResponse("OK", participant);
 		} catch (Exception e) {
-			jsonJtableResponse = new JsonJTableParticipantResponse("ERROR", e.getMessage());
+			jsonJtableResponse = new JTableParticipantResponse("ERROR", e.getMessage());
 		}
 
 		return jsonJtableResponse;
@@ -78,71 +74,49 @@ public class ParticipantController {
 
 	@RequestMapping(value = "/updateParticipant", method = RequestMethod.POST)
 	@ResponseBody
-	public JsonJTableParticipantResponse updateParticipant(@ModelAttribute JsonJTableParticipantBean participantBean, BindingResult result) {
-		JsonJTableParticipantResponse jsonJtableResponse;
+	public JTableParticipantResponse updateParticipant(@ModelAttribute Participant participant, BindingResult result) {
 		if (result.hasErrors()) {
-			jsonJtableResponse = new JsonJTableParticipantResponse("ERROR", "Form invalid");
+			return new JTableParticipantResponse("ERROR", "Form invalid");
 		}
 
-		Participant participant = jsonJTableParticipantBeanToParticipant(participantBean);
+		JTableParticipantResponse jsonJtableResponse;
 
 		try {
 			participantService.update(participant);
-			jsonJtableResponse = new JsonJTableParticipantResponse("OK", participant);
+			jsonJtableResponse = new JTableParticipantResponse("OK", participant);
 		} catch (Exception e) {
-			jsonJtableResponse = new JsonJTableParticipantResponse("ERROR", e.getMessage());
+			jsonJtableResponse = new JTableParticipantResponse("ERROR", e.getMessage());
 		}
+		
 		return jsonJtableResponse;
 	}
 
 	@RequestMapping(value = "/deleteParticipant", method = RequestMethod.POST)
 	@ResponseBody
-	public JsonJTableParticipantResponse deleteParticipant(@RequestParam Long id) {
-		JsonJTableParticipantResponse jsonJtableResponse;
+	public JTableParticipantResponse deleteParticipant(@RequestParam Long id) {
+		JTableParticipantResponse jsonJtableResponse;
 		
 		try {
 			participantService.deleteById(id);
-			jsonJtableResponse = new JsonJTableParticipantResponse("OK");
+			jsonJtableResponse = new JTableParticipantResponse("OK");
 		} catch (Exception e) {
-			jsonJtableResponse = new JsonJTableParticipantResponse("ERROR", e.getMessage());
+			jsonJtableResponse = new JTableParticipantResponse("ERROR", e.getMessage());
 		}
+		
 		return jsonJtableResponse;
 	}
 
-	private List<JsonJTableOptionBean> allPositions() {
-		List<JsonJTableOptionBean> positions = new ArrayList<JsonJTableOptionBean>();
-		positions.add(new JsonJTableOptionBean("Intership"));
-		positions.add(new JsonJTableOptionBean("Developer Trainee"));
-		positions.add(new JsonJTableOptionBean("Developer Junior"));
-		positions.add(new JsonJTableOptionBean("Developer Senior"));
-		positions.add(new JsonJTableOptionBean("QA Trainee"));
-		positions.add(new JsonJTableOptionBean("QA Junior"));
-		positions.add(new JsonJTableOptionBean("QA Senior"));
+	private List<JTableOptionBean> allPositions() {
+		List<JTableOptionBean> positions = new ArrayList<JTableOptionBean>();
+		positions.add(new JTableOptionBean("Intership"));
+		positions.add(new JTableOptionBean("Developer Trainee"));
+		positions.add(new JTableOptionBean("Developer Junior"));
+		positions.add(new JTableOptionBean("Developer Senior"));
+		positions.add(new JTableOptionBean("QA Trainee"));
+		positions.add(new JTableOptionBean("QA Junior"));
+		positions.add(new JTableOptionBean("QA Senior"));
 
 		return positions;
-	}
-
-	private List<JsonJTableParticipantBean> participantToJsonJTableParticipantBean(
-			List<Participant> participants) {
-		List<JsonJTableParticipantBean> participantsBeans = new ArrayList<JsonJTableParticipantBean>();
-
-		for (Participant participant : participants) {
-			JsonJTableParticipantBean participantsBean = new JsonJTableParticipantBean();
-			participantsBean.setId(participant.getId());
-			participantsBean.setName(participant.getName());
-			participantsBean.setLastname(participant.getLastname());
-			participantsBean.setPosition(participant.getPosition());
-			participantsBean.setEmail(participant.getEmail());
-
-			participantsBeans.add(participantsBean);
-		}
-
-		return participantsBeans;
-	}
-
-	private Participant jsonJTableParticipantBeanToParticipant(JsonJTableParticipantBean bean) {
-		return new Participant(bean.getId(), bean.getName(), bean.getLastname(),
-				bean.getPosition(), bean.getEmail());
 	}
 
 }

@@ -23,9 +23,9 @@
         <put-attribute name="content" value="/WEB-INF/views/index.jsp"/>
     </definition>
     
-    <definition name="participant/all-participants" extends="default">
+    <definition name="participant/participants" extends="default">
         <put-attribute name="title" value="Nisum On-Boarding: Participants"/>
-        <put-attribute name="content" value="/WEB-INF/views/participant/all-participants.jsp"/>
+        <put-attribute name="content" value="/WEB-INF/views/participant/participants.jsp"/>
         <put-list-attribute name="stylesheets" inherit="true">
         	<add-attribute value="/resources/js/jtable.2.4.0/themes/lightcolor/blue/jtable.css"/>
         </put-list-attribute>
@@ -33,11 +33,6 @@
         	<add-attribute value="/resources/js/jtable.2.4.0/jquery.jtable.js"/>
         	<add-attribute value="/resources/js/participantsJTable.js"/>
         </put-list-attribute>
-    </definition>
-    
-    <definition name="participant/new-participant" extends="default">
-        <put-attribute name="title" value="Nisum On-Boarding: Participant Registration"/>
-        <put-attribute name="content" value="/WEB-INF/views/participant/new-participant.jsp"/>
     </definition>
     
 </tiles-definitions>

@@ -22,6 +22,8 @@
 		<property name="annotatedClasses">
 			<list>
 				<value>com.nisum.onboarding.model.Participant</value>
+				<value>com.nisum.onboarding.model.Program</value>
+				<value>com.nisum.onboarding.model.Task</value>
 			</list>
 		</property>
 

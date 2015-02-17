@@ -1,16 +1,12 @@
 package com.nisum.onboarding.model;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -47,8 +43,8 @@ public class Participant implements Serializable {
 	@Column(name = "email", unique = true, nullable = false, length = 50)
 	private String email;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "program")
-	private Set<Program> programs = new HashSet<Program>(0);
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "participant")
+//	private Set<Program> programs = new HashSet<Program>(0);
 
 	public Participant() {
 	}
@@ -101,13 +97,13 @@ public class Participant implements Serializable {
 		this.email = email;
 	}
 
-	public Set<Program> getPrograms() {
-		return programs;
-	}
-
-	public void setPrograms(Set<Program> programs) {
-		this.programs = programs;
-	}
+//	public Set<Program> getPrograms() {
+//		return programs;
+//	}
+//
+//	public void setPrograms(Set<Program> programs) {
+//		this.programs = programs;
+//	}
 
 	@Override
 	public String toString() {

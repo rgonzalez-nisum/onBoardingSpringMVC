@@ -27,10 +27,12 @@ public class ParticipantServiceImpl implements ParticipantService {
 		this.participantDao = participantDao;
 	}
 
+	@Override
 	public ParticipantDao getParticipantDao() {
 		return participantDao;
 	}
 
+	@Override
 	public void setParticipantDao(ParticipantDao participantDao) {
 		this.participantDao = participantDao;
 	}

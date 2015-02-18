@@ -34,10 +34,14 @@
 	text-decoration: none;
 }
 
-#menu ul li:hover, #menu ul li.active {
+#menu ul li:hover {
 	background: url("../images/nav-bg-hover.png") repeat-x scroll left bottom #0f71ba;
 }
 
-#menu ul li a:hover, #menu ul li.active>a {
+#menu ul li.active {
+	background: url("../images/nav-bg.png") repeat-x scroll left bottom #0f71ba;
+}
+
+#menu ul li a:hover, #menu ul li.active > a {
 	color: #ffffff;
 }

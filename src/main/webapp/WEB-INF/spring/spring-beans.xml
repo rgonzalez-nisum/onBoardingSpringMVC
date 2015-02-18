@@ -10,9 +10,21 @@
 	    </property>
 	</bean>
 	
+	<bean id="programDao" class="com.nisum.onboarding.dao.impl.ProgramDaoImpl">
+	    <property name="sessionFactory">
+	        <ref bean="sessionFactory" />
+	    </property>
+	</bean>
+	
 	<bean id="participantService" class="com.nisum.onboarding.service.impl.ParticipantServiceImpl">
 	    <property name="participantDao">
 	        <ref bean="participantDao" />
+	    </property>
+	</bean>
+	
+	<bean id="programService" class="com.nisum.onboarding.service.impl.ProgramServiceImpl">
+	    <property name="programDao">
+	        <ref bean="programDao" />
 	    </property>
 	</bean>
 	

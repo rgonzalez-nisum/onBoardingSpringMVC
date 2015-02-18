@@ -30,4 +30,9 @@
 			<tiles:insertAttribute name="footer" />
 		</div>
 	</body>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#<tiles:insertAttribute name="menu-active-option"/>').addClass('active');
+		});
+	</script>
 </html>

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('#participantTableContainer').jtable({
+    $('#participantsTableContainer').jtable({
         title: 'Participants',
         defaultDateFormat: 'yyyy-mm-dd',
         selecting: true,
@@ -22,11 +22,9 @@ $(document).ready(function() {
             },
             name: {
                 title: 'Name'
-                //width: '30%'
             },
             lastname: {
                 title: 'Last name'
-                //width: '15%'
             },
             position: {
                 title: 'Position',
@@ -34,15 +32,14 @@ $(document).ready(function() {
             },
             email: {
                 title: 'E-mail'
-                //width: '25%'
             }
         },
         recordAdded: function(event, data){
-            $('#participantTableContainer').jtable('load');
+            $('#participantsTableContainer').jtable('load');
         },
         recordUpdated: function(event, data){
-            $('#participantTableContainer').jtable('load');
+            $('#participantsTableContainer').jtable('load');
         }
     });
-    $('#participantTableContainer').jtable('load');              
+    $('#participantsTableContainer').jtable('load');              
 });

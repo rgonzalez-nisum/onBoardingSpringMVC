@@ -6,6 +6,7 @@
     <definition name="default" template="/WEB-INF/templates/template.jsp">
     	<put-attribute name="title" value="Nisum On-Boarding" type="string"/>
         <put-attribute name="header" value="/WEB-INF/templates/header.jsp"/>
+        <put-attribute name="menu-active-option" value="option-home" type="string"/>
         <put-attribute name="content" value="/WEB-INF/templates/content.jsp"/>
         <put-attribute name="footer" value="/WEB-INF/templates/footer.jsp"/>
 	    <put-list-attribute name="stylesheets">
@@ -20,11 +21,13 @@
     
     <definition name="index" extends="default">
         <put-attribute name="title" value="Nisum On-Boarding"/>
+        <put-attribute name="menu-active-option" value="option-home"/>
         <put-attribute name="content" value="/WEB-INF/views/index.jsp"/>
     </definition>
     
     <definition name="participant/participants" extends="default">
         <put-attribute name="title" value="Nisum On-Boarding: Participants"/>
+        <put-attribute name="menu-active-option" value="option-participant"/>
         <put-attribute name="content" value="/WEB-INF/views/participant/participants.jsp"/>
         <put-list-attribute name="stylesheets" inherit="true">
         	<add-attribute value="/resources/js/jtable.2.4.0/themes/lightcolor/blue/jtable.css"/>
@@ -32,6 +35,19 @@
         <put-list-attribute name="javascripts" inherit="true">
         	<add-attribute value="/resources/js/jtable.2.4.0/jquery.jtable.js"/>
         	<add-attribute value="/resources/js/participantsJTable.js"/>
+        </put-list-attribute>
+    </definition>
+    
+    <definition name="program/programs" extends="default">
+        <put-attribute name="title" value="Nisum On-Boarding: Programs"/>
+        <put-attribute name="menu-active-option" value="option-program"/>
+        <put-attribute name="content" value="/WEB-INF/views/program/programs.jsp"/>
+        <put-list-attribute name="stylesheets" inherit="true">
+        	<add-attribute value="/resources/js/jtable.2.4.0/themes/lightcolor/blue/jtable.css"/>
+        </put-list-attribute>
+        <put-list-attribute name="javascripts" inherit="true">
+        	<add-attribute value="/resources/js/jtable.2.4.0/jquery.jtable.js"/>
+        	<add-attribute value="/resources/js/programsJTable.js"/>
         </put-list-attribute>
     </definition>
     

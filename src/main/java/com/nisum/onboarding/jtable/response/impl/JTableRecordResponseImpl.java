@@ -6,9 +6,6 @@ public abstract class JTableRecordResponseImpl<T> extends JTableResponseImpl imp
 
 	private T record;
 
-	public JTableRecordResponseImpl() {
-	}
-
 	public JTableRecordResponseImpl(String result) {
 		setResult(result);
 	}

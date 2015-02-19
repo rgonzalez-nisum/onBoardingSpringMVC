@@ -1,12 +1,16 @@
 package com.nisum.onboarding.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -14,11 +18,14 @@ import javax.persistence.UniqueConstraint;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NamedQueries({
-	@NamedQuery(name = "Participant.findAll", query = "from Participant"),
-	@NamedQuery(name = "Participant.findByNameOrLastname", query = "from Participant where name = :name or lastname = :lastname"),
-	@NamedQuery(name = "Participant.findByEmail", query = "from Participant where email = :email") 
-})
+		@NamedQuery(name = "Participant.findAll", query = "from Participant"),
+		@NamedQuery(name = "Participant.findByNameOrLastname", query = "from Participant where name = :name or lastname = :lastname"),
+		@NamedQuery(name = "Participant.findByEmail", query = "from Participant where email = :email") })
 @Entity
 @Table(name = "participant", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class Participant implements Serializable {
@@ -42,6 +49,10 @@ public class Participant implements Serializable {
 
 	@Column(name = "email", unique = true, nullable = false, length = 50)
 	private String email;
+
+	@JsonManagedReference
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "participant")
+	private Set<Program> programs = new HashSet<Program>(0);
 
 	public Participant() {
 	}
@@ -92,6 +103,14 @@ public class Participant implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Set<Program> getPrograms() {
+		return programs;
+	}
+
+	public void setPrograms(Set<Program> programs) {
+		this.programs = programs;
 	}
 
 	@Override

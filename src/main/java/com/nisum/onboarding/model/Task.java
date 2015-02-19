@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @NamedQueries({
 	@NamedQuery(name = "Task.findAll", query = "from Task"),
 	@NamedQuery(name = "Task.findByProgramId", query = "from Task where program.id = :programId"),
@@ -36,6 +38,7 @@ public class Task implements Serializable {
 	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "program_id", nullable = false)
 	private Program program;
@@ -43,7 +46,7 @@ public class Task implements Serializable {
 	@Column(name = "content")
 	private String content;
 
-	@Column(name = "taskDay")
+	@Column(name = "task_day")
 	private Integer taskDay;
 
 	@Column(name = "started", nullable = false, length = 29)

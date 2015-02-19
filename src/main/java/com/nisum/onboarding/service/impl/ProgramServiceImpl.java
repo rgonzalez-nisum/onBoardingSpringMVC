@@ -1,17 +1,21 @@
 package com.nisum.onboarding.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nisum.onboarding.dao.ProgramDao;
 import com.nisum.onboarding.exception.BeanException;
+import com.nisum.onboarding.jtable.bean.JTableProgramBean;
 import com.nisum.onboarding.model.Program;
 import com.nisum.onboarding.model.ProgramStatus;
 import com.nisum.onboarding.service.ProgramService;
 
+@Service
 public class ProgramServiceImpl implements ProgramService {
 
 	private static final Logger LOG = Logger.getLogger(ProgramServiceImpl.class);
@@ -38,9 +42,9 @@ public class ProgramServiceImpl implements ProgramService {
 
 	@Override
 	@Transactional
-	public void save(Program program) throws BeanException {
+	public void save(JTableProgramBean program) throws BeanException {
 		try {
-			programDao.save(program);
+			programDao.save(program.toProgram());
 		} catch (Exception e) {
 			String message = "An exception has been thrown while saving " + program;
 			LOG.error(message, e);
@@ -50,9 +54,9 @@ public class ProgramServiceImpl implements ProgramService {
 
 	@Override
 	@Transactional
-	public void update(Program program) throws BeanException {
+	public void update(JTableProgramBean program) throws BeanException {
 		try {
-			programDao.update(program);
+			programDao.update(program.toProgram());
 		} catch (Exception e) {
 			String message = "An exception has been thrown while updating " + program;
 			LOG.error(message, e);
@@ -62,9 +66,9 @@ public class ProgramServiceImpl implements ProgramService {
 
 	@Override
 	@Transactional
-	public void delete(Program program) throws BeanException {
+	public void delete(JTableProgramBean program) throws BeanException {
 		try {
-			programDao.delete(program);
+			programDao.delete(program.toProgram());
 		} catch (Exception e) {
 			String message = "An exception has been thrown while deleting " + program;
 			LOG.error(message, e);
@@ -86,9 +90,9 @@ public class ProgramServiceImpl implements ProgramService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<Program> findAll() throws BeanException {
+	public List<JTableProgramBean> findAll() throws BeanException {
 		try {
-			return programDao.findAll();
+			return toJTableProgramBeans(programDao.findAll());
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding all programs";
 			LOG.error(message, e);
@@ -98,9 +102,9 @@ public class ProgramServiceImpl implements ProgramService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Program findById(Long id) throws BeanException {
+	public JTableProgramBean findById(Long id) throws BeanException {
 		try {
-			return findById(id);
+			return toJTableProgramBean(programDao.findById(id));
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding program by ID=" + id;
 			LOG.error(message, e);
@@ -109,25 +113,40 @@ public class ProgramServiceImpl implements ProgramService {
 	}
 
 	@Override
-	public List<Program> findByParticipantId(Long id) throws BeanException {
+	public List<JTableProgramBean> findByParticipantId(Long participantId) throws BeanException {
 		try {
-			return findByParticipantId(id);
+			return toJTableProgramBeans(programDao.findByParticipantId(participantId));
 		} catch (Exception e) {
-			String message = "An exception has been thrown while finding program by participant ID=" + id;
+			String message = "An exception has been thrown while finding program by participant ID=" + participantId;
 			LOG.error(message, e);
 			throw new BeanException(message, e);
 		}
 	}
 
 	@Override
-	public List<Program> findByStatus(ProgramStatus status) throws BeanException {
+	public List<JTableProgramBean> findByStatus(ProgramStatus status) throws BeanException {
 		try {
-			return findByStatus(status);
+			return toJTableProgramBeans(programDao.findByStatus(status));
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding program by status=" + status;
 			LOG.error(message, e);
 			throw new BeanException(message, e);
 		}
+	}
+	
+	private JTableProgramBean toJTableProgramBean(Program program) {
+		return new JTableProgramBean(program);
+	}
+
+
+	private List<JTableProgramBean> toJTableProgramBeans(List<Program> programs) {
+		List<JTableProgramBean> programBeans = new ArrayList<JTableProgramBean>();
+		
+		for (Program program : programs) {
+			programBeans.add(toJTableProgramBean(program));
+		}
+		
+		return programBeans;
 	}
 
 }

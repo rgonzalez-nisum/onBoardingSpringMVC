@@ -1,7 +1,7 @@
 package com.nisum.onboarding.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,12 +18,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NamedQueries({
 	@NamedQuery(name = "Program.findAll", query = "from Program"),
 	@NamedQuery(name = "Program.findByParticipantId", query = "from Program where participant.id = :participantId"),
@@ -41,7 +46,8 @@ public class Program implements Serializable {
 	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@JsonBackReference
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "participant_id", nullable = false)
 	private Participant participant;
 
@@ -52,18 +58,19 @@ public class Program implements Serializable {
 	@Column(name = "status", nullable = false, length = 15)
 	private ProgramStatus status;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "started", nullable = false, length = 29)
-	private Timestamp started;
+	private Date started;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "program", orphanRemoval = true)
-	@Cascade({ CascadeType.ALL })
+	@JsonManagedReference
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "program", orphanRemoval = true)
 	private Set<Task> tasks = new HashSet<Task>();
 
 	public Program() {
 	}
 
 	public Program(Long id, Participant participant, String description, ProgramStatus status,
-			Timestamp started) {
+			Date started) {
 		setId(id);
 		setParticipant(participant);
 		setDescription(description);
@@ -72,7 +79,7 @@ public class Program implements Serializable {
 	}
 
 	public Program(Long id, Participant participant, String description, ProgramStatus status,
-			Timestamp started, Set<Task> tasks) {
+			Date started, Set<Task> tasks) {
 		setId(id);
 		setParticipant(participant);
 		setDescription(description);
@@ -113,11 +120,11 @@ public class Program implements Serializable {
 		this.status = status;
 	}
 
-	public Timestamp getStarted() {
+	public Date getStarted() {
 		return started;
 	}
 
-	public void setStarted(Timestamp started) {
+	public void setStarted(Date started) {
 		this.started = started;
 	}
 

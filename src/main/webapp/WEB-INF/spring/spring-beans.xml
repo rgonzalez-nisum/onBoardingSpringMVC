@@ -4,28 +4,28 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
 
-	<bean id="participantDao" class="com.nisum.onboarding.dao.impl.ParticipantDaoImpl">
-	    <property name="sessionFactory">
-	        <ref bean="sessionFactory" />
-	    </property>
-	</bean>
+<!-- 	<bean id="participantDao" class="com.nisum.onboarding.dao.impl.ParticipantDaoImpl"> -->
+<!-- 	    <property name="sessionFactory"> -->
+<!-- 	        <ref bean="sessionFactory" /> -->
+<!-- 	    </property> -->
+<!-- 	</bean> -->
 	
-	<bean id="programDao" class="com.nisum.onboarding.dao.impl.ProgramDaoImpl">
-	    <property name="sessionFactory">
-	        <ref bean="sessionFactory" />
-	    </property>
-	</bean>
+<!-- 	<bean id="programDao" class="com.nisum.onboarding.dao.impl.ProgramDaoImpl"> -->
+<!-- 	    <property name="sessionFactory"> -->
+<!-- 	        <ref bean="sessionFactory" /> -->
+<!-- 	    </property> -->
+<!-- 	</bean> -->
 	
-	<bean id="participantService" class="com.nisum.onboarding.service.impl.ParticipantServiceImpl">
-	    <property name="participantDao">
-	        <ref bean="participantDao" />
-	    </property>
-	</bean>
+<!-- 	<bean id="participantService" class="com.nisum.onboarding.service.impl.ParticipantServiceImpl"> -->
+<!-- 	    <property name="participantDao"> -->
+<!-- 	        <ref bean="participantDao" /> -->
+<!-- 	    </property> -->
+<!-- 	</bean> -->
 	
-	<bean id="programService" class="com.nisum.onboarding.service.impl.ProgramServiceImpl">
-	    <property name="programDao">
-	        <ref bean="programDao" />
-	    </property>
-	</bean>
+<!-- 	<bean id="programService" class="com.nisum.onboarding.service.impl.ProgramServiceImpl"> -->
+<!-- 	    <property name="programDao"> -->
+<!-- 	        <ref bean="programDao" /> -->
+<!-- 	    </property> -->
+<!-- 	</bean> -->
 	
 </beans>

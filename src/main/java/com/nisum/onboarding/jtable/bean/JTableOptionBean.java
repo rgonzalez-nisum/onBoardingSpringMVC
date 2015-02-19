@@ -8,14 +8,14 @@ public class JTableOptionBean {
 	private String displayText;
 	
 	@JsonProperty("Value")
-	private String value;
+	private Object value;
 
 	public JTableOptionBean(String displayTextAndValue) {
 		setDisplayText(displayTextAndValue);
 		setValue(displayTextAndValue);
 	}
 	
-	public JTableOptionBean(String displayText, String value) {
+	public JTableOptionBean(String displayText, Object value) {
 		setDisplayText(displayText);
 		setValue(value);
 	}
@@ -28,11 +28,11 @@ public class JTableOptionBean {
 		this.displayText = displayText;
 	}
 
-	public String getValue() {
+	public Object getValue() {
 		return value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(Object value) {
 		this.value = value;
 	}
 

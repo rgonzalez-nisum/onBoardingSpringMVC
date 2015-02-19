@@ -1,7 +1,7 @@
 $(document).ready(function() {
-    $('#programsTableContainer').jtable({
+    $('#allProgramsTableContainer').jtable({
         title: 'Programs',
-        defaultDateFormat: 'yyyy-mm-dd',
+        defaultDateFormat: 'yy-mm-dd',
         selecting: true,
         sorting: true,
         multiSorting: true,
@@ -14,32 +14,35 @@ $(document).ready(function() {
         fields: {
             id: {
                 title: 'ID',
+                list: false,
                 key: true,
-                list: true,
                 create: false,
                 edit: false,
                 visibility: 'hidden'
             },
             participant: {
-                title: 'Participant'
+                title: 'Participant',
+                options: 'programs/participants'
             },
             description: {
-                title: 'Description'
+                title: 'Description',
+                type: 'textarea'
             },
             status: {
                 title: 'Status',
                 options: 'programs/statuses'
             },
             started: {
-                title: 'Started on'
+                title: 'Started on',
+                type: 'date'
             }
         },
         recordAdded: function(event, data){
-            $('#programsTableContainer').jtable('load');
+            $('#allProgramsTableContainer').jtable('load');
         },
         recordUpdated: function(event, data){
-            $('#programsTableContainer').jtable('load');
+            $('#allProgramsTableContainer').jtable('load');
         }
     });
-    $('#programsTableContainer').jtable('load');              
+    $('#allProgramsTableContainer').jtable('load');              
 });

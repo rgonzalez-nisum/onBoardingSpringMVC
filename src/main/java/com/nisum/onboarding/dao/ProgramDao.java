@@ -7,7 +7,7 @@ import com.nisum.onboarding.model.ProgramStatus;
 
 public interface ProgramDao extends GenericDao<Program, Long> {
 	
-	public List<Program> findByParticipantId(Long id);
+	public List<Program> findByParticipantId(Long participantId);
 	
 	public List<Program> findByStatus(ProgramStatus status);
 

@@ -10,8 +10,8 @@
 	<head>
 		<title><tiles:insertAttribute name="title" ignore="true"/></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<link rel="icon" href="<c:url value="/resources/images/favicon.ico"/>" type="image/x-icon" />
-		<link rel="shortcut icon" href="<c:url value="/resources/images/favicon.ico"/>" type="image/x-icon" />
+		<link rel="icon" href="<c:url value="/resources/icons/favicon.ico"/>" type="image/x-icon" />
+		<link rel="shortcut icon" href="<c:url value="/resources/icons/favicon.ico"/>" type="image/x-icon" />
 	    <c:forEach var="css" items="${stylesheets}">
 	        <link rel="stylesheet" type="text/css" href="<c:url value="${css}"/>">
 	    </c:forEach>

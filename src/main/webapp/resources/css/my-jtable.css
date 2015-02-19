@@ -1,0 +1,24 @@
+.jtable-main-container {
+	margin: 10px !important;
+}
+
+.jtable-programs-icon, .jtable-program-goto-icon, .jtable-tasks-icon {
+	min-width: 16px;
+	min-height: 16px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	cursor: pointer;
+}
+
+.jtable-programs-icon {
+	background: url(../icons/programs.png) no-repeat center center;
+}
+
+.jtable-program-goto-icon {
+	background: url(../icons/program-goto.png) no-repeat center center;
+}
+
+.jtable-tasks-icon {
+	background: url(../icons/tasks.png) no-repeat center center;
+}

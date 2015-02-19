@@ -2,27 +2,30 @@ package com.nisum.onboarding.dao.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.nisum.onboarding.dao.ProgramDao;
 import com.nisum.onboarding.model.Program;
 import com.nisum.onboarding.model.ProgramStatus;
 
 @SuppressWarnings("unchecked")
+@Repository
+@Transactional
 public class ProgramDaoImpl extends GenericDaoImpl<Program, Long> implements ProgramDao {
-	
+
 	@Override
-	public List<Program> findByParticipantId(Long id) {
-		List<?> results = getHibernateTemplate().findByNamedQueryAndNamedParam(
-				"Program.findByParticipantId", "participantId", id);
-		
-		return (List<Program>) results;
+	public List<Program> findByParticipantId(Long participantId) {
+		return getSession().getNamedQuery("Program.findByParticipantId")
+				.setParameter("participantId", participantId)
+				.list();
 	}
 
 	@Override
 	public List<Program> findByStatus(ProgramStatus status) {
-		List<?> results = getHibernateTemplate().findByNamedQueryAndNamedParam(
-				"Program.findByStatus", "status", status);
-		
-		return (List<Program>) results;
+		return getSession().getNamedQuery("Program.findByStatus")
+				.setParameter("status", status)
+				.list();
 	}
-	
+
 }

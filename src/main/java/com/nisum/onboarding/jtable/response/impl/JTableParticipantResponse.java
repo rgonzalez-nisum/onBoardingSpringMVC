@@ -1,14 +1,14 @@
 package com.nisum.onboarding.jtable.response.impl;
 
-import com.nisum.onboarding.model.Participant;
+import com.nisum.onboarding.jtable.bean.JTableParticipantBean;
 
-public class JTableParticipantResponse extends JTableRecordResponseImpl<Participant> {
+public class JTableParticipantResponse extends JTableRecordResponseImpl<JTableParticipantBean> {
 
 	public JTableParticipantResponse(String result) {
 		super(result);
 	}
 	
-	public JTableParticipantResponse(String result, Participant record) {
+	public JTableParticipantResponse(String result, JTableParticipantBean record) {
 		super(result, record);
 	}
 

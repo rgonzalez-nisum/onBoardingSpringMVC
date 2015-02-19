@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nisum.onboarding.jtable.bean.JTableOptionBean;
+import com.nisum.onboarding.jtable.bean.JTableParticipantBean;
 import com.nisum.onboarding.jtable.response.impl.JTableOptionListResponseImpl;
 import com.nisum.onboarding.jtable.response.impl.JTableParticipantListResponse;
 import com.nisum.onboarding.jtable.response.impl.JTableParticipantResponse;
-import com.nisum.onboarding.model.Participant;
 import com.nisum.onboarding.service.ParticipantService;
 
 @Controller
@@ -27,18 +26,13 @@ public class ParticipantController {
 	@Autowired
 	private ParticipantService participantService;
 
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public String show(ModelMap model) {
-		return "participant/participants";
-	}
-
 	@RequestMapping(value = "/getAllParticipants", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableParticipantListResponse getAllParticipants(String jtSorting) {
+	public JTableParticipantListResponse getAllParticipants() {
 		JTableParticipantListResponse response;
 
 		try {
-			List<Participant> participants = participantService.findAll();
+			List<JTableParticipantBean> participants = participantService.findAll();
 			response = new JTableParticipantListResponse("OK", participants, participants.size());
 		} catch (Exception e) {
 			response = new JTableParticipantListResponse("ERROR", e.getMessage());
@@ -55,7 +49,7 @@ public class ParticipantController {
 
 	@RequestMapping(value = "/addParticipant", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableParticipantResponse addParticipant(@ModelAttribute Participant participant, BindingResult result) {
+	public JTableParticipantResponse addParticipant(@ModelAttribute JTableParticipantBean participant, BindingResult result) {
 		if (result.hasErrors()) {
 			return new JTableParticipantResponse("ERROR", "Form invalid");
 		}
@@ -74,7 +68,7 @@ public class ParticipantController {
 
 	@RequestMapping(value = "/updateParticipant", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableParticipantResponse updateParticipant(@ModelAttribute Participant participant, BindingResult result) {
+	public JTableParticipantResponse updateParticipant(@ModelAttribute JTableParticipantBean participant, BindingResult result) {
 		if (result.hasErrors()) {
 			return new JTableParticipantResponse("ERROR", "Form invalid");
 		}

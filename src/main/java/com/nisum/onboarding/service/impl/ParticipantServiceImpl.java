@@ -42,11 +42,11 @@ public class ParticipantServiceImpl implements ParticipantService {
 
 	@Override
 	@Transactional
-	public void save(JTableParticipantBean participant) throws BeanException {
+	public void save(JTableParticipantBean jtableParticipant) throws BeanException {
 		try {
-			participantDao.save(participant.toParticipant());
+			participantDao.save(jtableParticipant.toParticipant());
 		} catch (Exception e) {
-			String message = "An exception has been thrown while saving " + participant;
+			String message = "An exception has been thrown while saving " + jtableParticipant;
 			LOG.error(message, e);
 			throw new BeanException(message, e);
 		}
@@ -54,11 +54,11 @@ public class ParticipantServiceImpl implements ParticipantService {
 
 	@Override
 	@Transactional
-	public void update(JTableParticipantBean participant) throws BeanException {
+	public void update(JTableParticipantBean jtableParticipant) throws BeanException {
 		try {
-			participantDao.update(participant.toParticipant());
+			participantDao.update(jtableParticipant.toParticipant());
 		} catch (Exception e) {
-			String message = "An exception has been thrown while updating " + participant;
+			String message = "An exception has been thrown while updating " + jtableParticipant;
 			LOG.error(message, e);
 			throw new BeanException(message, e);
 		}
@@ -66,11 +66,11 @@ public class ParticipantServiceImpl implements ParticipantService {
 
 	@Override
 	@Transactional
-	public void delete(JTableParticipantBean participant) throws BeanException {
+	public void delete(JTableParticipantBean jtableParticipant) throws BeanException {
 		try {
-			participantDao.delete(participant.toParticipant());
+			participantDao.delete(jtableParticipant.toParticipant());
 		} catch (Exception e) {
-			String message = "An exception has been thrown while deleting " + participant;
+			String message = "An exception has been thrown while deleting " + jtableParticipant;
 			LOG.error(message, e);
 			throw new BeanException(message, e);
 		}

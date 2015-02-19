@@ -51,4 +51,17 @@
         </put-list-attribute>
     </definition>
     
+    <definition name="program/program-tasks" extends="default">
+        <put-attribute name="title" value="Nisum On-Boarding: Program Tasks"/>
+        <put-attribute name="menu-active-option" value="option-program"/>
+        <put-attribute name="content" value="/WEB-INF/views/program/program-tasks.jsp"/>
+        <put-list-attribute name="stylesheets" inherit="true">
+        	<add-attribute value="/resources/js/jtable.2.4.0/themes/lightcolor/blue/jtable.css"/>
+        </put-list-attribute>
+        <put-list-attribute name="javascripts" inherit="true">
+        	<add-attribute value="/resources/js/jtable.2.4.0/jquery.jtable.js"/>
+        	<add-attribute value="/resources/js/programTasksJTable.js"/>
+        </put-list-attribute>
+    </definition>
+    
 </tiles-definitions>

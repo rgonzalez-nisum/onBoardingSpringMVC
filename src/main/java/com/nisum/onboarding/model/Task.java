@@ -1,7 +1,7 @@
 package com.nisum.onboarding.model;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
@@ -49,11 +51,13 @@ public class Task implements Serializable {
 	@Column(name = "task_day")
 	private Integer taskDay;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "started", nullable = false, length = 29)
-	private Timestamp started;
+	private Date started;
 
-	@Column(name = "ended", nullable = false, length = 29)
-	private Timestamp ended;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "ended", length = 29)
+	private Date ended;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", nullable = false, length = 15)
@@ -65,8 +69,11 @@ public class Task implements Serializable {
 	@Column(name = "review")
 	private String review;
 
-	public Task(Long id, Program program, String content, Integer taskDay, Timestamp started,
-			Timestamp ended, TaskStatus status, String comment, String review) {
+	public Task() {
+	}
+	
+	public Task(Long id, Program program, String content, Integer taskDay, Date started,
+			Date ended, TaskStatus status, String comment, String review) {
 		setId(id);
 		setProgram(program);
 		setContent(content);
@@ -110,19 +117,19 @@ public class Task implements Serializable {
 		this.taskDay = taskDay;
 	}
 
-	public Timestamp getStarted() {
+	public Date getStarted() {
 		return started;
 	}
 
-	public void setStarted(Timestamp started) {
+	public void setStarted(Date started) {
 		this.started = started;
 	}
 
-	public Timestamp getEnded() {
+	public Date getEnded() {
 		return ended;
 	}
 
-	public void setEnded(Timestamp ended) {
+	public void setEnded(Date ended) {
 		this.ended = ended;
 	}
 

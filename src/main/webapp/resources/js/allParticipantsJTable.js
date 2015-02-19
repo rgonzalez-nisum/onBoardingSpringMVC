@@ -52,8 +52,6 @@ $(document).ready(function() {
                                 {
                                     title: participant.record.name + ' - Programs',
                                     actions: {
-//                                        listAction: 'programs/getProgramByParticipantId?participantId=' + participant.record.id
-//                                        listAction: participant.record.programs
                                         listAction: function (postData, jtParams) {
                                             return {
                                                 "Result": "OK",
@@ -91,7 +89,7 @@ $(document).ready(function() {
                                                 var $img = $('<div class="jtable-program-goto-icon" title="View program"/>');
                                                 
                                                 $img.click(function () {
-                                                	$('<form action="programs/program" method="POST">'
+                                                	$('<form action="programs" method="GET">'
                                                 			+ '<input type="hidden" name="id" value="'+program.record.id+'">'
                                             		+ '</form>').submit();
                                                 });

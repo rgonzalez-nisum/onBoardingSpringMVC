@@ -42,11 +42,11 @@ public class ProgramServiceImpl implements ProgramService {
 
 	@Override
 	@Transactional
-	public void save(JTableProgramBean program) throws BeanException {
+	public void save(JTableProgramBean jtableProgram) throws BeanException {
 		try {
-			programDao.save(program.toProgram());
+			programDao.save(jtableProgram.toProgram());
 		} catch (Exception e) {
-			String message = "An exception has been thrown while saving " + program;
+			String message = "An exception has been thrown while saving " + jtableProgram;
 			LOG.error(message, e);
 			throw new BeanException(message, e);
 		}
@@ -54,11 +54,11 @@ public class ProgramServiceImpl implements ProgramService {
 
 	@Override
 	@Transactional
-	public void update(JTableProgramBean program) throws BeanException {
+	public void update(JTableProgramBean jtableProgram) throws BeanException {
 		try {
-			programDao.update(program.toProgram());
+			programDao.update(jtableProgram.toProgram());
 		} catch (Exception e) {
-			String message = "An exception has been thrown while updating " + program;
+			String message = "An exception has been thrown while updating " + jtableProgram;
 			LOG.error(message, e);
 			throw new BeanException(message, e);
 		}
@@ -66,11 +66,11 @@ public class ProgramServiceImpl implements ProgramService {
 
 	@Override
 	@Transactional
-	public void delete(JTableProgramBean program) throws BeanException {
+	public void delete(JTableProgramBean jtableProgram) throws BeanException {
 		try {
-			programDao.delete(program.toProgram());
+			programDao.delete(jtableProgram.toProgram());
 		} catch (Exception e) {
-			String message = "An exception has been thrown while deleting " + program;
+			String message = "An exception has been thrown while deleting " + jtableProgram;
 			LOG.error(message, e);
 			throw new BeanException(message, e);
 		}

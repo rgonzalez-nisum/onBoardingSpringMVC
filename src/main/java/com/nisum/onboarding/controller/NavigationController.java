@@ -29,4 +29,9 @@ public class NavigationController {
 		return "program/all-programs";
 	}
 	
+	@RequestMapping(value = "/program-tasks", method = RequestMethod.GET)
+	public String programTasks(ModelMap model) {
+		return "program/program-tasks";
+	}
+	
 }

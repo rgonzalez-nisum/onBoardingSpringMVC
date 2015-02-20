@@ -2,16 +2,16 @@ package com.nisum.onboarding.jtable.response.impl;
 
 import java.util.List;
 
-import com.nisum.onboarding.jtable.bean.JTableOptionBean;
+import com.nisum.onboarding.bo.impl.OptionBoImpl;
 import com.nisum.onboarding.jtable.response.JTableOptionListResponse;
 
-public class JTableOptionListResponseImpl implements JTableOptionListResponse<JTableOptionBean> {
+public class JTableOptionListResponseImpl implements JTableOptionListResponse<OptionBoImpl> {
 
 	private String result;
-	private List<JTableOptionBean> options;
+	private List<OptionBoImpl> options;
 	private String message;
 
-	public JTableOptionListResponseImpl(String result, List<JTableOptionBean> options) {
+	public JTableOptionListResponseImpl(String result, List<OptionBoImpl> options) {
 		this.result = result;
 		this.options = options;
 	}
@@ -30,11 +30,11 @@ public class JTableOptionListResponseImpl implements JTableOptionListResponse<JT
 		this.result = result;
 	}
 
-	public List<JTableOptionBean> getOptions() {
+	public List<OptionBoImpl> getOptions() {
 		return options;
 	}
 
-	public void setOptions(List<JTableOptionBean> options) {
+	public void setOptions(List<OptionBoImpl> options) {
 		this.options = options;
 	}
 

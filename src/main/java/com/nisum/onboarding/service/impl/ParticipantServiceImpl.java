@@ -8,15 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nisum.onboarding.bo.impl.OptionBoImpl;
+import com.nisum.onboarding.bo.impl.hibernate.ParticipantBoHibernateImpl;
 import com.nisum.onboarding.dao.ParticipantDao;
 import com.nisum.onboarding.exception.BeanException;
-import com.nisum.onboarding.jtable.bean.JTableOptionBean;
-import com.nisum.onboarding.jtable.bean.JTableParticipantBean;
 import com.nisum.onboarding.model.Participant;
+import com.nisum.onboarding.model.hibernate.ParticipantHibernate;
 import com.nisum.onboarding.service.ParticipantService;
 
 @Service
-public class ParticipantServiceImpl implements ParticipantService {
+public class ParticipantServiceImpl implements ParticipantService<ParticipantBoHibernateImpl> {
 
 	private static final Logger LOG = Logger.getLogger(ParticipantServiceImpl.class);
 
@@ -42,11 +43,11 @@ public class ParticipantServiceImpl implements ParticipantService {
 
 	@Override
 	@Transactional
-	public void save(JTableParticipantBean jtableParticipant) throws BeanException {
+	public void save(ParticipantBoHibernateImpl participantBo) throws BeanException {
 		try {
-			participantDao.save(jtableParticipant.toParticipant());
+			participantDao.save(participantBo.toParticipant());
 		} catch (Exception e) {
-			String message = "An exception has been thrown while saving " + jtableParticipant;
+			String message = "An exception has been thrown while saving " + participantBo;
 			LOG.error(message, e);
 			throw new BeanException(message, e);
 		}
@@ -54,11 +55,11 @@ public class ParticipantServiceImpl implements ParticipantService {
 
 	@Override
 	@Transactional
-	public void update(JTableParticipantBean jtableParticipant) throws BeanException {
+	public void update(ParticipantBoHibernateImpl participantBo) throws BeanException {
 		try {
-			participantDao.update(jtableParticipant.toParticipant());
+			participantDao.update(participantBo.toParticipant());
 		} catch (Exception e) {
-			String message = "An exception has been thrown while updating " + jtableParticipant;
+			String message = "An exception has been thrown while updating " + participantBo;
 			LOG.error(message, e);
 			throw new BeanException(message, e);
 		}
@@ -66,11 +67,11 @@ public class ParticipantServiceImpl implements ParticipantService {
 
 	@Override
 	@Transactional
-	public void delete(JTableParticipantBean jtableParticipant) throws BeanException {
+	public void delete(ParticipantBoHibernateImpl participantBo) throws BeanException {
 		try {
-			participantDao.delete(jtableParticipant.toParticipant());
+			participantDao.delete(participantBo.toParticipant());
 		} catch (Exception e) {
-			String message = "An exception has been thrown while deleting " + jtableParticipant;
+			String message = "An exception has been thrown while deleting " + participantBo;
 			LOG.error(message, e);
 			throw new BeanException(message, e);
 		}
@@ -90,9 +91,9 @@ public class ParticipantServiceImpl implements ParticipantService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<JTableParticipantBean> findAll() throws BeanException {
+	public List<ParticipantBoHibernateImpl> findAll() throws BeanException {
 		try {
-			return toJTableParticipantBeans(participantDao.findAll());
+			return toParticipantBoList(participantDao.findAll());
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding all participants";
 			LOG.error(message, e);
@@ -102,9 +103,9 @@ public class ParticipantServiceImpl implements ParticipantService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public JTableParticipantBean findById(Long id) throws BeanException {
+	public ParticipantBoHibernateImpl findById(Long id) throws BeanException {
 		try {
-			return toJTableParticipantBean(participantDao.findById(id));
+			return toParticipantBo(participantDao.findById(id));
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding participant by ID=" + id;
 			LOG.error(message, e);
@@ -114,9 +115,9 @@ public class ParticipantServiceImpl implements ParticipantService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public JTableParticipantBean findByEmail(String email) throws BeanException {
+	public ParticipantBoHibernateImpl findByEmail(String email) throws BeanException {
 		try {
-			return toJTableParticipantBean(participantDao.findByEmail(email));
+			return toParticipantBo(participantDao.findByEmail(email));
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding participant by Email=" + email;
 			LOG.error(message, e);
@@ -126,9 +127,9 @@ public class ParticipantServiceImpl implements ParticipantService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<JTableParticipantBean> findByNameOrLastname(String nameOrLastname) throws BeanException {
+	public List<ParticipantBoHibernateImpl> findByNameOrLastname(String nameOrLastname) throws BeanException {
 		try {
-			return toJTableParticipantBeans(participantDao.findByNameOrLastname(nameOrLastname));
+			return toParticipantBoList(participantDao.findByNameOrLastname(nameOrLastname));
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding participant by Name or Lastname=" + nameOrLastname;
 			LOG.error(message, e);
@@ -137,27 +138,26 @@ public class ParticipantServiceImpl implements ParticipantService {
 	}
 	
 	@Override
-	public List<JTableOptionBean> findAllAsOptions() throws BeanException {
-		List<JTableOptionBean> options = new ArrayList<JTableOptionBean>();
+	public List<OptionBoImpl> findAllAsOptions() throws BeanException {
+		List<OptionBoImpl> options = new ArrayList<OptionBoImpl>();
 		
-		for (JTableParticipantBean participant : findAll()) {
+		for (ParticipantBoHibernateImpl participant : findAll()) {
 			String displayText = participant.getName() + " " + participant.getLastname();
-			options.add(new JTableOptionBean(displayText, participant.getId()));
+			options.add(new OptionBoImpl(displayText, participant.getId()));
 		}
 
 		return options;
 	}
 	
-	private JTableParticipantBean toJTableParticipantBean(Participant participant) {
-		return new JTableParticipantBean(participant);
+	private ParticipantBoHibernateImpl toParticipantBo(Participant paticipant) {
+		return new ParticipantBoHibernateImpl((ParticipantHibernate) paticipant);
 	}
-
-
-	private List<JTableParticipantBean> toJTableParticipantBeans(List<Participant> participants) {
-		List<JTableParticipantBean> participantBeans = new ArrayList<JTableParticipantBean>();
+	
+	private List<ParticipantBoHibernateImpl> toParticipantBoList(List<Participant> participants) {
+		List<ParticipantBoHibernateImpl> participantBeans = new ArrayList<ParticipantBoHibernateImpl>();
 		
 		for (Participant participant : participants) {
-			participantBeans.add(toJTableParticipantBean(participant));
+			participantBeans.add(toParticipantBo(participant));
 		}
 		
 		return participantBeans;

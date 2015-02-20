@@ -8,15 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nisum.onboarding.bo.impl.hibernate.TaskBoHibernateImpl;
 import com.nisum.onboarding.dao.TaskDao;
 import com.nisum.onboarding.exception.BeanException;
-import com.nisum.onboarding.jtable.bean.JTableTaskBean;
 import com.nisum.onboarding.model.Task;
 import com.nisum.onboarding.model.TaskStatus;
+import com.nisum.onboarding.model.hibernate.TaskHibernate;
 import com.nisum.onboarding.service.TaskService;
 
 @Service
-public class TaskServiceImpl implements TaskService {
+public class TaskServiceImpl implements TaskService<TaskBoHibernateImpl> {
 
 	private static final Logger LOG = Logger.getLogger(ProgramServiceImpl.class);
 	
@@ -40,11 +41,11 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	@Transactional
-	public void save(JTableTaskBean jtableTask) throws BeanException {
+	public void save(TaskBoHibernateImpl taskBo) throws BeanException {
 		try {
-			taskDao.save(jtableTask.toTask());
+			taskDao.save(taskBo.toTask());
 		} catch (Exception e) {
-			String message = "An exception has been thrown while saving " + jtableTask;
+			String message = "An exception has been thrown while saving " + taskBo;
 			LOG.error(message, e);
 			throw new BeanException(message, e);
 		}
@@ -52,11 +53,11 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	@Transactional
-	public void update(JTableTaskBean jtableTask) throws BeanException {
+	public void update(TaskBoHibernateImpl taskBo) throws BeanException {
 		try {
-			taskDao.update(jtableTask.toTask());
+			taskDao.update(taskBo.toTask());
 		} catch (Exception e) {
-			String message = "An exception has been thrown while updating " + jtableTask;
+			String message = "An exception has been thrown while updating " + taskBo;
 			LOG.error(message, e);
 			throw new BeanException(message, e);
 		}
@@ -64,11 +65,11 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	@Transactional
-	public void delete(JTableTaskBean jtableTask) throws BeanException {
+	public void delete(TaskBoHibernateImpl taskBo) throws BeanException {
 		try {
-			taskDao.delete(jtableTask.toTask());
+			taskDao.delete(taskBo.toTask());
 		} catch (Exception e) {
-			String message = "An exception has been thrown while deleting " + jtableTask;
+			String message = "An exception has been thrown while deleting " + taskBo;
 			LOG.error(message, e);
 			throw new BeanException(message, e);
 		}
@@ -88,9 +89,9 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<JTableTaskBean> findAll() throws BeanException {
+	public List<TaskBoHibernateImpl> findAll() throws BeanException {
 		try {
-			return toJTableTaskBeans(taskDao.findAll());
+			return toTaskBoList(taskDao.findAll());
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding all tasks";
 			LOG.error(message, e);
@@ -100,9 +101,9 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public JTableTaskBean findById(Long id) throws BeanException {
+	public TaskBoHibernateImpl findById(Long id) throws BeanException {
 		try {
-			return toJTableTaskBean(taskDao.findById(id));
+			return toTaskBo(taskDao.findById(id));
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding task by ID=" + id;
 			LOG.error(message, e);
@@ -111,9 +112,9 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public List<JTableTaskBean> findByProgramId(Long programId) throws BeanException {
+	public List<TaskBoHibernateImpl> findByProgramId(Long programId) throws BeanException {
 		try {
-			return toJTableTaskBeans(taskDao.findByProgramId(programId));
+			return toTaskBoList(taskDao.findByProgramId(programId));
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding task by program ID=" + programId;
 			LOG.error(message, e);
@@ -122,9 +123,9 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public List<JTableTaskBean> findByStatus(TaskStatus status) throws BeanException {
+	public List<TaskBoHibernateImpl> findByStatus(TaskStatus status) throws BeanException {
 		try {
-			return toJTableTaskBeans(taskDao.findByStatus(status));
+			return toTaskBoList(taskDao.findByStatus(status));
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding task by status=" + status;
 			LOG.error(message, e);
@@ -132,16 +133,16 @@ public class TaskServiceImpl implements TaskService {
 		}
 	}
 	
-	private JTableTaskBean toJTableTaskBean(Task task) {
-		return new JTableTaskBean(task);
+	private TaskBoHibernateImpl toTaskBo(Task task) {
+		return new TaskBoHibernateImpl((TaskHibernate) task);
 	}
 
 
-	private List<JTableTaskBean> toJTableTaskBeans(List<Task> tasks) {
-		List<JTableTaskBean> taskBeans = new ArrayList<JTableTaskBean>();
+	private List<TaskBoHibernateImpl> toTaskBoList(List<Task> tasks) {
+		List<TaskBoHibernateImpl> taskBeans = new ArrayList<TaskBoHibernateImpl>();
 		
 		for (Task task : tasks) {
-			taskBeans.add(toJTableTaskBean(task));
+			taskBeans.add(toTaskBo(task));
 		}
 		
 		return taskBeans;

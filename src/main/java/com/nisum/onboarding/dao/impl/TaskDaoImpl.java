@@ -12,7 +12,7 @@ import com.nisum.onboarding.model.TaskStatus;
 @SuppressWarnings("unchecked")
 @Repository
 @Transactional
-public class TaskDaoImpl extends GenericDaoImpl<Task, Long> implements TaskDao {
+public class TaskDaoImpl extends HibernateDaoImpl<Task, Long> implements TaskDao {
 	
 	@Override
 	public List<Task> findByProgramId(Long programId) {

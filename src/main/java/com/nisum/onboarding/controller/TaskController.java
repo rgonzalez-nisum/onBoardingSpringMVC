@@ -13,14 +13,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.nisum.onboarding.jtable.bean.JTableOptionBean;
-import com.nisum.onboarding.jtable.bean.JTableTaskBean;
+import com.nisum.onboarding.bo.TaskBo;
+import com.nisum.onboarding.bo.impl.OptionBoImpl;
 import com.nisum.onboarding.jtable.response.impl.JTableOptionListResponseImpl;
 import com.nisum.onboarding.jtable.response.impl.JTableTaskListResponse;
 import com.nisum.onboarding.jtable.response.impl.JTableTaskResponse;
 import com.nisum.onboarding.model.TaskStatus;
 import com.nisum.onboarding.service.TaskService;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 @Controller
 @RequestMapping("/tasks")
 public class TaskController {
@@ -36,7 +37,7 @@ public class TaskController {
 		JTableTaskListResponse response;
 
 		try {
-			List<JTableTaskBean> taskBeans = taskService.findAll();
+			List<TaskBo> taskBeans = taskService.findAll();
 			
 			response = new JTableTaskListResponse("OK", taskBeans, taskBeans.size());
 		} catch (Exception e) {
@@ -53,7 +54,7 @@ public class TaskController {
 		JTableTaskResponse response;
 
 		try {
-			JTableTaskBean taskBean = taskService.findById(id);
+			TaskBo taskBean = taskService.findById(id);
 			
 			response = new JTableTaskResponse("OK", taskBean);
 		} catch (Exception e) {
@@ -70,7 +71,7 @@ public class TaskController {
 		JTableTaskListResponse response;
 
 		try {
-			List<JTableTaskBean> taskBeans = taskService.findByProgramId(programId);
+			List<TaskBo> taskBeans = taskService.findByProgramId(programId);
 			
 			response = new JTableTaskListResponse("OK", taskBeans, taskBeans.size());
 		} catch (Exception e) {
@@ -83,13 +84,13 @@ public class TaskController {
 
 	@RequestMapping(value = "/statuses", method = RequestMethod.POST)
 	public @ResponseBody JTableOptionListResponseImpl getPositions() {
-		List<JTableOptionBean> statuses = allStatuses();
+		List<OptionBoImpl> statuses = allStatuses();
 		return new JTableOptionListResponseImpl("OK", statuses);
 	}
 	
 	@RequestMapping(value = "/addTask", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableTaskResponse addTask(@ModelAttribute JTableTaskBean taskBean, BindingResult result) {
+	public JTableTaskResponse addTask(@ModelAttribute TaskBo taskBean, BindingResult result) {
 		if (result.hasErrors()) {
 			LOG.error(result.getAllErrors());
 			return new JTableTaskResponse("ERROR", "Form invalid");
@@ -111,7 +112,7 @@ public class TaskController {
 
 	@RequestMapping(value = "/updateTask", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableTaskResponse updateTask(@ModelAttribute JTableTaskBean taskBean, BindingResult result) {
+	public JTableTaskResponse updateTask(@ModelAttribute TaskBo taskBean, BindingResult result) {
 		if (result.hasErrors()) {
 			LOG.error(result.getAllErrors());
 			return new JTableTaskResponse("ERROR", "Form invalid");
@@ -146,11 +147,11 @@ public class TaskController {
 		return jsonJtableResponse;
 	}
 	
-	private List<JTableOptionBean> allStatuses() {
-		List<JTableOptionBean> positions = new ArrayList<JTableOptionBean>();
+	private List<OptionBoImpl> allStatuses() {
+		List<OptionBoImpl> positions = new ArrayList<OptionBoImpl>();
 		
 		for (TaskStatus status : TaskStatus.values()) {
-			positions.add(new JTableOptionBean(status.toString()));
+			positions.add(new OptionBoImpl(status.toString()));
 		}
 
 		return positions;

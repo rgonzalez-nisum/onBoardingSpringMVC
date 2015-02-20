@@ -9,6 +9,8 @@ import org.junit.Test;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
+import com.nisum.onboarding.model.hibernate.ParticipantHibernate;
+
 public class JsonDeserialisationTest {
 
 	private MappingJackson2HttpMessageConverter converter;
@@ -25,7 +27,7 @@ public class JsonDeserialisationTest {
 
 	@Test
 	public void allClassesUsedByOurControllersShouldBeDeserialisableByJackson() throws Exception {
-		assertCanBeMapped(Participant.class);
+		assertCanBeMapped(ParticipantHibernate.class);
 		assertCanBeMapped(Program.class);
 		assertCanBeMapped(Task.class);
 	}

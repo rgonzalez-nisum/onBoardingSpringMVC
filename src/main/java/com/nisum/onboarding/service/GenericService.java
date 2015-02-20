@@ -3,9 +3,10 @@ package com.nisum.onboarding.service;
 import java.io.Serializable;
 import java.util.List;
 
+import com.nisum.onboarding.bo.SerializableBo;
 import com.nisum.onboarding.exception.BeanException;
 
-public interface GenericService<T, ID extends Serializable> {
+public interface GenericService<T extends SerializableBo, ID extends Serializable> {
 
 	public void save(T t) throws BeanException;
 	

@@ -2,9 +2,10 @@ package com.nisum.onboarding.jtable.response.impl;
 
 import java.util.List;
 
+import com.nisum.onboarding.bo.SerializableBo;
 import com.nisum.onboarding.jtable.response.JTableRecordListResponse;
 
-public abstract class JTableRecordListResponseImpl<T> extends JTableResponseImpl implements JTableRecordListResponse<T> {
+public abstract class JTableRecordListResponseImpl<T extends SerializableBo> extends JTableResponseImpl implements JTableRecordListResponse<T> {
 
 	private List<T> records;
 	private int totalRecordCount;

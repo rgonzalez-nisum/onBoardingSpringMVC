@@ -1,8 +1,9 @@
 package com.nisum.onboarding.jtable.response.impl;
 
+import com.nisum.onboarding.bo.SerializableBo;
 import com.nisum.onboarding.jtable.response.JTableRecordResponse;
 
-public abstract class JTableRecordResponseImpl<T> extends JTableResponseImpl implements JTableRecordResponse<T> {
+public abstract class JTableRecordResponseImpl<T extends SerializableBo> extends JTableResponseImpl implements JTableRecordResponse<T> {
 
 	private T record;
 

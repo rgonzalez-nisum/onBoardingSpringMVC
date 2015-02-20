@@ -1,16 +1,18 @@
 package com.nisum.onboarding.validator;
 
 import org.springframework.validation.Errors;
+
 import static org.springframework.validation.ValidationUtils.rejectIfEmptyOrWhitespace;
+
 import org.springframework.validation.Validator;
 
-import com.nisum.onboarding.model.Participant;
+import com.nisum.onboarding.model.hibernate.ParticipantHibernate;
 
 public class ParticipantValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return Participant.class.isAssignableFrom(clazz);
+		return ParticipantHibernate.class.isAssignableFrom(clazz);
 	}
 
 	@Override

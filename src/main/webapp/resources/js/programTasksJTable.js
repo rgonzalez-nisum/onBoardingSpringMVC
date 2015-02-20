@@ -6,7 +6,7 @@ $(document).ready(function() {
         sorting: true,
         multiSorting: true,
         actions: {
-            listAction: 'tasks/getTasks',
+            listAction: 'tasks/getTaskByProgramId',
             createAction: 'tasks/addTask',
             updateAction: 'tasks/updateTask',
             deleteAction: 'tasks/deleteTask'
@@ -58,5 +58,4 @@ $(document).ready(function() {
             $('#programTasksTableContainer').jtable('load');
         }
     });
-    $('#programTasksTableContainer').jtable('load');              
 });

@@ -1,14 +1,15 @@
 package com.nisum.onboarding.jtable.response.impl;
 
-import com.nisum.onboarding.jtable.bean.JTableTaskBean;
+import com.nisum.onboarding.bo.TaskBo;
 
-public class JTableTaskResponse extends JTableRecordResponseImpl<JTableTaskBean> {
+@SuppressWarnings("rawtypes")
+public class JTableTaskResponse extends JTableRecordResponseImpl<TaskBo> {
 
 	public JTableTaskResponse(String result) {
 		super(result);
 	}
 
-	public JTableTaskResponse(String result, JTableTaskBean record) {
+	public JTableTaskResponse(String result, TaskBo record) {
 		super(result, record);
 	}
 

@@ -1,14 +1,15 @@
 package com.nisum.onboarding.jtable.response.impl;
 
-import com.nisum.onboarding.jtable.bean.JTableProgramBean;
+import com.nisum.onboarding.bo.ProgramBo;
 
-public class JTableProgramResponse extends JTableRecordResponseImpl<JTableProgramBean> {
+@SuppressWarnings("rawtypes")
+public class JTableProgramResponse extends JTableRecordResponseImpl<ProgramBo> {
 
 	public JTableProgramResponse(String result) {
 		super(result);
 	}
 
-	public JTableProgramResponse(String result, JTableProgramBean record) {
+	public JTableProgramResponse(String result, ProgramBo record) {
 		super(result, record);
 	}
 

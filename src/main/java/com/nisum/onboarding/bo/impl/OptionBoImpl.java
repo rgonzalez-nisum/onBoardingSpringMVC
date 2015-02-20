@@ -1,37 +1,40 @@
-package com.nisum.onboarding.jtable.bean;
+package com.nisum.onboarding.bo.impl;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.nisum.onboarding.bo.OptionBo;
 
-public class JTableOptionBean {
+public class OptionBoImpl implements OptionBo {
 
-	@JsonProperty("DisplayText")
-	private String displayText;
+	private static final long serialVersionUID = 1340946921988217674L;
 	
-	@JsonProperty("Value")
+	private String displayText;
 	private Object value;
 
-	public JTableOptionBean(String displayTextAndValue) {
+	public OptionBoImpl(String displayTextAndValue) {
 		setDisplayText(displayTextAndValue);
 		setValue(displayTextAndValue);
 	}
 	
-	public JTableOptionBean(String displayText, Object value) {
+	public OptionBoImpl(String displayText, Object value) {
 		setDisplayText(displayText);
 		setValue(value);
 	}
 
+	@Override
 	public String getDisplayText() {
 		return displayText;
 	}
 
+	@Override
 	public void setDisplayText(String displayText) {
 		this.displayText = displayText;
 	}
 
+	@Override
 	public Object getValue() {
 		return value;
 	}
 
+	@Override
 	public void setValue(Object value) {
 		this.value = value;
 	}

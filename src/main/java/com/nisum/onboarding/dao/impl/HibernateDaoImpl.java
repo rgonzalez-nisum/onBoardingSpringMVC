@@ -13,14 +13,14 @@ import com.nisum.onboarding.dao.GenericDao;
 
 @SuppressWarnings("unchecked")
 @Transactional
-public abstract class GenericDaoImpl<T, ID extends Serializable> implements GenericDao<T, ID> {
+public abstract class HibernateDaoImpl<T, ID extends Serializable> implements GenericDao<T, ID> {
 	
 	@Autowired
 	private SessionFactory sessionFactory;
 
 	private Class<T> persistentClass;
 
-	public GenericDaoImpl() {
+	public HibernateDaoImpl() {
 		ParameterizedType pt = (ParameterizedType) getClass().getGenericSuperclass();
 		persistentClass = (Class<T>) pt.getActualTypeArguments()[0];
 	}

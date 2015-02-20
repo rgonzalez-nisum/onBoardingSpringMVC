@@ -7,11 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nisum.onboarding.dao.ParticipantDao;
 import com.nisum.onboarding.model.Participant;
+import com.nisum.onboarding.model.hibernate.ParticipantHibernate;
 
 @SuppressWarnings("unchecked")
 @Repository
 @Transactional
-public class ParticipantDaoImpl extends GenericDaoImpl<Participant, Long> implements ParticipantDao {
+public class ParticipantDaoImpl extends HibernateDaoImpl<Participant, Long> implements ParticipantDao {
 
 	@Override
 	public Participant findByEmail(String email) {
@@ -19,7 +20,7 @@ public class ParticipantDaoImpl extends GenericDaoImpl<Participant, Long> implem
 				.setParameter("email", email)
 				.list();
 
-		return !results.isEmpty() ? (Participant) results.get(0) : null;
+		return !results.isEmpty() ? (ParticipantHibernate) results.get(0) : null;
 	}
 
 	@Override

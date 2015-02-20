@@ -12,7 +12,7 @@ import com.nisum.onboarding.model.ProgramStatus;
 @SuppressWarnings("unchecked")
 @Repository
 @Transactional
-public class ProgramDaoImpl extends GenericDaoImpl<Program, Long> implements ProgramDao {
+public class ProgramDaoImpl extends HibernateDaoImpl<Program, Long> implements ProgramDao {
 
 	@Override
 	public List<Program> findByParticipantId(Long participantId) {

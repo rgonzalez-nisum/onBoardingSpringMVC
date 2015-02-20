@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.nisum.onboarding.bo.impl.OptionBoImpl;
+import com.nisum.onboarding.bo.impl.ProgramBo;
 import com.nisum.onboarding.exception.BeanException;
-import com.nisum.onboarding.jtable.bean.JTableOptionBean;
-import com.nisum.onboarding.jtable.bean.JTableProgramBean;
 import com.nisum.onboarding.jtable.response.impl.JTableOptionListResponseImpl;
 import com.nisum.onboarding.jtable.response.impl.JTableProgramListResponse;
 import com.nisum.onboarding.jtable.response.impl.JTableProgramResponse;
@@ -23,6 +23,7 @@ import com.nisum.onboarding.model.ProgramStatus;
 import com.nisum.onboarding.service.ParticipantService;
 import com.nisum.onboarding.service.ProgramService;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 @Controller
 @RequestMapping("/programs")
 public class ProgramController {
@@ -40,7 +41,7 @@ public class ProgramController {
 		JTableProgramListResponse response;
 
 		try {
-			List<JTableProgramBean> programBeans = programService.findAll();
+			List<ProgramBo> programBeans = programService.findAll();
 			
 			response = new JTableProgramListResponse("OK", programBeans, programBeans.size());
 		} catch (Exception e) {
@@ -53,11 +54,11 @@ public class ProgramController {
 	
 	@RequestMapping(value = "/getProgramById", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableProgramResponse getProgramById(@RequestParam Long id) {
+	public JTableProgramResponse getProgramById(@RequestParam(required=true) Long id) {
 		JTableProgramResponse response;
 
 		try {
-			JTableProgramBean programBean = programService.findById(id);
+			ProgramBo programBean = programService.findById(id);
 			
 			response = new JTableProgramResponse("OK", programBean);
 		} catch (Exception e) {
@@ -70,11 +71,11 @@ public class ProgramController {
 	
 	@RequestMapping(value = "/getProgramByParticipantId", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableProgramListResponse getProgramByParticipantId(@RequestParam Long participantId) {
+	public JTableProgramListResponse getProgramByParticipantId(@RequestParam(required=true) Long participantId) {
 		JTableProgramListResponse response;
 
 		try {
-			List<JTableProgramBean> programBeans = programService.findByParticipantId(participantId);
+			List<ProgramBo> programBeans = programService.findByParticipantId(participantId);
 			
 			response = new JTableProgramListResponse("OK", programBeans, programBeans.size());
 		} catch (Exception e) {
@@ -87,80 +88,80 @@ public class ProgramController {
 
 	@RequestMapping(value = "/participants", method = RequestMethod.POST)
 	public @ResponseBody JTableOptionListResponseImpl getParticipants() throws BeanException {
-		List<JTableOptionBean> options = participantService.findAllAsOptions();
+		List<OptionBoImpl> options = participantService.findAllAsOptions();
 		return new JTableOptionListResponseImpl("OK", options);
 	}
 	
 	@RequestMapping(value = "/statuses", method = RequestMethod.POST)
 	public @ResponseBody JTableOptionListResponseImpl getPositions() {
-		List<JTableOptionBean> statuses = allStatuses();
+		List<OptionBoImpl> statuses = allStatuses();
 		return new JTableOptionListResponseImpl("OK", statuses);
 	}
 	
 	@RequestMapping(value = "/addProgram", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableProgramResponse addProgram(@ModelAttribute JTableProgramBean programBean, BindingResult result) {
+	public JTableProgramResponse addProgram(@ModelAttribute ProgramBo programBean, BindingResult result) {
 		if (result.hasErrors()) {
 			LOG.error(result.getAllErrors());
 			return new JTableProgramResponse("ERROR", "Form invalid");
 		}
 
-		JTableProgramResponse jsonJtableResponse;
+		JTableProgramResponse response;
 		
 		try {
 			programService.save(programBean);
 			
-			jsonJtableResponse = new JTableProgramResponse("OK", programBean);
+			response = new JTableProgramResponse("OK", programBean);
 		} catch (Exception e) {
 			LOG.error("Exception while adding program", e);
-			jsonJtableResponse = new JTableProgramResponse("ERROR", "Could not complete the operation.");
+			response = new JTableProgramResponse("ERROR", "Could not complete the operation.");
 		}
 
-		return jsonJtableResponse;
+		return response;
 	}
 
 	@RequestMapping(value = "/updateProgram", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableProgramResponse updateProgram(@ModelAttribute JTableProgramBean programBean, BindingResult result) {
+	public JTableProgramResponse updateProgram(@ModelAttribute ProgramBo programBean, BindingResult result) {
 		if (result.hasErrors()) {
 			LOG.error(result.getAllErrors());
 			return new JTableProgramResponse("ERROR", "Form invalid");
 		}
 
-		JTableProgramResponse jsonJtableResponse;
+		JTableProgramResponse response;
 
 		try {
 			programService.update(programBean);
-			jsonJtableResponse = new JTableProgramResponse("OK", programBean);
+			response = new JTableProgramResponse("OK", programBean);
 		} catch (Exception e) {
 			LOG.error("Exception while updating program", e);
-			jsonJtableResponse = new JTableProgramResponse("ERROR", "Could not complete the operation.");
+			response = new JTableProgramResponse("ERROR", "Could not complete the operation.");
 		}
 		
-		return jsonJtableResponse;
+		return response;
 	}
 
 	@RequestMapping(value = "/deleteProgram", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableProgramResponse deleteProgram(@RequestParam Long id) {
-		JTableProgramResponse jsonJtableResponse;
+	public JTableProgramResponse deleteProgram(@RequestParam(required=true) Long id) {
+		JTableProgramResponse response;
 		
 		try {
 			programService.deleteById(id);
-			jsonJtableResponse = new JTableProgramResponse("OK");
+			response = new JTableProgramResponse("OK");
 		} catch (Exception e) {
 			LOG.error("Exception while deleting program", e);
-			jsonJtableResponse = new JTableProgramResponse("ERROR", "Could not complete the operation.");
+			response = new JTableProgramResponse("ERROR", "Could not complete the operation.");
 		}
 		
-		return jsonJtableResponse;
+		return response;
 	}
 	
-	private List<JTableOptionBean> allStatuses() {
-		List<JTableOptionBean> positions = new ArrayList<JTableOptionBean>();
+	private List<OptionBoImpl> allStatuses() {
+		List<OptionBoImpl> positions = new ArrayList<OptionBoImpl>();
 		
 		for (ProgramStatus status : ProgramStatus.values()) {
-			positions.add(new JTableOptionBean(status.toString()));
+			positions.add(new OptionBoImpl(status.toString()));
 		}
 
 		return positions;

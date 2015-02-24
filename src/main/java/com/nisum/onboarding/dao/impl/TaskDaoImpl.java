@@ -6,24 +6,24 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nisum.onboarding.dao.TaskDao;
-import com.nisum.onboarding.model.Task;
 import com.nisum.onboarding.model.TaskStatus;
+import com.nisum.onboarding.model.hibernate.TaskHibernate;
 
 @SuppressWarnings("unchecked")
 @Repository
 @Transactional
-public class TaskDaoImpl extends HibernateDaoImpl<Task, Long> implements TaskDao {
+public class TaskDaoImpl extends HibernateDaoImpl<TaskHibernate, Long> implements TaskDao<TaskHibernate> {
 	
 	@Override
-	public List<Task> findByProgramId(Long programId) {
-		return getSession().getNamedQuery("Task.findByProgramId")
+	public List<TaskHibernate> findByProgramId(Long programId) {
+		return getSession().getNamedQuery(getEntityName() + ".findByProgramId")
 				.setParameter("programId", programId)
 				.list();
 	}
 
 	@Override
-	public List<Task> findByStatus(TaskStatus status) {
-		return getSession().getNamedQuery("Task.findByStatus")
+	public List<TaskHibernate> findByStatus(TaskStatus status) {
+		return getSession().getNamedQuery(getEntityName() + ".findByStatus")
 				.setParameter("status", status)
 				.list();
 	}

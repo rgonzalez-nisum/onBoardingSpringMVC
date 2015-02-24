@@ -5,10 +5,10 @@ import java.util.List;
 import com.nisum.onboarding.model.Task;
 import com.nisum.onboarding.model.TaskStatus;
 
-public interface TaskDao extends GenericDao<Task, Long> {
+public interface TaskDao<T extends Task> extends GenericDao<T, Long> {
 	
-	public List<Task> findByProgramId(Long programId);
+	public List<T> findByProgramId(Long programId);
 	
-	public List<Task> findByStatus(TaskStatus status);
+	public List<T> findByStatus(TaskStatus status);
 
 }

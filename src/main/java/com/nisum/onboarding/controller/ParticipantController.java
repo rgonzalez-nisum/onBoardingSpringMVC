@@ -1,6 +1,5 @@
 package com.nisum.onboarding.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -15,12 +14,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nisum.onboarding.bo.ParticipantBo;
 import com.nisum.onboarding.bo.impl.OptionBoImpl;
+import com.nisum.onboarding.bo.impl.hibernate.ParticipantBoHibernateImpl;
+import com.nisum.onboarding.exception.BeanException;
 import com.nisum.onboarding.jtable.response.impl.JTableOptionListResponseImpl;
 import com.nisum.onboarding.jtable.response.impl.JTableParticipantListResponse;
 import com.nisum.onboarding.jtable.response.impl.JTableParticipantResponse;
 import com.nisum.onboarding.service.ParticipantService;
 
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings("rawtypes")
 @Controller
 @RequestMapping("/participants")
 public class ParticipantController {
@@ -28,7 +29,7 @@ public class ParticipantController {
 	private static final Logger LOG = Logger.getLogger(ParticipantController.class);
 	
 	@Autowired
-	private ParticipantService participantService;
+	private ParticipantService<ParticipantBo> participantService;
 
 	@RequestMapping(value = "/getAllParticipants", method = RequestMethod.POST)
 	@ResponseBody
@@ -43,6 +44,23 @@ public class ParticipantController {
 			response = new JTableParticipantListResponse("ERROR", "Could not complete the operation.");
 		}
 
+		return response;
+	}
+	
+	@RequestMapping(value = "/getAllParticipantsAsOptions", method = RequestMethod.POST)
+	@ResponseBody
+	public JTableOptionListResponseImpl getAllParticipantsAsOptions() throws BeanException {
+		JTableOptionListResponseImpl response;
+		
+		try {
+			List<ParticipantBo> participants = participantService.findAll();
+			List<OptionBoImpl> options = participantService.toOptions(participants);
+			response = new JTableOptionListResponseImpl("OK", options);
+		} catch (Exception e) {
+			LOG.error("Exception while finding all participants", e);
+			response = new JTableOptionListResponseImpl("ERROR", "Could not complete the operation.");
+		}
+		
 		return response;
 	}
 	
@@ -63,15 +81,9 @@ public class ParticipantController {
 		return response;
 	}
 
-	@RequestMapping(value = "/positions", method = RequestMethod.POST)
-	public @ResponseBody JTableOptionListResponseImpl getPositions() {
-		List<OptionBoImpl> positions = allPositions();
-		return new JTableOptionListResponseImpl("OK", positions);
-	}
-
 	@RequestMapping(value = "/addParticipant", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableParticipantResponse addParticipant(@ModelAttribute ParticipantBo participant, BindingResult result) {
+	public JTableParticipantResponse addParticipant(@ModelAttribute ParticipantBoHibernateImpl participant, BindingResult result) {
 		if (result.hasErrors()) {
 			return new JTableParticipantResponse("ERROR", "Form invalid");
 		}
@@ -91,7 +103,7 @@ public class ParticipantController {
 
 	@RequestMapping(value = "/updateParticipant", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableParticipantResponse updateParticipant(@ModelAttribute ParticipantBo participant, BindingResult result) {
+	public JTableParticipantResponse updateParticipant(@ModelAttribute ParticipantBoHibernateImpl participant, BindingResult result) {
 		if (result.hasErrors()) {
 			return new JTableParticipantResponse("ERROR", "Form invalid");
 		}
@@ -121,19 +133,6 @@ public class ParticipantController {
 		}
 		
 		return response;
-	}
-
-	private List<OptionBoImpl> allPositions() {
-		List<OptionBoImpl> positions = new ArrayList<OptionBoImpl>();
-		positions.add(new OptionBoImpl("Intership"));
-		positions.add(new OptionBoImpl("Developer Trainee"));
-		positions.add(new OptionBoImpl("Developer Junior"));
-		positions.add(new OptionBoImpl("Developer Senior"));
-		positions.add(new OptionBoImpl("QA Trainee"));
-		positions.add(new OptionBoImpl("QA Junior"));
-		positions.add(new OptionBoImpl("QA Senior"));
-
-		return positions;
 	}
 
 }

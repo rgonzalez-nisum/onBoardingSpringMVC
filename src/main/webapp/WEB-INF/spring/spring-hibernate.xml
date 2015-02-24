@@ -21,9 +21,9 @@
 
 		<property name="annotatedClasses">
 			<list>
-				<value>com.nisum.onboarding.model.ParticipantHibernate</value>
-				<value>com.nisum.onboarding.model.Program</value>
-				<value>com.nisum.onboarding.model.Task</value>
+				<value>com.nisum.onboarding.model.hibernate.ParticipantHibernate</value>
+				<value>com.nisum.onboarding.model.hibernate.ProgramHibernate</value>
+				<value>com.nisum.onboarding.model.hibernate.TaskHibernate</value>
 			</list>
 		</property>
 	</bean>

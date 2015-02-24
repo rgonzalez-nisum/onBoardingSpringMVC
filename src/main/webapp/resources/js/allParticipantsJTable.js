@@ -29,7 +29,7 @@ $(document).ready(function() {
             },
             position: {
                 title: 'Position',
-                options: 'participants/positions'
+                options: 'positions/getAllPositionsAsOptions'
             },
             email: {
                 title: 'E-mail'
@@ -76,7 +76,7 @@ $(document).ready(function() {
                                         },
                                         status: {
                                             title: 'Status',
-                                            options: 'programs/statuses'
+                                            options: 'statuses/getAllProgramStatusesAsOptions'
                                         },
                                         started: {
                                             title: 'Started on',
@@ -89,7 +89,7 @@ $(document).ready(function() {
                                                 var $img = $('<div class="jtable-program-goto-icon" title="View program"/>');
                                                 
                                                 $img.click(function () {
-                                                	$('<form action="programs" method="GET">'
+                                                	$('<form action="programs/getProgramById" method="POST">'
                                                 			+ '<input type="hidden" name="id" value="'+program.record.id+'">'
                                             		+ '</form>').submit();
                                                 });

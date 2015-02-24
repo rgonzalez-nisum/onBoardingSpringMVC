@@ -22,7 +22,7 @@ $(document).ready(function() {
             },
             participant: {
                 title: 'Participant',
-                options: 'programs/participants'
+                options: 'participants/getAllParticipantsAsOptions'
             },
             description: {
                 title: 'Description',
@@ -30,7 +30,7 @@ $(document).ready(function() {
             },
             status: {
                 title: 'Status',
-                options: 'programs/statuses'
+                options: 'statuses/getAllProgramStatusesAsOptions'
             },
             started: {
                 title: 'Started on',

@@ -1,6 +1,7 @@
 package com.nisum.onboarding.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -8,26 +9,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nisum.onboarding.bo.impl.OptionBoImpl;
 import com.nisum.onboarding.bo.impl.hibernate.ProgramBoHibernateImpl;
 import com.nisum.onboarding.dao.ProgramDao;
 import com.nisum.onboarding.exception.BeanException;
-import com.nisum.onboarding.model.Program;
 import com.nisum.onboarding.model.ProgramStatus;
 import com.nisum.onboarding.model.hibernate.ProgramHibernate;
 import com.nisum.onboarding.service.ProgramService;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 @Service
 public class ProgramServiceImpl implements ProgramService<ProgramBoHibernateImpl> {
 
 	private static final Logger LOG = Logger.getLogger(ProgramServiceImpl.class);
 
 	@Autowired
-	private ProgramDao programDao;
+	private ProgramDao<ProgramHibernate> programDao;
 
 	public ProgramServiceImpl() {
 	}
 
-	public ProgramServiceImpl(ProgramDao programDao) {
+	public ProgramServiceImpl(ProgramDao<ProgramHibernate> programDao) {
 		this.programDao = programDao;
 	}
 
@@ -114,6 +116,7 @@ public class ProgramServiceImpl implements ProgramService<ProgramBoHibernateImpl
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<ProgramBoHibernateImpl> findByParticipantId(Long participantId) throws BeanException {
 		try {
 			return toProgramBoList(programDao.findByParticipantId(participantId));
@@ -125,6 +128,7 @@ public class ProgramServiceImpl implements ProgramService<ProgramBoHibernateImpl
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<ProgramBoHibernateImpl> findByStatus(ProgramStatus status) throws BeanException {
 		try {
 			return toProgramBoList(programDao.findByStatus(status));
@@ -135,15 +139,25 @@ public class ProgramServiceImpl implements ProgramService<ProgramBoHibernateImpl
 		}
 	}
 	
-	private ProgramBoHibernateImpl toProgramBo(Program program) {
-		return new ProgramBoHibernateImpl((ProgramHibernate) program);
+	@Override
+	public List<OptionBoImpl> toOptions(Collection<ProgramBoHibernateImpl> bos) throws BeanException {
+		List<OptionBoImpl> options = new ArrayList<OptionBoImpl>();
+		
+		for (ProgramBoHibernateImpl program : bos) {
+			options.add(new OptionBoImpl(program.getDescription(), program.getId()));
+		}
+
+		return options;
+	}
+	
+	private ProgramBoHibernateImpl toProgramBo(ProgramHibernate program) {
+		return new ProgramBoHibernateImpl(program);
 	}
 
-
-	private List<ProgramBoHibernateImpl> toProgramBoList(List<Program> programs) {
+	private List<ProgramBoHibernateImpl> toProgramBoList(List<ProgramHibernate> programs) {
 		List<ProgramBoHibernateImpl> programBeans = new ArrayList<ProgramBoHibernateImpl>();
 		
-		for (Program program : programs) {
+		for (ProgramHibernate program : programs) {
 			programBeans.add(new ProgramBoHibernateImpl((ProgramHibernate) program));
 		}
 		

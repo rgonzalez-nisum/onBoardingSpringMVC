@@ -1,6 +1,5 @@
 package com.nisum.onboarding.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -14,14 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nisum.onboarding.bo.TaskBo;
-import com.nisum.onboarding.bo.impl.OptionBoImpl;
-import com.nisum.onboarding.jtable.response.impl.JTableOptionListResponseImpl;
+import com.nisum.onboarding.bo.impl.hibernate.TaskBoHibernateImpl;
 import com.nisum.onboarding.jtable.response.impl.JTableTaskListResponse;
 import com.nisum.onboarding.jtable.response.impl.JTableTaskResponse;
-import com.nisum.onboarding.model.TaskStatus;
 import com.nisum.onboarding.service.TaskService;
 
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings("rawtypes")
 @Controller
 @RequestMapping("/tasks")
 public class TaskController {
@@ -29,7 +26,7 @@ public class TaskController {
 	private static final Logger LOG = Logger.getLogger(TaskController.class);
 	
 	@Autowired
-	private TaskService taskService;
+	private TaskService<TaskBo> taskService;
 
 	@RequestMapping(value = "/getTasks", method = RequestMethod.POST)
 	@ResponseBody
@@ -82,15 +79,9 @@ public class TaskController {
 		return response;
 	}
 
-	@RequestMapping(value = "/statuses", method = RequestMethod.POST)
-	public @ResponseBody JTableOptionListResponseImpl getPositions() {
-		List<OptionBoImpl> statuses = allStatuses();
-		return new JTableOptionListResponseImpl("OK", statuses);
-	}
-	
 	@RequestMapping(value = "/addTask", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableTaskResponse addTask(@ModelAttribute TaskBo taskBean, BindingResult result) {
+	public JTableTaskResponse addTask(@ModelAttribute TaskBoHibernateImpl taskBean, BindingResult result) {
 		if (result.hasErrors()) {
 			LOG.error(result.getAllErrors());
 			return new JTableTaskResponse("ERROR", "Form invalid");
@@ -112,7 +103,7 @@ public class TaskController {
 
 	@RequestMapping(value = "/updateTask", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableTaskResponse updateTask(@ModelAttribute TaskBo taskBean, BindingResult result) {
+	public JTableTaskResponse updateTask(@ModelAttribute TaskBoHibernateImpl taskBean, BindingResult result) {
 		if (result.hasErrors()) {
 			LOG.error(result.getAllErrors());
 			return new JTableTaskResponse("ERROR", "Form invalid");
@@ -145,16 +136,6 @@ public class TaskController {
 		}
 		
 		return jsonJtableResponse;
-	}
-	
-	private List<OptionBoImpl> allStatuses() {
-		List<OptionBoImpl> positions = new ArrayList<OptionBoImpl>();
-		
-		for (TaskStatus status : TaskStatus.values()) {
-			positions.add(new OptionBoImpl(status.toString()));
-		}
-
-		return positions;
 	}
 	
 }

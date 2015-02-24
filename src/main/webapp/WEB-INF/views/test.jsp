@@ -28,7 +28,7 @@
 	</head>
 	<body>
 		<div class="container">
-			<table id="example" class="display" cellspacing="0" width="100%">
+			<table id="example" class="display">
 				<thead>
 					<tr>
 						<th>ID</th>

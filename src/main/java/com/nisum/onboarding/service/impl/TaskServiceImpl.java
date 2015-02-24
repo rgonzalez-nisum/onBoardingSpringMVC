@@ -11,23 +11,23 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nisum.onboarding.bo.impl.hibernate.TaskBoHibernateImpl;
 import com.nisum.onboarding.dao.TaskDao;
 import com.nisum.onboarding.exception.BeanException;
-import com.nisum.onboarding.model.Task;
 import com.nisum.onboarding.model.TaskStatus;
 import com.nisum.onboarding.model.hibernate.TaskHibernate;
 import com.nisum.onboarding.service.TaskService;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 @Service
 public class TaskServiceImpl implements TaskService<TaskBoHibernateImpl> {
 
-	private static final Logger LOG = Logger.getLogger(ProgramServiceImpl.class);
+	private static final Logger LOG = Logger.getLogger(TaskServiceImpl.class);
 	
 	@Autowired
-	private TaskDao taskDao;
+	private TaskDao<TaskHibernate> taskDao;
 
 	public TaskServiceImpl() {
 	}
 
-	public TaskServiceImpl(TaskDao taskDao) {
+	public TaskServiceImpl(TaskDao<TaskHibernate> taskDao) {
 		this.taskDao = taskDao;
 	}
 
@@ -112,6 +112,7 @@ public class TaskServiceImpl implements TaskService<TaskBoHibernateImpl> {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<TaskBoHibernateImpl> findByProgramId(Long programId) throws BeanException {
 		try {
 			return toTaskBoList(taskDao.findByProgramId(programId));
@@ -123,6 +124,7 @@ public class TaskServiceImpl implements TaskService<TaskBoHibernateImpl> {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<TaskBoHibernateImpl> findByStatus(TaskStatus status) throws BeanException {
 		try {
 			return toTaskBoList(taskDao.findByStatus(status));
@@ -133,15 +135,14 @@ public class TaskServiceImpl implements TaskService<TaskBoHibernateImpl> {
 		}
 	}
 	
-	private TaskBoHibernateImpl toTaskBo(Task task) {
-		return new TaskBoHibernateImpl((TaskHibernate) task);
+	private TaskBoHibernateImpl toTaskBo(TaskHibernate task) {
+		return new TaskBoHibernateImpl(task);
 	}
 
-
-	private List<TaskBoHibernateImpl> toTaskBoList(List<Task> tasks) {
+	private List<TaskBoHibernateImpl> toTaskBoList(List<TaskHibernate> tasks) {
 		List<TaskBoHibernateImpl> taskBeans = new ArrayList<TaskBoHibernateImpl>();
 		
-		for (Task task : tasks) {
+		for (TaskHibernate task : tasks) {
 			taskBeans.add(toTaskBo(task));
 		}
 		

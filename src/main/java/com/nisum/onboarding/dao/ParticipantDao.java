@@ -4,10 +4,10 @@ import java.util.List;
 
 import com.nisum.onboarding.model.Participant;
 
-public interface ParticipantDao extends GenericDao<Participant, Long> {
+public interface ParticipantDao<T extends Participant> extends GenericDao<T, Long> {
 
-	public Participant findByEmail(String email);
+	public T findByEmail(String email);
 	
-	public List<Participant> findByNameOrLastname(String nameOrLastname);
+	public List<T> findByNameOrLastname(String nameOrLastname);
 	
 }

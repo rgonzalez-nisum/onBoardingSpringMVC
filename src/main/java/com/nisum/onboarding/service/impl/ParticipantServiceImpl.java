@@ -1,6 +1,7 @@
 package com.nisum.onboarding.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -12,22 +13,22 @@ import com.nisum.onboarding.bo.impl.OptionBoImpl;
 import com.nisum.onboarding.bo.impl.hibernate.ParticipantBoHibernateImpl;
 import com.nisum.onboarding.dao.ParticipantDao;
 import com.nisum.onboarding.exception.BeanException;
-import com.nisum.onboarding.model.Participant;
 import com.nisum.onboarding.model.hibernate.ParticipantHibernate;
 import com.nisum.onboarding.service.ParticipantService;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 @Service
 public class ParticipantServiceImpl implements ParticipantService<ParticipantBoHibernateImpl> {
 
 	private static final Logger LOG = Logger.getLogger(ParticipantServiceImpl.class);
 
 	@Autowired
-	private ParticipantDao participantDao;
+	private ParticipantDao<ParticipantHibernate> participantDao;
 
 	public ParticipantServiceImpl() {
 	}
 
-	public ParticipantServiceImpl(ParticipantDao participantDao) {
+	public ParticipantServiceImpl(ParticipantDao<ParticipantHibernate> participantDao) {
 		this.participantDao = participantDao;
 	}
 
@@ -138,10 +139,10 @@ public class ParticipantServiceImpl implements ParticipantService<ParticipantBoH
 	}
 	
 	@Override
-	public List<OptionBoImpl> findAllAsOptions() throws BeanException {
+	public List<OptionBoImpl> toOptions(Collection<ParticipantBoHibernateImpl> bos) throws BeanException {
 		List<OptionBoImpl> options = new ArrayList<OptionBoImpl>();
 		
-		for (ParticipantBoHibernateImpl participant : findAll()) {
+		for (ParticipantBoHibernateImpl participant : bos) {
 			String displayText = participant.getName() + " " + participant.getLastname();
 			options.add(new OptionBoImpl(displayText, participant.getId()));
 		}
@@ -149,14 +150,14 @@ public class ParticipantServiceImpl implements ParticipantService<ParticipantBoH
 		return options;
 	}
 	
-	private ParticipantBoHibernateImpl toParticipantBo(Participant paticipant) {
-		return new ParticipantBoHibernateImpl((ParticipantHibernate) paticipant);
+	private ParticipantBoHibernateImpl toParticipantBo(ParticipantHibernate paticipant) {
+		return new ParticipantBoHibernateImpl(paticipant);
 	}
 	
-	private List<ParticipantBoHibernateImpl> toParticipantBoList(List<Participant> participants) {
+	private List<ParticipantBoHibernateImpl> toParticipantBoList(List<ParticipantHibernate> participants) {
 		List<ParticipantBoHibernateImpl> participantBeans = new ArrayList<ParticipantBoHibernateImpl>();
 		
-		for (Participant participant : participants) {
+		for (ParticipantHibernate participant : participants) {
 			participantBeans.add(toParticipantBo(participant));
 		}
 		

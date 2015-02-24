@@ -40,7 +40,7 @@ $(document).ready(function() {
             },
             status: {
                 title: 'Status',
-                options: 'tasks/statuses'
+                options: 'statuses/getAllTaskStatusesAsOptions'
             },
             comment: {
                 title: 'Comments',

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+import javax.persistence.Entity;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,8 +69,12 @@ public abstract class HibernateDaoImpl<T, ID extends Serializable> implements Ge
 	@Override
 	@Transactional(readOnly = true)
 	public List<T> findAll() {
-		String namedQuery = persistentClass.getSimpleName() + ".findAll";
+		String namedQuery = getEntityName() + ".findAll";
 		return (List<T>) getSession().getNamedQuery(namedQuery).list();
 	}
-
+	
+	protected String getEntityName() {
+		return persistentClass.getAnnotation(Entity.class).name();
+	}
+	
 }

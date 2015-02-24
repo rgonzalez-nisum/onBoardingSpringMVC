@@ -5,16 +5,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.nisum.onboarding.exception.BeanException;
-import com.nisum.onboarding.service.ParticipantService;
+import com.nisum.onboarding.service.ProgramService;
 
 @Controller
 public class NavigationController {
 
 	@SuppressWarnings("rawtypes")
 	@Autowired
-	private ParticipantService participantService;
+	private ProgramService programService;
 	
 	@RequestMapping(value={"/", "index"}, method=RequestMethod.GET)
 	public String homePage() {
@@ -38,7 +39,11 @@ public class NavigationController {
 	
 	@RequestMapping(value = "/program-tasks", method = RequestMethod.GET)
 	public String programTasks(ModelMap model) throws BeanException {
-		model.addAttribute("participantOptions", participantService.findAllAsOptions());
+		return "program/program-tasks";
+	}
+
+	@RequestMapping(value = "/program-tasks/{programId}", method = RequestMethod.GET)
+	public String programTasksByProgramtId(ModelMap model, @RequestParam(required=true) Long programId) throws BeanException {
 		return "program/program-tasks";
 	}
 	

@@ -1,52 +1,63 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-<c:url var="getProgramByParticipantIdUrl" value="programs/getProgramByParticipantId" />
+<c:url var="getParticipantsUrl" value="participants/getAllParticipantsAsOptions" />
+<c:url var="getProgramByParticipantIdUrl" value="programs/getProgramByParticipantIdAsOptions" />
 <c:url var="getProgramByIdUrl" value="programs/getProgramById" />
 
 <script type="text/javascript">
 	$(document).ready(function() {
+		function createOptions(component, options) {
+			var html = '<option value=""></option>';
+            for (var i = 0; i< options.length; i++) {
+                html += '<option value="' + options[i].Value + '">' + options[i].DisplayText + '</option>';
+            }
+            $(component).html(html);
+		}
+		
+ 		$.post(
+			'${getParticipantsUrl}', {
+				participantId: $('#participant').val(), 
+				ajax: 'true'
+			}, function(data) {
+                createOptions('#participant', data.Options);
+            }, "json"
+        );
+		
 	 	$('#participant').change(function() {
-	 		$.getJSON(
+	 		$.post(
  				'${getProgramByParticipantIdUrl}', {
  					participantId: $('#participant').val(), 
  					ajax: 'true'
 				}, function(data) {
- 	                var html = '<option value=""></option>';
- 	                var len = data.length;
- 	                for (var i = 0; i< len; i++) {
- 	                    html += '<option value="' + data[i].value + '">' + data[i].displaytext + '</option>';
- 	                }
- 	                $('#program').html(html);
- 	            }
+					createOptions('#program', data.Options);
+ 	            }, "json"
  	        );
 		});
 	 	
 	 	$("#program").change(function() {
 	 		var programId = $('#program').val();
-	 		$.getJSON(
+	 		$.post(
  				'${getProgramByIdUrl}', {
- 					programId: programId, 
+ 					programId: $('#program').val(),
  					ajax: 'true'
 				}, function(data) {
+					console.log(data);
  	                $('#program').html(data);
  	                $('#programTasksTableContainer').jtable('load', {programId: programId});
- 	            }
+ 	            }, "json"
  	        );
 	 	});
+	 	
+	 	
 	});
 </script>
 <div align="center" style="margin: 20px;">
 	<div class="search-box">
-<%-- 		<form:form method="POST" commandName="customerForm"> --%>
-			<fieldset>
-				<label for="participant">Participant</label>
-				<form:select id="participant" path="participant" items="${participantOptions}" />
-				<br/>
-				<label for="program">Program</label>
-				<select id="program" style="width: 200px"></select>
-			</fieldset>
-<%-- 		</form:form> --%>
+		<label for="participant">Participant</label>
+		<select id="participant" style="min-width: 200px"></select>
+		<label for="program">Program</label>
+		<select id="program" style="min-width: 200px"></select>
 	</div>
 	<div class="info-div">
 		<div id="output">

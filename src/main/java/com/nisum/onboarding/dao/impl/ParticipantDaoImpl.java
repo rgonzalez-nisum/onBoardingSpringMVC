@@ -6,17 +6,16 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nisum.onboarding.dao.ParticipantDao;
-import com.nisum.onboarding.model.Participant;
 import com.nisum.onboarding.model.hibernate.ParticipantHibernate;
 
 @SuppressWarnings("unchecked")
 @Repository
 @Transactional
-public class ParticipantDaoImpl extends HibernateDaoImpl<Participant, Long> implements ParticipantDao {
+public class ParticipantDaoImpl extends HibernateDaoImpl<ParticipantHibernate, Long> implements ParticipantDao<ParticipantHibernate> {
 
 	@Override
-	public Participant findByEmail(String email) {
-		List<?> results = getSession().getNamedQuery("Participant.findByEmail")
+	public ParticipantHibernate findByEmail(String email) {
+		List<?> results = getSession().getNamedQuery(getEntityName() + ".findByEmail")
 				.setParameter("email", email)
 				.list();
 
@@ -24,8 +23,8 @@ public class ParticipantDaoImpl extends HibernateDaoImpl<Participant, Long> impl
 	}
 
 	@Override
-	public List<Participant> findByNameOrLastname(String nameOrLastname) {
-		return getSession().getNamedQuery("Participant.findByNameOrLastname")
+	public List<ParticipantHibernate> findByNameOrLastname(String nameOrLastname) {
+		return getSession().getNamedQuery(getEntityName() + ".findByNameOrLastname")
 				.setParameter("name", nameOrLastname)
 				.setParameter("lastname", nameOrLastname)
 				.list();

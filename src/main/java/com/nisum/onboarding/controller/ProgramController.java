@@ -1,6 +1,5 @@
 package com.nisum.onboarding.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -13,17 +12,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.nisum.onboarding.bo.ProgramBo;
 import com.nisum.onboarding.bo.impl.OptionBoImpl;
-import com.nisum.onboarding.bo.impl.ProgramBo;
+import com.nisum.onboarding.bo.impl.hibernate.ProgramBoHibernateImpl;
 import com.nisum.onboarding.exception.BeanException;
 import com.nisum.onboarding.jtable.response.impl.JTableOptionListResponseImpl;
 import com.nisum.onboarding.jtable.response.impl.JTableProgramListResponse;
 import com.nisum.onboarding.jtable.response.impl.JTableProgramResponse;
-import com.nisum.onboarding.model.ProgramStatus;
-import com.nisum.onboarding.service.ParticipantService;
 import com.nisum.onboarding.service.ProgramService;
 
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings("rawtypes")
 @Controller
 @RequestMapping("/programs")
 public class ProgramController {
@@ -31,9 +29,7 @@ public class ProgramController {
 	private static final Logger LOG = Logger.getLogger(ProgramController.class);
 	
 	@Autowired
-	private ProgramService programService;
-	@Autowired
-	private ParticipantService participantService;
+	private ProgramService<ProgramBo> programService;
 
 	@RequestMapping(value = "/getAllPrograms", method = RequestMethod.POST)
 	@ResponseBody
@@ -49,6 +45,23 @@ public class ProgramController {
 			response = new JTableProgramListResponse("ERROR", "Could not complete the operation.");
 		}
 
+		return response;
+	}
+	
+	@RequestMapping(value = "/getAllProgramsAsOptions", method = RequestMethod.POST)
+	@ResponseBody
+	public JTableOptionListResponseImpl getAllProgramsAsOptions() throws BeanException {
+		JTableOptionListResponseImpl response;
+		
+		try {
+			List<ProgramBo> programs = programService.findAll();
+			List<OptionBoImpl> options = programService.toOptions(programs);
+			response = new JTableOptionListResponseImpl("OK", options);
+		} catch (Exception e) {
+			LOG.error("Exception while finding all programs", e);
+			response = new JTableOptionListResponseImpl("ERROR", "Could not complete the operation.");
+		}
+		
 		return response;
 	}
 	
@@ -85,22 +98,27 @@ public class ProgramController {
 
 		return response;
 	}
+	
+	@RequestMapping(value = "/getProgramByParticipantIdAsOptions", method = RequestMethod.POST)
+	@ResponseBody
+	public JTableOptionListResponseImpl getProgramByParticipantIdAsOptions(@RequestParam(required=true) Long participantId) throws BeanException {
+		JTableOptionListResponseImpl response;
+		
+		try {
+			List<ProgramBo> programs = programService.findByParticipantId(participantId);
+			List<OptionBoImpl> options = programService.toOptions(programs);
+			response = new JTableOptionListResponseImpl("OK", options);
+		} catch (Exception e) {
+			LOG.error("Exception while finding all programs", e);
+			response = new JTableOptionListResponseImpl("ERROR", "Could not complete the operation.");
+		}
+		
+		return response;
+	}
 
-	@RequestMapping(value = "/participants", method = RequestMethod.POST)
-	public @ResponseBody JTableOptionListResponseImpl getParticipants() throws BeanException {
-		List<OptionBoImpl> options = participantService.findAllAsOptions();
-		return new JTableOptionListResponseImpl("OK", options);
-	}
-	
-	@RequestMapping(value = "/statuses", method = RequestMethod.POST)
-	public @ResponseBody JTableOptionListResponseImpl getPositions() {
-		List<OptionBoImpl> statuses = allStatuses();
-		return new JTableOptionListResponseImpl("OK", statuses);
-	}
-	
 	@RequestMapping(value = "/addProgram", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableProgramResponse addProgram(@ModelAttribute ProgramBo programBean, BindingResult result) {
+	public JTableProgramResponse addProgram(@ModelAttribute ProgramBoHibernateImpl programBean, BindingResult result) {
 		if (result.hasErrors()) {
 			LOG.error(result.getAllErrors());
 			return new JTableProgramResponse("ERROR", "Form invalid");
@@ -122,7 +140,7 @@ public class ProgramController {
 
 	@RequestMapping(value = "/updateProgram", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableProgramResponse updateProgram(@ModelAttribute ProgramBo programBean, BindingResult result) {
+	public JTableProgramResponse updateProgram(@ModelAttribute ProgramBoHibernateImpl programBean, BindingResult result) {
 		if (result.hasErrors()) {
 			LOG.error(result.getAllErrors());
 			return new JTableProgramResponse("ERROR", "Form invalid");
@@ -155,16 +173,6 @@ public class ProgramController {
 		}
 		
 		return response;
-	}
-	
-	private List<OptionBoImpl> allStatuses() {
-		List<OptionBoImpl> positions = new ArrayList<OptionBoImpl>();
-		
-		for (ProgramStatus status : ProgramStatus.values()) {
-			positions.add(new OptionBoImpl(status.toString()));
-		}
-
-		return positions;
 	}
 	
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -60,12 +61,8 @@ public class TaskDaoHibernateImpl extends AbstractHibernateDao<TaskDto, Long> im
 		task.setProgram(program);
 		task.setContent(taskDto.getContent());
 		task.setTaskDay(taskDto.getTaskDay());
-		try {
-			task.setStarted(DATE_FORMAT.parse(taskDto.getStarted()));
-			task.setEnded(DATE_FORMAT.parse(taskDto.getEnded()));
-		} catch(ParseException e) {
-			LOG.error("Exception parsing Task started/ended date", e);
-		}
+		task.setStarted(parseDate(taskDto.getStarted()));
+		task.setEnded(parseDate(taskDto.getEnded()));
 		task.setStatus(taskDto.getStatus());
 		task.setComment(taskDto.getComment());
 		task.setReview(taskDto.getReview());
@@ -85,12 +82,30 @@ public class TaskDaoHibernateImpl extends AbstractHibernateDao<TaskDto, Long> im
 		taskDto.setProgram(task.getProgram().getId());
 		taskDto.setContent(task.getContent());
 		taskDto.setTaskDay(task.getTaskDay());
-		taskDto.setStarted(DATE_FORMAT.format(task.getStarted()));
-		taskDto.setEnded(DATE_FORMAT.format(task.getEnded()));
+		taskDto.setStarted(formatDate(task.getStarted()));
+		taskDto.setEnded(formatDate(task.getEnded()));
 		taskDto.setComment(task.getComment());
 		taskDto.setReview(task.getReview());
 		
 		return taskDto;
+	}
+	
+	private Date parseDate(String stringDate) {
+		if (stringDate == null || stringDate.trim().isEmpty())
+			return null;
+		
+		Date date = null;
+		try {
+			date = DATE_FORMAT.parse(stringDate);
+		} catch(ParseException e) {
+			LOG.error("Exception parsing Task started/ended date", e);
+		}
+		
+		return date;
+	}
+	
+	private String formatDate(Date date) {
+		return date == null ? null : DATE_FORMAT.format(date);
 	}
 	
 }

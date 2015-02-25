@@ -97,9 +97,9 @@ public class ProgramController {
 		return response;
 	}
 	
-	@RequestMapping(value = "/getProgramByParticipantIdAsOptions", method = RequestMethod.POST)
+	@RequestMapping(value = "/getProgramByParticipantIdAsOptions")
 	@ResponseBody
-	public JTableOptionListResponseImpl getProgramByParticipantIdAsOptions(@RequestParam(required=true) Long participantId) throws BeanException {
+	public JTableOptionListResponseImpl getProgramByParticipantIdAsOptionsPOST(@RequestParam(required=true) Long participantId) throws BeanException {
 		JTableOptionListResponseImpl response;
 		
 		try {
@@ -113,7 +113,7 @@ public class ProgramController {
 		
 		return response;
 	}
-
+	
 	@RequestMapping(value = "/addProgram", method = RequestMethod.POST)
 	@ResponseBody
 	public JTableProgramResponse addProgram(@ModelAttribute ProgramDto programBean, BindingResult result) {

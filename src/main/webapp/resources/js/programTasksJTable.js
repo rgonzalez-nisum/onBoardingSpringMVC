@@ -1,4 +1,6 @@
 $(document).ready(function() {
+	var participantId;
+	
     $('#programTasksTableContainer').jtable({
         title: 'Programs',
         defaultDateFormat: 'yy-mm-dd',
@@ -6,7 +8,24 @@ $(document).ready(function() {
         sorting: true,
         multiSorting: true,
         actions: {
-            listAction: 'tasks/getTaskByProgramId',
+            listAction: function (postData, jtParams) {
+            	participantId = postData.participantId;
+            	
+            	return $.Deferred(function ($dfd) {
+                    $.ajax({
+                        url: 'tasks/getTaskByProgramId',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: postData,
+                        success: function (data) {
+                            $dfd.resolve(data);
+                        },
+                        error: function () {
+                            $dfd.reject();
+                        }
+                    });
+                });
+        	},
             createAction: 'tasks/addTask',
             updateAction: 'tasks/updateTask',
             deleteAction: 'tasks/deleteTask'
@@ -14,29 +33,36 @@ $(document).ready(function() {
         fields: {
             id: {
                 title: 'ID',
-                list: false,
                 key: true,
+                list: false,
                 create: false,
                 edit: false,
                 visibility: 'hidden'
             },
             program: {
-                title: 'Program'
+                title: 'Program',
+            	options: function(data) {
+            		return 'programs/getProgramByParticipantIdAsOptions?participantId=' + participantId;
+                },
+        		list: false,
+                visibility: 'hidden'
             },
             content: {
                 title: 'Content',
                 type: 'textarea'
             },
-            taskday: {
+            taskDay: {
             	title: 'Task day'
             },
             started: {
                 title: 'Started on',
-                type: 'date'
+                type: 'date',
+            	create: false
             },
             ended: {
                 title: 'Ended on',
-                type: 'date'
+                type: 'date',
+            	create: false
             },
             status: {
                 title: 'Status',
@@ -44,18 +70,20 @@ $(document).ready(function() {
             },
             comment: {
                 title: 'Comments',
-                type: 'textarea'
+                type: 'textarea',
+            	create: false
             },
             review: {
                 title: 'Review',
-                type: 'textarea'
+                type: 'textarea',
+            	create: false
             }
         },
         recordAdded: function(event, data){
-            $('#programTasksTableContainer').jtable('load');
+            $('#programTasksTableContainer').jtable('reload');
         },
         recordUpdated: function(event, data){
-            $('#programTasksTableContainer').jtable('load');
+            $('#programTasksTableContainer').jtable('reload');
         }
     });
 });

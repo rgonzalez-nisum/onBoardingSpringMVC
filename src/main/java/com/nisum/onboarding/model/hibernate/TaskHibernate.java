@@ -56,7 +56,7 @@ public class TaskHibernate implements Task {
 	private Integer taskDay;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "started", nullable = false, length = 29)
+	@Column(name = "started", length = 29)
 	private Date started;
 
 	@Temporal(TemporalType.TIMESTAMP)

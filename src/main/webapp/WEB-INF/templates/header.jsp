@@ -6,8 +6,9 @@
 	<div id="menu">
 		<ul>
 			<li id="option-home"><a href="<c:url value="/"/>">Home</a></li>
-			<li id="option-participant"><a href="<c:url value="/participants.html"/>">Participants</a></li>
-			<li id="option-program"><a href="<c:url value="/programs.html"/>">Programs</a></li>
+			<li id="option-participant"><a href="<c:url value="/participants"/>">Participants</a></li>
+			<li id="option-program"><a href="<c:url value="/programs"/>">Programs</a></li>
+			<li id="option-task"><a href="<c:url value="/program-tasks"/>">Program Tasks</a></li>
 		</ul>
 	</div>
 </div>

@@ -36,20 +36,18 @@
 		});
 	 	
 	 	$("#program").change(function() {
+	 		var participantId = $('#participant').val();
 	 		var programId = $('#program').val();
 	 		$.post(
  				'${getProgramByIdUrl}', {
- 					programId: $('#program').val(),
+ 					id: $('#program').val(),
  					ajax: 'true'
 				}, function(data) {
-					console.log(data);
- 	                $('#program').html(data);
- 	                $('#programTasksTableContainer').jtable('load', {programId: programId});
+ 	                $('#output').html(data);
+ 	                $('#programTasksTableContainer').jtable('load', {participantId: participantId, programId: programId});
  	            }, "json"
  	        );
 	 	});
-	 	
-	 	
 	});
 </script>
 <div align="center" style="margin: 20px;">

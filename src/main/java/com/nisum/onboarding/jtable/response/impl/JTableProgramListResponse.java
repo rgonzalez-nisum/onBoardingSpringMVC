@@ -2,16 +2,15 @@ package com.nisum.onboarding.jtable.response.impl;
 
 import java.util.List;
 
-import com.nisum.onboarding.bo.ProgramBo;
+import com.nisum.onboarding.dto.ProgramDto;
 
-@SuppressWarnings("rawtypes")
-public class JTableProgramListResponse extends JTableRecordListResponseImpl<ProgramBo> {
+public class JTableProgramListResponse extends JTableRecordListResponseImpl<ProgramDto> {
 
 	public JTableProgramListResponse(String result, String message) {
 		super(result, message);
 	}
 
-	public JTableProgramListResponse(String result, List<ProgramBo> records, int totalRecordCount) {
+	public JTableProgramListResponse(String result, List<ProgramDto> records, int totalRecordCount) {
 		super(result, records, totalRecordCount);
 	}
 	

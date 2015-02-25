@@ -2,12 +2,12 @@ package com.nisum.onboarding.dao;
 
 import java.util.List;
 
-import com.nisum.onboarding.model.Participant;
+import com.nisum.onboarding.dto.ParticipantDto;
 
-public interface ParticipantDao<T extends Participant> extends GenericDao<T, Long> {
+public interface ParticipantDao extends GenericDao<ParticipantDto, Long> {
 
-	public T findByEmail(String email);
+	public ParticipantDto findByEmail(String email);
 	
-	public List<T> findByNameOrLastname(String nameOrLastname);
+	public List<ParticipantDto> findByNameOrLastname(String nameOrLastname);
 	
 }

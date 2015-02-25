@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.NamedQueries;
@@ -32,6 +33,7 @@ import com.nisum.onboarding.model.Program;
 @Table(name = "participant", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class ParticipantHibernate implements Participant {
 
+	@Transient
 	private static final long serialVersionUID = 3565644386767589142L;
 
 	@Id

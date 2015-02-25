@@ -9,47 +9,45 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nisum.onboarding.bo.impl.OptionBoImpl;
-import com.nisum.onboarding.bo.impl.hibernate.ProgramBoHibernateImpl;
-import com.nisum.onboarding.dao.ProgramDao;
+import com.nisum.onboarding.bo.ProgramBo;
+import com.nisum.onboarding.dto.OptionDto;
+import com.nisum.onboarding.dto.ProgramDto;
 import com.nisum.onboarding.exception.BeanException;
 import com.nisum.onboarding.model.ProgramStatus;
-import com.nisum.onboarding.model.hibernate.ProgramHibernate;
 import com.nisum.onboarding.service.ProgramService;
 
-@SuppressWarnings({"rawtypes", "unchecked"})
 @Service
-public class ProgramServiceImpl implements ProgramService<ProgramBoHibernateImpl> {
+public class ProgramServiceImpl implements ProgramService {
 
 	private static final Logger LOG = Logger.getLogger(ProgramServiceImpl.class);
 
 	@Autowired
-	private ProgramDao<ProgramHibernate> programDao;
+	private ProgramBo programBo;
 
 	public ProgramServiceImpl() {
 	}
 
-	public ProgramServiceImpl(ProgramDao<ProgramHibernate> programDao) {
-		this.programDao = programDao;
+	public ProgramServiceImpl(ProgramBo programBo) {
+		setProgramBo(programBo);
 	}
 
 	@Override
-	public ProgramDao getProgramDao() {
-		return programDao;
+	public ProgramBo getProgramBo() {
+		return programBo;
 	}
 
 	@Override
-	public void setProgramDao(ProgramDao programDao) {
-		this.programDao = programDao;
+	public void setProgramBo(ProgramBo programBo) {
+		this.programBo = programBo;
 	}
 
 	@Override
 	@Transactional
-	public void save(ProgramBoHibernateImpl programBo) throws BeanException {
+	public void save(ProgramDto programDto) throws BeanException {
 		try {
-			programDao.save(programBo.toProgram());
+			programBo.save(programDto);
 		} catch (Exception e) {
-			String message = "An exception has been thrown while saving " + programBo;
+			String message = "An exception has been thrown while saving " + programDto;
 			LOG.error(message, e);
 			throw new BeanException(message, e);
 		}
@@ -57,23 +55,11 @@ public class ProgramServiceImpl implements ProgramService<ProgramBoHibernateImpl
 
 	@Override
 	@Transactional
-	public void update(ProgramBoHibernateImpl programBo) throws BeanException {
+	public void update(ProgramDto programDto) throws BeanException {
 		try {
-			programDao.update(programBo.toProgram());
+			programBo.update(programDto);
 		} catch (Exception e) {
-			String message = "An exception has been thrown while updating " + programBo;
-			LOG.error(message, e);
-			throw new BeanException(message, e);
-		}
-	}
-
-	@Override
-	@Transactional
-	public void delete(ProgramBoHibernateImpl programBo) throws BeanException {
-		try {
-			programDao.delete(programBo.toProgram());
-		} catch (Exception e) {
-			String message = "An exception has been thrown while deleting " + programBo;
+			String message = "An exception has been thrown while updating " + programDto;
 			LOG.error(message, e);
 			throw new BeanException(message, e);
 		}
@@ -81,9 +67,9 @@ public class ProgramServiceImpl implements ProgramService<ProgramBoHibernateImpl
 	
 	@Override
 	@Transactional
-	public void deleteById(Long id) throws BeanException {
+	public void delete(Long id) throws BeanException {
 		try {
-			programDao.deleteById(id);
+			programBo.delete(id);
 		} catch (Exception e) {
 			String message = "An exception has been thrown while deleting program ID " + id;
 			LOG.error(message, e);
@@ -93,9 +79,9 @@ public class ProgramServiceImpl implements ProgramService<ProgramBoHibernateImpl
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<ProgramBoHibernateImpl> findAll() throws BeanException {
+	public List<ProgramDto> findAll() throws BeanException {
 		try {
-			return toProgramBoList(programDao.findAll());
+			return programBo.findAll();
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding all programs";
 			LOG.error(message, e);
@@ -105,9 +91,9 @@ public class ProgramServiceImpl implements ProgramService<ProgramBoHibernateImpl
 
 	@Override
 	@Transactional(readOnly = true)
-	public ProgramBoHibernateImpl findById(Long id) throws BeanException {
+	public ProgramDto findById(Long id) throws BeanException {
 		try {
-			return toProgramBo(programDao.findById(id));
+			return programBo.findById(id);
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding program by ID=" + id;
 			LOG.error(message, e);
@@ -117,9 +103,9 @@ public class ProgramServiceImpl implements ProgramService<ProgramBoHibernateImpl
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<ProgramBoHibernateImpl> findByParticipantId(Long participantId) throws BeanException {
+	public List<ProgramDto> findByParticipantId(Long participantId) throws BeanException {
 		try {
-			return toProgramBoList(programDao.findByParticipantId(participantId));
+			return programBo.findByParticipantId(participantId);
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding program by participant ID=" + participantId;
 			LOG.error(message, e);
@@ -129,9 +115,9 @@ public class ProgramServiceImpl implements ProgramService<ProgramBoHibernateImpl
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<ProgramBoHibernateImpl> findByStatus(ProgramStatus status) throws BeanException {
+	public List<ProgramDto> findByStatus(ProgramStatus status) throws BeanException {
 		try {
-			return toProgramBoList(programDao.findByStatus(status));
+			return programBo.findByStatus(status);
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding program by status=" + status;
 			LOG.error(message, e);
@@ -140,28 +126,14 @@ public class ProgramServiceImpl implements ProgramService<ProgramBoHibernateImpl
 	}
 	
 	@Override
-	public List<OptionBoImpl> toOptions(Collection<ProgramBoHibernateImpl> bos) throws BeanException {
-		List<OptionBoImpl> options = new ArrayList<OptionBoImpl>();
+	public List<OptionDto> toOptions(Collection<ProgramDto> dtos) throws BeanException {
+		List<OptionDto> options = new ArrayList<OptionDto>();
 		
-		for (ProgramBoHibernateImpl program : bos) {
-			options.add(new OptionBoImpl(program.getDescription(), program.getId()));
+		for (ProgramDto program : dtos) {
+			options.add(new OptionDto(program.getDescription(), program.getId()));
 		}
 
 		return options;
 	}
 	
-	private ProgramBoHibernateImpl toProgramBo(ProgramHibernate program) {
-		return new ProgramBoHibernateImpl(program);
-	}
-
-	private List<ProgramBoHibernateImpl> toProgramBoList(List<ProgramHibernate> programs) {
-		List<ProgramBoHibernateImpl> programBeans = new ArrayList<ProgramBoHibernateImpl>();
-		
-		for (ProgramHibernate program : programs) {
-			programBeans.add(new ProgramBoHibernateImpl((ProgramHibernate) program));
-		}
-		
-		return programBeans;
-	}
-
 }

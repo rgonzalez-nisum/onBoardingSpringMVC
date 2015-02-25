@@ -3,7 +3,9 @@ package com.nisum.onboarding.dao;
 import java.io.Serializable;
 import java.util.List;
 
-public interface GenericDao<T, ID extends Serializable> {
+import com.nisum.onboarding.dto.SerializableDto;
+
+public interface GenericDao<T extends SerializableDto, ID extends Serializable> {
 	
 	public void save(T newInstance);
 	

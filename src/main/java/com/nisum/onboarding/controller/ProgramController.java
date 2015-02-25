@@ -12,16 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.nisum.onboarding.bo.ProgramBo;
-import com.nisum.onboarding.bo.impl.OptionBoImpl;
-import com.nisum.onboarding.bo.impl.hibernate.ProgramBoHibernateImpl;
+import com.nisum.onboarding.dto.OptionDto;
+import com.nisum.onboarding.dto.ProgramDto;
 import com.nisum.onboarding.exception.BeanException;
 import com.nisum.onboarding.jtable.response.impl.JTableOptionListResponseImpl;
 import com.nisum.onboarding.jtable.response.impl.JTableProgramListResponse;
 import com.nisum.onboarding.jtable.response.impl.JTableProgramResponse;
 import com.nisum.onboarding.service.ProgramService;
 
-@SuppressWarnings("rawtypes")
 @Controller
 @RequestMapping("/programs")
 public class ProgramController {
@@ -29,7 +27,7 @@ public class ProgramController {
 	private static final Logger LOG = Logger.getLogger(ProgramController.class);
 	
 	@Autowired
-	private ProgramService<ProgramBo> programService;
+	private ProgramService programService;
 
 	@RequestMapping(value = "/getAllPrograms", method = RequestMethod.POST)
 	@ResponseBody
@@ -37,7 +35,7 @@ public class ProgramController {
 		JTableProgramListResponse response;
 
 		try {
-			List<ProgramBo> programBeans = programService.findAll();
+			List<ProgramDto> programBeans = programService.findAll();
 			
 			response = new JTableProgramListResponse("OK", programBeans, programBeans.size());
 		} catch (Exception e) {
@@ -54,8 +52,8 @@ public class ProgramController {
 		JTableOptionListResponseImpl response;
 		
 		try {
-			List<ProgramBo> programs = programService.findAll();
-			List<OptionBoImpl> options = programService.toOptions(programs);
+			List<ProgramDto> programs = programService.findAll();
+			List<OptionDto> options = programService.toOptions(programs);
 			response = new JTableOptionListResponseImpl("OK", options);
 		} catch (Exception e) {
 			LOG.error("Exception while finding all programs", e);
@@ -71,7 +69,7 @@ public class ProgramController {
 		JTableProgramResponse response;
 
 		try {
-			ProgramBo programBean = programService.findById(id);
+			ProgramDto programBean = programService.findById(id);
 			
 			response = new JTableProgramResponse("OK", programBean);
 		} catch (Exception e) {
@@ -88,7 +86,7 @@ public class ProgramController {
 		JTableProgramListResponse response;
 
 		try {
-			List<ProgramBo> programBeans = programService.findByParticipantId(participantId);
+			List<ProgramDto> programBeans = programService.findByParticipantId(participantId);
 			
 			response = new JTableProgramListResponse("OK", programBeans, programBeans.size());
 		} catch (Exception e) {
@@ -105,8 +103,8 @@ public class ProgramController {
 		JTableOptionListResponseImpl response;
 		
 		try {
-			List<ProgramBo> programs = programService.findByParticipantId(participantId);
-			List<OptionBoImpl> options = programService.toOptions(programs);
+			List<ProgramDto> programs = programService.findByParticipantId(participantId);
+			List<OptionDto> options = programService.toOptions(programs);
 			response = new JTableOptionListResponseImpl("OK", options);
 		} catch (Exception e) {
 			LOG.error("Exception while finding all programs", e);
@@ -118,7 +116,7 @@ public class ProgramController {
 
 	@RequestMapping(value = "/addProgram", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableProgramResponse addProgram(@ModelAttribute ProgramBoHibernateImpl programBean, BindingResult result) {
+	public JTableProgramResponse addProgram(@ModelAttribute ProgramDto programBean, BindingResult result) {
 		if (result.hasErrors()) {
 			LOG.error(result.getAllErrors());
 			return new JTableProgramResponse("ERROR", "Form invalid");
@@ -140,7 +138,7 @@ public class ProgramController {
 
 	@RequestMapping(value = "/updateProgram", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableProgramResponse updateProgram(@ModelAttribute ProgramBoHibernateImpl programBean, BindingResult result) {
+	public JTableProgramResponse updateProgram(@ModelAttribute ProgramDto programBean, BindingResult result) {
 		if (result.hasErrors()) {
 			LOG.error(result.getAllErrors());
 			return new JTableProgramResponse("ERROR", "Form invalid");
@@ -165,7 +163,7 @@ public class ProgramController {
 		JTableProgramResponse response;
 		
 		try {
-			programService.deleteById(id);
+			programService.delete(id);
 			response = new JTableProgramResponse("OK");
 		} catch (Exception e) {
 			LOG.error("Exception while deleting program", e);

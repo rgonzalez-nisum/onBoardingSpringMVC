@@ -1,38 +1,13 @@
 package com.nisum.onboarding.bo;
 
-import java.util.Set;
+import java.util.List;
 
-import com.nisum.onboarding.model.Participant;
+import com.nisum.onboarding.dto.ParticipantDto;
 
-@SuppressWarnings("rawtypes")
-public interface ParticipantBo<T extends Participant> extends SerializableBo {
+public interface ParticipantBo extends GenericBo<ParticipantDto, Long> {
 
-	public Long getId();
-
-	public void setId(Long id);
-
-	public String getName();
-
-	public void setName(String name);
-
-	public String getLastname();
-
-	public void setLastname(String lastname);
-
-	public String getPosition();
-
-	public void setPosition(String position);
-
-	public String getEmail();
-
-	public void setEmail(String email);
-
-	public Set<? extends ProgramBo> getPrograms();
-
-	public void setPrograms(Set<? extends ProgramBo> programs);
-
-	public void fromParticipant(T participant);
+	public ParticipantDto findByEmail(String email);
 	
-	public T toParticipant() throws Exception;
+	public List<ParticipantDto> findByNameOrLastname(String nameOrLastname);
 	
 }

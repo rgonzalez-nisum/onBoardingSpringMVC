@@ -16,6 +16,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
@@ -25,7 +26,6 @@ import com.nisum.onboarding.model.Program;
 import com.nisum.onboarding.model.Task;
 import com.nisum.onboarding.model.TaskStatus;
 
-@SuppressWarnings("unchecked")
 @NamedQueries({
 	@NamedQuery(name = "Task.findAll", query = "from Task"),
 	@NamedQuery(name = "Task.findByProgramId", query = "from Task where program.id = :programId"),
@@ -35,6 +35,7 @@ import com.nisum.onboarding.model.TaskStatus;
 @Table(name = "task")
 public class TaskHibernate implements Task {
 
+	@Transient
 	private static final long serialVersionUID = 797684742710974944L;
 
 	@Id
@@ -104,7 +105,7 @@ public class TaskHibernate implements Task {
 	}
 
 	@Override
-	public <T extends Program> void setProgram(T program) {
+	public void setProgram(Program program) {
 		this.program = (ProgramHibernate) program;
 	}
 

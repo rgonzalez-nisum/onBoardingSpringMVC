@@ -3,19 +3,17 @@ package com.nisum.onboarding.service;
 import java.util.List;
 
 import com.nisum.onboarding.bo.ParticipantBo;
-import com.nisum.onboarding.bo.impl.OptionBoImpl;
-import com.nisum.onboarding.dao.ParticipantDao;
+import com.nisum.onboarding.dto.ParticipantDto;
 import com.nisum.onboarding.exception.BeanException;
 
-@SuppressWarnings("rawtypes")
-public interface ParticipantService<T extends ParticipantBo> extends GenericService<T, Long>, OptionService<OptionBoImpl, T> {
+public interface ParticipantService extends GenericService<ParticipantDto, Long>, Optionable<ParticipantDto> {
 
-	public ParticipantDao getParticipantDao();
+	public ParticipantBo getParticipantBo();
 	
-	public void setParticipantDao(ParticipantDao participantDao);
+	public void setParticipantBo(ParticipantBo participantBo);
 	
-	public T findByEmail(String email) throws BeanException;
+	public ParticipantDto findByEmail(String email) throws BeanException;
 	
-	public List<T> findByNameOrLastname(String nameOrLastname) throws BeanException;
+	public List<ParticipantDto> findByNameOrLastname(String nameOrLastname) throws BeanException;
 	
 }

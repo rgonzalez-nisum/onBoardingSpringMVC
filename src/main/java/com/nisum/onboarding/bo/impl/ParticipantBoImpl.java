@@ -1,129 +1,53 @@
 package com.nisum.onboarding.bo.impl;
 
-import java.lang.reflect.ParameterizedType;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.nisum.onboarding.bo.ParticipantBo;
-import com.nisum.onboarding.bo.ProgramBo;
-import com.nisum.onboarding.model.Participant;
-import com.nisum.onboarding.model.Program;
+import com.nisum.onboarding.dao.ParticipantDao;
+import com.nisum.onboarding.dto.ParticipantDto;
 
-@SuppressWarnings({"rawtypes", "unchecked"})
-public abstract class ParticipantBoImpl<T extends Participant> implements ParticipantBo<T> {
+@Component
+public class ParticipantBoImpl implements ParticipantBo {
 
-	private static final long serialVersionUID = -5720686673223336674L;
-	
-	private Long id;
-	private String name;
-	private String lastname;
-	private String position;
-	private String email;
-	private Set<? extends ProgramBo> programs = new HashSet<ProgramBo>(0);
-	
-	private Class<T> participantClass;
-	
-	public ParticipantBoImpl() {
-	}
-	
-	public ParticipantBoImpl(T participant) {
-		fromParticipant(participant);
-	}
-	
+	@Autowired
+	private ParticipantDao participantDao;
+
 	@Override
-	public Long getId() {
-		return id;
+	public void save(ParticipantDto dto) {
+		participantDao.save(dto);
 	}
 
 	@Override
-	public void setId(Long id) {
-		this.id = id;
+	public void update(ParticipantDto dto) {
+		participantDao.update(dto);
 	}
 
 	@Override
-	public String getName() {
-		return name;
+	public void delete(Long id) {
+		participantDao.deleteById(id);
 	}
 
 	@Override
-	public void setName(String name) {
-		this.name = name;
+	public List<ParticipantDto> findAll() {
+		return participantDao.findAll();
 	}
 
 	@Override
-	public String getLastname() {
-		return lastname;
+	public ParticipantDto findById(Long id) {
+		return participantDao.findById(id);
 	}
 
 	@Override
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
+	public ParticipantDto findByEmail(String email) {
+		return participantDao.findByEmail(email);
 	}
 
 	@Override
-	public String getPosition() {
-		return position;
-	}
-
-	@Override
-	public void setPosition(String position) {
-		this.position = position;
-	}
-
-	@Override
-	public String getEmail() {
-		return email;
-	}
-
-	@Override
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	@Override
-	public Set<? extends ProgramBo> getPrograms() {
-		return programs;
-	}
-
-	@Override
-	public void setPrograms(Set<? extends ProgramBo> programs) {
-		this.programs = programs;
-	}
-	
-	@Override
-	public void fromParticipant(T participant) {
-		setId(participant.getId());
-		setName(participant.getName());
-		setLastname(participant.getLastname());
-		setPosition(participant.getPosition());
-		setEmail(participant.getEmail());
-		setPrograms(toProgramBos(participant.getPrograms()));
-	}
-
-	@Override
-	public T toParticipant() throws Exception {
-		T participant = getNewInstanceParticipant();
-		participant.setId(getId());
-		participant.setName(getName());
-		participant.setLastname(getLastname());
-		participant.setPosition(getPosition());
-		participant.setEmail(getEmail());
-		participant.setPrograms(toPrograms(getPrograms()));
-		
-		return participant;
-	}
-	
-	protected abstract Set<? extends ProgramBo> toProgramBos(Set<? extends Program> programs);
-	
-	protected abstract Set<? extends Program> toPrograms(Set<? extends ProgramBo> programBos) throws Exception;
-	
-	private T getNewInstanceParticipant() throws InstantiationException, IllegalAccessException {
-		if (participantClass == null) {
-			ParameterizedType pt = (ParameterizedType) getClass().getGenericSuperclass();
-			participantClass = (Class<T>) pt.getActualTypeArguments()[0];
-		}
-		
-		return participantClass.newInstance();
+	public List<ParticipantDto> findByNameOrLastname(String nameOrLastname) {
+		return participantDao.findByNameOrLastname(nameOrLastname);
 	}
 	
 }

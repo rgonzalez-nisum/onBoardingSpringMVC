@@ -3,13 +3,13 @@ package com.nisum.onboarding.jtable.response;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.nisum.onboarding.bo.OptionBo;
+import com.nisum.onboarding.dto.OptionDto;
 
-public interface JTableOptionListResponse<T extends OptionBo> extends JTableResponse {
+public interface JTableOptionListResponse extends JTableResponse {
 	
 	@JsonProperty("Options")
-	public List<T> getOptions();
+	public List<OptionDto> getOptions();
 	
-	public void setOptions(List<T> options);
+	public void setOptions(List<OptionDto> options);
 	
 }

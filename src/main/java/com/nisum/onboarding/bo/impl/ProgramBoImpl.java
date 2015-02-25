@@ -1,117 +1,54 @@
 package com.nisum.onboarding.bo.impl;
 
-import java.lang.reflect.ParameterizedType;
-import java.text.SimpleDateFormat;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.nisum.onboarding.bo.ProgramBo;
-import com.nisum.onboarding.model.Participant;
-import com.nisum.onboarding.model.Program;
+import com.nisum.onboarding.dao.ProgramDao;
+import com.nisum.onboarding.dto.ProgramDto;
 import com.nisum.onboarding.model.ProgramStatus;
 
-@SuppressWarnings("unchecked")
-public abstract class ProgramBoImpl<T extends Program> implements ProgramBo<T> {
+@Component
+public class ProgramBoImpl implements ProgramBo {
 
-	private static final long serialVersionUID = -5772028459610246237L;
-	private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-	
-	private Long id;
-	private Long participant;
-	private String description;
-	private ProgramStatus status;
-	private String started;
-	
-	private Class<T> programClass;
-	
-	public ProgramBoImpl() {
-	}
-	
-	public ProgramBoImpl(T program) {
-		fromProgram(program);
-	}
-
-	@Override
-	public Long getId() {
-		return id;
-	}
-
-	@Override
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@Override
-	public Long getParticipant() {
-		return participant;
-	}
-
-	@Override
-	public void setParticipant(Long participant) {
-		this.participant = participant;
-	}
-
-	@Override
-	public String getDescription() {
-		return description;
-	}
-
-	@Override
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	@Override
-	public ProgramStatus getStatus() {
-		return status;
-	}
-
-	@Override
-	public void setStatus(ProgramStatus status) {
-		this.status = status;
-	}
-
-	@Override
-	public String getStarted() {
-		return started;
-	}
-
-	@Override
-	public void setStarted(String started) {
-		this.started = started;
-	}
+	@Autowired
+	private ProgramDao programDao;
 	
 	@Override
-	public void fromProgram(T program) {
-		setId(program.getId());
-		setParticipant(program.getParticipant().getId());
-		setDescription(program.getDescription());
-		setStatus(program.getStatus());
-		setStarted(DATE_FORMAT.format(program.getStarted()));
+	public void save(ProgramDto dto) {
+		programDao.save(dto);
 	}
 
 	@Override
-	public T toProgram() throws Exception {
-		Participant participant = getNewInstanceParticipant();
-		participant.setId(this.participant);
+	public void update(ProgramDto dto) {
+		programDao.update(dto);
+	}
 
-		T program = getNewInstanceProgram();
-		program.setId(id);
-		program.setParticipant(participant);
-		program.setDescription(description);
-		program.setStatus(status);
-		program.setStarted(DATE_FORMAT.parse(started));
-		
-		return program;
+	@Override
+	public void delete(Long id) {
+		programDao.deleteById(id);
 	}
-	
-	private T getNewInstanceProgram() throws InstantiationException, IllegalAccessException {
-		if (programClass == null) {
-			ParameterizedType pt = (ParameterizedType) getClass().getGenericSuperclass();
-			programClass = (Class<T>) pt.getActualTypeArguments()[0];
-		}
-		
-		return programClass.newInstance();
+
+	@Override
+	public List<ProgramDto> findAll() {
+		return programDao.findAll();
 	}
-	
-	protected abstract Participant getNewInstanceParticipant();
+
+	@Override
+	public ProgramDto findById(Long id) {
+		return programDao.findById(id);
+	}
+
+	@Override
+	public List<ProgramDto> findByParticipantId(Long participantId) {
+		return programDao.findByParticipantId(participantId);
+	}
+
+	@Override
+	public List<ProgramDto> findByStatus(ProgramStatus status) {
+		return programDao.findByStatus(status);
+	}
 
 }

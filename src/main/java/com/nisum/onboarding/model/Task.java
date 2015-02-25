@@ -9,9 +9,9 @@ public interface Task extends Serializable {
 
 	public void setId(Long id);
 
-	public <T extends Program> T getProgram();
+	public Program getProgram();
 
-	public <T extends Program> void setProgram(T program);
+	public void setProgram(Program program);
 
 	public String getContent();
 

@@ -12,16 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.nisum.onboarding.bo.ParticipantBo;
-import com.nisum.onboarding.bo.impl.OptionBoImpl;
-import com.nisum.onboarding.bo.impl.hibernate.ParticipantBoHibernateImpl;
+import com.nisum.onboarding.dto.OptionDto;
+import com.nisum.onboarding.dto.ParticipantDto;
 import com.nisum.onboarding.exception.BeanException;
 import com.nisum.onboarding.jtable.response.impl.JTableOptionListResponseImpl;
 import com.nisum.onboarding.jtable.response.impl.JTableParticipantListResponse;
 import com.nisum.onboarding.jtable.response.impl.JTableParticipantResponse;
 import com.nisum.onboarding.service.ParticipantService;
 
-@SuppressWarnings("rawtypes")
 @Controller
 @RequestMapping("/participants")
 public class ParticipantController {
@@ -29,7 +27,7 @@ public class ParticipantController {
 	private static final Logger LOG = Logger.getLogger(ParticipantController.class);
 	
 	@Autowired
-	private ParticipantService<ParticipantBo> participantService;
+	private ParticipantService participantService;
 
 	@RequestMapping(value = "/getAllParticipants", method = RequestMethod.POST)
 	@ResponseBody
@@ -37,7 +35,7 @@ public class ParticipantController {
 		JTableParticipantListResponse response;
 
 		try {
-			List<ParticipantBo> participants = participantService.findAll();
+			List<ParticipantDto> participants = participantService.findAll();
 			response = new JTableParticipantListResponse("OK", participants, participants.size());
 		} catch (Exception e) {
 			LOG.error("Exception while finding all participants", e);
@@ -53,8 +51,8 @@ public class ParticipantController {
 		JTableOptionListResponseImpl response;
 		
 		try {
-			List<ParticipantBo> participants = participantService.findAll();
-			List<OptionBoImpl> options = participantService.toOptions(participants);
+			List<ParticipantDto> participants = participantService.findAll();
+			List<OptionDto> options = participantService.toOptions(participants);
 			response = new JTableOptionListResponseImpl("OK", options);
 		} catch (Exception e) {
 			LOG.error("Exception while finding all participants", e);
@@ -70,7 +68,7 @@ public class ParticipantController {
 		JTableParticipantResponse response;
 
 		try {
-			ParticipantBo participantBean = participantService.findById(id);
+			ParticipantDto participantBean = participantService.findById(id);
 			
 			response = new JTableParticipantResponse("OK", participantBean);
 		} catch (Exception e) {
@@ -83,7 +81,7 @@ public class ParticipantController {
 
 	@RequestMapping(value = "/addParticipant", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableParticipantResponse addParticipant(@ModelAttribute ParticipantBoHibernateImpl participant, BindingResult result) {
+	public JTableParticipantResponse addParticipant(@ModelAttribute ParticipantDto participant, BindingResult result) {
 		if (result.hasErrors()) {
 			return new JTableParticipantResponse("ERROR", "Form invalid");
 		}
@@ -103,7 +101,7 @@ public class ParticipantController {
 
 	@RequestMapping(value = "/updateParticipant", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableParticipantResponse updateParticipant(@ModelAttribute ParticipantBoHibernateImpl participant, BindingResult result) {
+	public JTableParticipantResponse updateParticipant(@ModelAttribute ParticipantDto participant, BindingResult result) {
 		if (result.hasErrors()) {
 			return new JTableParticipantResponse("ERROR", "Form invalid");
 		}
@@ -126,7 +124,7 @@ public class ParticipantController {
 		JTableParticipantResponse response;
 		
 		try {
-			participantService.deleteById(id);
+			participantService.delete(id);
 			response = new JTableParticipantResponse("OK");
 		} catch (Exception e) {
 			response = new JTableParticipantResponse("ERROR", e.getMessage());

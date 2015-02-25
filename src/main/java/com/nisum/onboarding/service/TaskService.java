@@ -3,19 +3,18 @@ package com.nisum.onboarding.service;
 import java.util.List;
 
 import com.nisum.onboarding.bo.TaskBo;
-import com.nisum.onboarding.dao.TaskDao;
+import com.nisum.onboarding.dto.TaskDto;
 import com.nisum.onboarding.exception.BeanException;
 import com.nisum.onboarding.model.TaskStatus;
 
-@SuppressWarnings("rawtypes")
-public interface TaskService<T extends TaskBo> extends GenericService<T, Long> {
+public interface TaskService extends GenericService<TaskDto, Long> {
 	
-	public TaskDao getTaskDao();
+	public TaskBo getTaskBo();
 	
-	public void setTaskDao(TaskDao taskDao);
+	public void setTaskBo(TaskBo taskBo);
 	
-	public List<T> findByProgramId(Long programId) throws BeanException;
+	public List<TaskDto> findByProgramId(Long programId) throws BeanException;
 	
-	public List<T> findByStatus(TaskStatus status) throws BeanException;
+	public List<TaskDto> findByStatus(TaskStatus status) throws BeanException;
 
 }

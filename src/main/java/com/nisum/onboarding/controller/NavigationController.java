@@ -13,7 +13,6 @@ import com.nisum.onboarding.service.ProgramService;
 @Controller
 public class NavigationController {
 
-	@SuppressWarnings("rawtypes")
 	@Autowired
 	private ProgramService programService;
 	

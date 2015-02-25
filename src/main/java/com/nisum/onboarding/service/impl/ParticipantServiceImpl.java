@@ -9,46 +9,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nisum.onboarding.bo.impl.OptionBoImpl;
-import com.nisum.onboarding.bo.impl.hibernate.ParticipantBoHibernateImpl;
-import com.nisum.onboarding.dao.ParticipantDao;
+import com.nisum.onboarding.bo.ParticipantBo;
+import com.nisum.onboarding.dto.OptionDto;
+import com.nisum.onboarding.dto.ParticipantDto;
 import com.nisum.onboarding.exception.BeanException;
-import com.nisum.onboarding.model.hibernate.ParticipantHibernate;
 import com.nisum.onboarding.service.ParticipantService;
 
-@SuppressWarnings({"rawtypes", "unchecked"})
 @Service
-public class ParticipantServiceImpl implements ParticipantService<ParticipantBoHibernateImpl> {
+public class ParticipantServiceImpl implements ParticipantService {
 
 	private static final Logger LOG = Logger.getLogger(ParticipantServiceImpl.class);
 
 	@Autowired
-	private ParticipantDao<ParticipantHibernate> participantDao;
+	private ParticipantBo participantBo;
 
 	public ParticipantServiceImpl() {
 	}
 
-	public ParticipantServiceImpl(ParticipantDao<ParticipantHibernate> participantDao) {
-		this.participantDao = participantDao;
+	public ParticipantServiceImpl(ParticipantBo participantBo) {
+		setParticipantBo(participantBo);
 	}
 
 	@Override
-	public ParticipantDao getParticipantDao() {
-		return participantDao;
+	public ParticipantBo getParticipantBo() {
+		return participantBo;
 	}
 
 	@Override
-	public void setParticipantDao(ParticipantDao participantDao) {
-		this.participantDao = participantDao;
+	public void setParticipantBo(ParticipantBo participantBo) {
+		this.participantBo = participantBo;
 	}
 
 	@Override
 	@Transactional
-	public void save(ParticipantBoHibernateImpl participantBo) throws BeanException {
+	public void save(ParticipantDto participantDto) throws BeanException {
 		try {
-			participantDao.save(participantBo.toParticipant());
+			participantBo.save(participantDto);
 		} catch (Exception e) {
-			String message = "An exception has been thrown while saving " + participantBo;
+			String message = "An exception has been thrown while saving " + participantDto;
 			LOG.error(message, e);
 			throw new BeanException(message, e);
 		}
@@ -56,11 +54,11 @@ public class ParticipantServiceImpl implements ParticipantService<ParticipantBoH
 
 	@Override
 	@Transactional
-	public void update(ParticipantBoHibernateImpl participantBo) throws BeanException {
+	public void update(ParticipantDto participantDto) throws BeanException {
 		try {
-			participantDao.update(participantBo.toParticipant());
+			participantBo.update(participantDto);
 		} catch (Exception e) {
-			String message = "An exception has been thrown while updating " + participantBo;
+			String message = "An exception has been thrown while updating " + participantDto;
 			LOG.error(message, e);
 			throw new BeanException(message, e);
 		}
@@ -68,21 +66,9 @@ public class ParticipantServiceImpl implements ParticipantService<ParticipantBoH
 
 	@Override
 	@Transactional
-	public void delete(ParticipantBoHibernateImpl participantBo) throws BeanException {
+	public void delete(Long id) throws BeanException {
 		try {
-			participantDao.delete(participantBo.toParticipant());
-		} catch (Exception e) {
-			String message = "An exception has been thrown while deleting " + participantBo;
-			LOG.error(message, e);
-			throw new BeanException(message, e);
-		}
-	}
-	
-	@Override
-	@Transactional
-	public void deleteById(Long id) throws BeanException {
-		try {
-			participantDao.deleteById(id);
+			participantBo.delete(id);
 		} catch (Exception e) {
 			String message = "An exception has been thrown while deleting participant ID " + id;
 			LOG.error(message, e);
@@ -92,9 +78,9 @@ public class ParticipantServiceImpl implements ParticipantService<ParticipantBoH
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<ParticipantBoHibernateImpl> findAll() throws BeanException {
+	public List<ParticipantDto> findAll() throws BeanException {
 		try {
-			return toParticipantBoList(participantDao.findAll());
+			return participantBo.findAll();
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding all participants";
 			LOG.error(message, e);
@@ -104,9 +90,9 @@ public class ParticipantServiceImpl implements ParticipantService<ParticipantBoH
 
 	@Override
 	@Transactional(readOnly = true)
-	public ParticipantBoHibernateImpl findById(Long id) throws BeanException {
+	public ParticipantDto findById(Long id) throws BeanException {
 		try {
-			return toParticipantBo(participantDao.findById(id));
+			return participantBo.findById(id);
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding participant by ID=" + id;
 			LOG.error(message, e);
@@ -116,9 +102,9 @@ public class ParticipantServiceImpl implements ParticipantService<ParticipantBoH
 
 	@Override
 	@Transactional(readOnly = true)
-	public ParticipantBoHibernateImpl findByEmail(String email) throws BeanException {
+	public ParticipantDto findByEmail(String email) throws BeanException {
 		try {
-			return toParticipantBo(participantDao.findByEmail(email));
+			return participantBo.findByEmail(email);
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding participant by Email=" + email;
 			LOG.error(message, e);
@@ -128,9 +114,9 @@ public class ParticipantServiceImpl implements ParticipantService<ParticipantBoH
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<ParticipantBoHibernateImpl> findByNameOrLastname(String nameOrLastname) throws BeanException {
+	public List<ParticipantDto> findByNameOrLastname(String nameOrLastname) throws BeanException {
 		try {
-			return toParticipantBoList(participantDao.findByNameOrLastname(nameOrLastname));
+			return participantBo.findByNameOrLastname(nameOrLastname);
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding participant by Name or Lastname=" + nameOrLastname;
 			LOG.error(message, e);
@@ -139,29 +125,15 @@ public class ParticipantServiceImpl implements ParticipantService<ParticipantBoH
 	}
 	
 	@Override
-	public List<OptionBoImpl> toOptions(Collection<ParticipantBoHibernateImpl> bos) throws BeanException {
-		List<OptionBoImpl> options = new ArrayList<OptionBoImpl>();
+	public List<OptionDto> toOptions(Collection<ParticipantDto> dtos) throws BeanException {
+		List<OptionDto> options = new ArrayList<OptionDto>();
 		
-		for (ParticipantBoHibernateImpl participant : bos) {
+		for (ParticipantDto participant : dtos) {
 			String displayText = participant.getName() + " " + participant.getLastname();
-			options.add(new OptionBoImpl(displayText, participant.getId()));
+			options.add(new OptionDto(displayText, participant.getId()));
 		}
 
 		return options;
-	}
-	
-	private ParticipantBoHibernateImpl toParticipantBo(ParticipantHibernate paticipant) {
-		return new ParticipantBoHibernateImpl(paticipant);
-	}
-	
-	private List<ParticipantBoHibernateImpl> toParticipantBoList(List<ParticipantHibernate> participants) {
-		List<ParticipantBoHibernateImpl> participantBeans = new ArrayList<ParticipantBoHibernateImpl>();
-		
-		for (ParticipantHibernate participant : participants) {
-			participantBeans.add(toParticipantBo(participant));
-		}
-		
-		return participantBeans;
 	}
 
 }

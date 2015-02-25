@@ -1,42 +1,41 @@
-package com.nisum.onboarding.bo.impl;
+package com.nisum.onboarding.dto;
 
-import com.nisum.onboarding.bo.OptionBo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class OptionBoImpl implements OptionBo {
+public class OptionDto implements SerializableDto {
 
-	private static final long serialVersionUID = 1340946921988217674L;
-	
+	private static final long serialVersionUID = 1662042079895753524L;
+
+	@JsonProperty("DisplayText")
 	private String displayText;
+	
+	@JsonProperty("Value")
 	private Object value;
 
-	public OptionBoImpl(String displayTextAndValue) {
+	public OptionDto(String displayTextAndValue) {
 		setDisplayText(displayTextAndValue);
 		setValue(displayTextAndValue);
 	}
 	
-	public OptionBoImpl(String displayText, Object value) {
+	public OptionDto(String displayText, Object value) {
 		setDisplayText(displayText);
 		setValue(value);
 	}
 
-	@Override
 	public String getDisplayText() {
 		return displayText;
 	}
 
-	@Override
 	public void setDisplayText(String displayText) {
 		this.displayText = displayText;
 	}
 
-	@Override
 	public Object getValue() {
 		return value;
 	}
 
-	@Override
 	public void setValue(Object value) {
 		this.value = value;
 	}
-
+	
 }

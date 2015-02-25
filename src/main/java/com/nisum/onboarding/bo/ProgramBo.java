@@ -1,32 +1,14 @@
 package com.nisum.onboarding.bo;
 
-import com.nisum.onboarding.model.Program;
+import java.util.List;
+
+import com.nisum.onboarding.dto.ProgramDto;
 import com.nisum.onboarding.model.ProgramStatus;
 
-public interface ProgramBo<T extends Program> extends SerializableBo {
-
-	public Long getId();
-
-	public void setId(Long id);
-
-	public Long getParticipant();
-
-	public void setParticipant(Long participant);
-
-	public String getDescription();
-
-	public void setDescription(String description);
-
-	public ProgramStatus getStatus();
-
-	public void setStatus(ProgramStatus status);
-
-	public String getStarted();
-
-	public void setStarted(String started);
-
-	public void fromProgram(T program);
+public interface ProgramBo extends GenericBo<ProgramDto, Long> {
 	
-	public T toProgram() throws Exception;
+	public List<ProgramDto> findByParticipantId(Long participantId);
 	
+	public List<ProgramDto> findByStatus(ProgramStatus status);
+
 }

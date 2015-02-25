@@ -12,13 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.nisum.onboarding.bo.TaskBo;
-import com.nisum.onboarding.bo.impl.hibernate.TaskBoHibernateImpl;
+import com.nisum.onboarding.dto.TaskDto;
 import com.nisum.onboarding.jtable.response.impl.JTableTaskListResponse;
 import com.nisum.onboarding.jtable.response.impl.JTableTaskResponse;
 import com.nisum.onboarding.service.TaskService;
 
-@SuppressWarnings("rawtypes")
 @Controller
 @RequestMapping("/tasks")
 public class TaskController {
@@ -26,7 +24,7 @@ public class TaskController {
 	private static final Logger LOG = Logger.getLogger(TaskController.class);
 	
 	@Autowired
-	private TaskService<TaskBo> taskService;
+	private TaskService taskService;
 
 	@RequestMapping(value = "/getTasks", method = RequestMethod.POST)
 	@ResponseBody
@@ -34,7 +32,7 @@ public class TaskController {
 		JTableTaskListResponse response;
 
 		try {
-			List<TaskBo> taskBeans = taskService.findAll();
+			List<TaskDto> taskBeans = taskService.findAll();
 			
 			response = new JTableTaskListResponse("OK", taskBeans, taskBeans.size());
 		} catch (Exception e) {
@@ -51,7 +49,7 @@ public class TaskController {
 		JTableTaskResponse response;
 
 		try {
-			TaskBo taskBean = taskService.findById(id);
+			TaskDto taskBean = taskService.findById(id);
 			
 			response = new JTableTaskResponse("OK", taskBean);
 		} catch (Exception e) {
@@ -68,7 +66,7 @@ public class TaskController {
 		JTableTaskListResponse response;
 
 		try {
-			List<TaskBo> taskBeans = taskService.findByProgramId(programId);
+			List<TaskDto> taskBeans = taskService.findByProgramId(programId);
 			
 			response = new JTableTaskListResponse("OK", taskBeans, taskBeans.size());
 		} catch (Exception e) {
@@ -81,7 +79,7 @@ public class TaskController {
 
 	@RequestMapping(value = "/addTask", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableTaskResponse addTask(@ModelAttribute TaskBoHibernateImpl taskBean, BindingResult result) {
+	public JTableTaskResponse addTask(@ModelAttribute TaskDto taskBean, BindingResult result) {
 		if (result.hasErrors()) {
 			LOG.error(result.getAllErrors());
 			return new JTableTaskResponse("ERROR", "Form invalid");
@@ -103,7 +101,7 @@ public class TaskController {
 
 	@RequestMapping(value = "/updateTask", method = RequestMethod.POST)
 	@ResponseBody
-	public JTableTaskResponse updateTask(@ModelAttribute TaskBoHibernateImpl taskBean, BindingResult result) {
+	public JTableTaskResponse updateTask(@ModelAttribute TaskDto taskBean, BindingResult result) {
 		if (result.hasErrors()) {
 			LOG.error(result.getAllErrors());
 			return new JTableTaskResponse("ERROR", "Form invalid");
@@ -128,7 +126,7 @@ public class TaskController {
 		JTableTaskResponse jsonJtableResponse;
 		
 		try {
-			taskService.deleteById(id);
+			taskService.delete(id);
 			jsonJtableResponse = new JTableTaskResponse("OK");
 		} catch (Exception e) {
 			LOG.error("Exception while deleting task", e);

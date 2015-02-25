@@ -1,167 +1,54 @@
 package com.nisum.onboarding.bo.impl;
 
-import java.lang.reflect.ParameterizedType;
-import java.text.SimpleDateFormat;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.nisum.onboarding.bo.TaskBo;
-import com.nisum.onboarding.model.Program;
-import com.nisum.onboarding.model.Task;
+import com.nisum.onboarding.dao.TaskDao;
+import com.nisum.onboarding.dto.TaskDto;
 import com.nisum.onboarding.model.TaskStatus;
 
-@SuppressWarnings("unchecked")
-public abstract class TaskBoImpl<T extends Task> implements TaskBo<T> {
+@Component
+public class TaskBoImpl implements TaskBo {
+
+	@Autowired
+	private TaskDao taskDao;
 	
-	private static final long serialVersionUID = -5143966118165094146L;
-	private static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-	
-	private Long id;
-	private Long program;
-	private String content;
-	private Integer taskDay;
-	private String started;
-	private String ended;
-	private TaskStatus status;
-	private String comment;
-	private String review;
-	
-	private Class<T> taskClass;
-
-	public TaskBoImpl() {
-	}
-
-	public TaskBoImpl(T task) {
-		fromTask(task);
+	@Override
+	public void save(TaskDto dto) {
+		taskDao.save(dto);
 	}
 
 	@Override
-	public Long getId() {
-		return id;
+	public void update(TaskDto dto) {
+		taskDao.update(dto);
 	}
 
 	@Override
-	public void setId(Long id) {
-		this.id = id;
+	public void delete(Long id) {
+		taskDao.deleteById(id);
 	}
 
 	@Override
-	public Long getProgram() {
-		return program;
+	public List<TaskDto> findAll() {
+		return taskDao.findAll();
 	}
 
 	@Override
-	public void setProgram(Long program) {
-		this.program = program;
+	public TaskDto findById(Long id) {
+		return taskDao.findById(id);
 	}
 
 	@Override
-	public String getContent() {
-		return content;
+	public List<TaskDto> findByProgramId(Long programId) {
+		return taskDao.findByProgramId(programId);
 	}
 
 	@Override
-	public void setContent(String content) {
-		this.content = content;
+	public List<TaskDto> findByStatus(TaskStatus status) {
+		return taskDao.findByStatus(status);
 	}
-
-	@Override
-	public Integer getTaskDay() {
-		return taskDay;
-	}
-
-	@Override
-	public void setTaskDay(Integer taskDay) {
-		this.taskDay = taskDay;
-	}
-
-	@Override
-	public String getStarted() {
-		return started;
-	}
-
-	@Override
-	public void setStarted(String started) {
-		this.started = started;
-	}
-
-	@Override
-	public String getEnded() {
-		return ended;
-	}
-
-	@Override
-	public void setEnded(String ended) {
-		this.ended = ended;
-	}
-
-	@Override
-	public TaskStatus getStatus() {
-		return status;
-	}
-
-	@Override
-	public void setStatus(TaskStatus status) {
-		this.status = status;
-	}
-
-	@Override
-	public String getComment() {
-		return comment;
-	}
-
-	@Override
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-
-	@Override
-	public String getReview() {
-		return review;
-	}
-
-	@Override
-	public void setReview(String review) {
-		this.review = review;
-	}
-
-	@Override
-	public void fromTask(T task) {
-		setId(task.getId());
-		setProgram(task.getProgram().getId());
-		setContent(task.getContent());
-		setTaskDay(task.getTaskDay());
-		setStarted(DATE_FORMAT.format(task.getStarted()));
-		setEnded(DATE_FORMAT.format(task.getEnded()));
-		setComment(task.getComment());
-		setReview(task.getReview());
-	}
-
-	@Override	
-	public T toTask() throws Exception {
-		Program selectedProgram = getNewInstanceProgram();
-		selectedProgram.setId(program);
-
-		T task = getNewInstanceTask();
-		task.setId(id);
-		task.setProgram(selectedProgram);
-		task.setContent(content);
-		task.setTaskDay(taskDay);
-		task.setStarted(DATE_FORMAT.parse(started));
-		task.setEnded(DATE_FORMAT.parse(ended));
-		task.setComment(comment);
-		task.setReview(review);
-		
-		return task;
-	}
-	
-	private T getNewInstanceTask() throws InstantiationException, IllegalAccessException {
-		if (taskClass == null) {
-			ParameterizedType pt = (ParameterizedType) getClass().getGenericSuperclass();
-			taskClass = (Class<T>) pt.getActualTypeArguments()[0];
-		}
-		
-		return taskClass.newInstance();
-	}
-
-	protected abstract Program getNewInstanceProgram();
 
 }

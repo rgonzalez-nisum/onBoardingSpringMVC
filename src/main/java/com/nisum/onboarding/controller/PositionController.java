@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.nisum.onboarding.bo.impl.OptionBoImpl;
+import com.nisum.onboarding.dto.OptionDto;
 import com.nisum.onboarding.jtable.response.impl.JTableOptionListResponseImpl;
 
 @Controller
@@ -18,20 +18,20 @@ public class PositionController {
 	@RequestMapping(value = "/getAllPositionsAsOptions", method = RequestMethod.POST)
 	@ResponseBody
 	public JTableOptionListResponseImpl getAllPositionsAsOptions() {
-		List<OptionBoImpl> positions = findAllPositionsAsOptions();
+		List<OptionDto> positions = findAllPositionsAsOptions();
 		
 		return new JTableOptionListResponseImpl("OK", positions);
 	}
 	
-	private List<OptionBoImpl> findAllPositionsAsOptions() {
-		List<OptionBoImpl> positions = new ArrayList<OptionBoImpl>();
-		positions.add(new OptionBoImpl("Intership"));
-		positions.add(new OptionBoImpl("Developer Trainee"));
-		positions.add(new OptionBoImpl("Developer Junior"));
-		positions.add(new OptionBoImpl("Developer Senior"));
-		positions.add(new OptionBoImpl("QA Trainee"));
-		positions.add(new OptionBoImpl("QA Junior"));
-		positions.add(new OptionBoImpl("QA Senior"));
+	private List<OptionDto> findAllPositionsAsOptions() {
+		List<OptionDto> positions = new ArrayList<OptionDto>();
+		positions.add(new OptionDto("Intership"));
+		positions.add(new OptionDto("Developer Trainee"));
+		positions.add(new OptionDto("Developer Junior"));
+		positions.add(new OptionDto("Developer Senior"));
+		positions.add(new OptionDto("QA Trainee"));
+		positions.add(new OptionDto("QA Junior"));
+		positions.add(new OptionDto("QA Senior"));
 
 		return positions;
 	}

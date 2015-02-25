@@ -1,15 +1,14 @@
 package com.nisum.onboarding.jtable.response.impl;
 
-import com.nisum.onboarding.bo.ParticipantBo;
+import com.nisum.onboarding.dto.ParticipantDto;
 
-@SuppressWarnings("rawtypes")
-public class JTableParticipantResponse extends JTableRecordResponseImpl<ParticipantBo> {
+public class JTableParticipantResponse extends JTableRecordResponseImpl<ParticipantDto> {
 
 	public JTableParticipantResponse(String result) {
 		super(result);
 	}
 	
-	public JTableParticipantResponse(String result, ParticipantBo record) {
+	public JTableParticipantResponse(String result, ParticipantDto record) {
 		super(result, record);
 	}
 

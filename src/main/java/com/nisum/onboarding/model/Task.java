@@ -17,9 +17,9 @@ public interface Task extends Serializable {
 
 	public void setContent(String content);
 
-	public Integer getTaskDay();
+	public String getTaskDay();
 
-	public void setTaskDay(Integer taskDay);
+	public void setTaskDay(String taskDay);
 
 	public Date getStarted();
 

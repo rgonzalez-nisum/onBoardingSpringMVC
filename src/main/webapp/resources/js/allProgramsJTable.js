@@ -37,6 +37,20 @@ $(document).ready(function() {
                 type: 'date'
             }
         },
+        formCreated: function (event, data) {
+            data.form.find('input[name="participant"]').addClass('validate[required]');
+            data.form.find('input[name="description"]').addClass('validate[required]');
+            data.form.find('input[name="status"]').addClass('validate[required');
+            data.form.find('input[name="started"]').addClass('validate[required,custom[date]]');
+            data.form.validationEngine();
+        },
+        formSubmitting: function (event, data) {
+            return data.form.validationEngine('validate');
+        },
+        formClosed: function (event, data) {
+            data.form.validationEngine('hide');
+            data.form.validationEngine('detach');
+        },
         recordAdded: function(event, data){
             $('#allProgramsTableContainer').jtable('load');
         },

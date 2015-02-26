@@ -79,6 +79,28 @@ $(document).ready(function() {
             	create: false
             }
         },
+        formCreated: function (event, data) {
+            data.form.find('input[name="program"]').addClass('validate[required]');
+            data.form.find('input[name="content"]').addClass('validate[required]');
+            data.form.find('input[name="taskDay"]').addClass('validate[required');
+            data.form.find('input[name="started"]').addClass('validate[custom[date]]');
+            data.form.find('input[name="ended"]').addClass('validate[custom[date],future[started]]');
+            data.form.find('input[name="status"]').addClass('validate[required]');
+            data.form.validationEngine();
+            
+            $('.jtable-input.jtable-date-input').parent().css({
+            	'float':'left',
+            	'min-width':'0',
+            	'width':'50%'
+    		});
+        },
+        formSubmitting: function (event, data) {
+            return data.form.validationEngine('validate');
+        },
+        formClosed: function (event, data) {
+            data.form.validationEngine('hide');
+            data.form.validationEngine('detach');
+        },
         recordAdded: function(event, data){
             $('#programTasksTableContainer').jtable('reload');
         },

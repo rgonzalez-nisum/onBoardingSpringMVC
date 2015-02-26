@@ -53,7 +53,7 @@ public class TaskHibernate implements Task {
 	private String content;
 
 	@Column(name = "task_day")
-	private Integer taskDay;
+	private String taskDay;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "started", length = 29)
@@ -76,7 +76,7 @@ public class TaskHibernate implements Task {
 	public TaskHibernate() {
 	}
 	
-	public TaskHibernate(Long id, ProgramHibernate program, String content, Integer taskDay, Date started,
+	public TaskHibernate(Long id, ProgramHibernate program, String content, String taskDay, Date started,
 			Date ended, TaskStatus status, String comment, String review) {
 		setId(id);
 		setProgram(program);
@@ -120,12 +120,12 @@ public class TaskHibernate implements Task {
 	}
 
 	@Override
-	public Integer getTaskDay() {
+	public String getTaskDay() {
 		return taskDay;
 	}
 
 	@Override
-	public void setTaskDay(Integer taskDay) {
+	public void setTaskDay(String taskDay) {
 		this.taskDay = taskDay;
 	}
 

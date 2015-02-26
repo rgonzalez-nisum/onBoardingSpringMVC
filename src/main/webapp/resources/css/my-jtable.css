@@ -22,3 +22,36 @@
 .jtable-tasks-icon {
 	background: url(../icons/tasks.png) no-repeat center center;
 }
+
+form.jtable-dialog-form div.jtable-input-field-container {
+	min-width: 300px;
+}
+
+div.jtable-input.jtable-dropdown-input select, div.jtable-input.jtable-text-input input, 
+div.jtable-input.jtable-date-input input, div.jtable-input.jtable-textarea-input textarea, 
+div.jtable-input textarea {
+	min-height: 30px !important;
+	font-size: 1.1em;
+	padding: 0 5px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	-webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+div.jtable-input.jtable-dropdown-input select {
+	min-width: 212px;
+	min-height: 32px;
+}
+
+div.jtable-input.jtable-text-input input, div.jtable-input.jtable-textarea-input textarea, 
+div.jtable-input textarea {
+	min-width: 200px;
+}
+
+div.jtable-input.jtable-textarea-input textarea, 
+div.jtable-input textarea {
+	padding: 5px;
+}

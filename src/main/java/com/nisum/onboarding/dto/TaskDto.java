@@ -10,7 +10,7 @@ public class TaskDto implements SerializableDto {
 	private Long id;
 	private Long program;
 	private String content;
-	private Integer taskDay;
+	private String taskDay;
 	private String started;
 	private String ended;
 	private TaskStatus status;
@@ -20,7 +20,7 @@ public class TaskDto implements SerializableDto {
 	public TaskDto() {
 	}
 
-	public TaskDto(Long id, Long program, String content, Integer taskDay, String started,
+	public TaskDto(Long id, Long program, String content, String taskDay, String started,
 			String ended, TaskStatus status, String comment, String review) {
 		this.id = id;
 		this.program = program;
@@ -57,11 +57,11 @@ public class TaskDto implements SerializableDto {
 		this.content = content;
 	}
 
-	public Integer getTaskDay() {
+	public String getTaskDay() {
 		return taskDay;
 	}
 
-	public void setTaskDay(Integer taskDay) {
+	public void setTaskDay(String taskDay) {
 		this.taskDay = taskDay;
 	}
 

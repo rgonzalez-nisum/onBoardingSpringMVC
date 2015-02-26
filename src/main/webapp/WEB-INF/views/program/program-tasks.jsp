@@ -7,48 +7,51 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+		$('#programTasksTableContainer').find('.jtable-toolbar-item').css({visibility: 'hidden'});
+		
 		function createOptions(component, options) {
 			var html = '<option value=""></option>';
-            for (var i = 0; i< options.length; i++) {
-                html += '<option value="' + options[i].Value + '">' + options[i].DisplayText + '</option>';
-            }
-            $(component).html(html);
+			for (var i = 0; i< options.length; i++) {
+				html += '<option value="' + options[i].Value + '">' + options[i].DisplayText + '</option>';
+			}
+			$(component).html(html);
 		}
 		
- 		$.post(
+		$.post(
 			'${getParticipantsUrl}', {
 				participantId: $('#participant').val(), 
 				ajax: 'true'
 			}, function(data) {
-                createOptions('#participant', data.Options);
-            }, "json"
-        );
+				createOptions('#participant', data.Options);
+			}, "json"
+		);
 		
-	 	$('#participant').change(function() {
-	 		$.post(
- 				'${getProgramByParticipantIdUrl}', {
- 					participantId: $('#participant').val(), 
- 					ajax: 'true'
+		$('#participant').change(function() {
+			$.post(
+				'${getProgramByParticipantIdUrl}', {
+					participantId: $('#participant').val(), 
+					ajax: 'true'
 				}, function(data) {
 					createOptions('#program', data.Options);
- 	            }, "json"
- 	        );
-	 		$('#programTasksTableContainer').jtable('load', {participantId: 0, programId: 0});
+				}, "json"
+			);
+			$('#programTasksTableContainer').jtable('load', {participantId: 0, programId: 0});
+			$('#programTasksTableContainer').find('.jtable-toolbar-item').css({visibility: 'hidden'});
 		});
-	 	
-	 	$("#program").change(function() {
-	 		var participantId = $('#participant').val();
-	 		var programId = $('#program').val();
-	 		$.post(
- 				'${getProgramByIdUrl}', {
- 					id: $('#program').val(),
- 					ajax: 'true'
+			
+		$("#program").change(function() {
+			var participantId = $('#participant').val();
+			var programId = $('#program').val();
+			$.post(
+				'${getProgramByIdUrl}', {
+					id: programId,
+					ajax: 'true'
 				}, function(data) {
- 	                $('#output').html(data);
- 	                $('#programTasksTableContainer').jtable('load', {participantId: participantId, programId: programId});
- 	            }, "json"
- 	        );
-	 	});
+					$('#programTasksTableContainer').jtable('load', {participantId: participantId, programId: programId});
+					$('#programTasksTableContainer').find('.jtable-toolbar-item').css({visibility: 'visible'});
+				}, "json"
+			);
+		});
 	});
 </script>
 <div align="center">

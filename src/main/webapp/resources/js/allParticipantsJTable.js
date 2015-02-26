@@ -42,10 +42,6 @@ $(document).ready(function() {
             	create: false,
             	display: function (participant) {
                     var $img = $('<div class="jtable-programs-icon" title="View programs"/>');
-                    
-                    console.log(participant.record.programs);
-                    console.log(participant.record.programs.lenght);
-                    
                     $img.click(function () {
                         $('#allParticipantsTableContainer').jtable('openChildTable',
                                 $img.closest('tr'),
@@ -87,7 +83,6 @@ $(document).ready(function() {
                                         	width: '2%',
                                         	display: function (program) {
                                                 var $img = $('<div class="jtable-program-goto-icon" title="View program"/>');
-                                                
                                                 $img.click(function () {
                                                 	$('<form action="programs/getProgramById" method="POST">'
                                                 			+ '<input type="hidden" name="id" value="'+program.record.id+'">'
@@ -104,6 +99,20 @@ $(document).ready(function() {
                     return $img;
             	}
             }
+        },
+        formCreated: function (event, data) {
+            data.form.find('input[name="name"]').addClass('validate[required]');
+            data.form.find('input[name="lastname"]').addClass('validate[required]');
+            data.form.find('input[name="position"]').addClass('validate[required');
+            data.form.find('input[name="email"]').addClass('validate[required,custom[email]]');
+            data.form.validationEngine();
+        },
+        formSubmitting: function (event, data) {
+            return data.form.validationEngine('validate');
+        },
+        formClosed: function (event, data) {
+            data.form.validationEngine('hide');
+            data.form.validationEngine('detach');
         },
         recordAdded: function(event, data){
             $('#allParticipantsTableContainer').jtable('load');

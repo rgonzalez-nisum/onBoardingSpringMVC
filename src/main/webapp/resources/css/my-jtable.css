@@ -1,8 +1,12 @@
-.jtable-main-container {
+div.jtable-main-container {
 	margin: 10px !important;
 }
 
-.jtable-programs-icon, .jtable-program-goto-icon, .jtable-tasks-icon {
+div.jtable-title div.jtable-title-text {
+	font-size: 1.1em;
+}
+
+div.jtable-programs-icon, div.jtable-tasks-icon, div.jtable-programtasks-goto-icon {
 	min-width: 16px;
 	min-height: 16px;
 	width: 100%;
@@ -11,16 +15,16 @@
 	cursor: pointer;
 }
 
-.jtable-programs-icon {
+div.jtable-programs-icon {
 	background: url(../icons/programs.png) no-repeat center center;
 }
 
-.jtable-program-goto-icon {
-	background: url(../icons/program-goto.png) no-repeat center center;
+div.jtable-tasks-icon {
+	background: url(../icons/tasks.png) no-repeat center center;
 }
 
-.jtable-tasks-icon {
-	background: url(../icons/tasks.png) no-repeat center center;
+div.jtable-programtasks-goto-icon {
+	background: url(../icons/programtasks-goto.png) no-repeat center center;
 }
 
 form.jtable-dialog-form div.jtable-input-field-container {

@@ -7,6 +7,9 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+		paramParticipantId = '${program.participant}';
+		paramProgramId = '${program.id}';
+		
 		$('#programTasksTableContainer').find('.jtable-toolbar-item').css({visibility: 'hidden'});
 		
 		function createOptions(component, options) {
@@ -24,7 +27,12 @@
 			}, function(data) {
 				createOptions('#participant', data.Options);
 			}, "json"
-		);
+		).done(function() {
+			if (paramParticipantId !== undefined) {
+				$('#participant').val(paramParticipantId).change();
+				delete paramParticipantId;
+			}
+		});
 		
 		$('#participant').change(function() {
 			$.post(
@@ -34,9 +42,15 @@
 				}, function(data) {
 					createOptions('#program', data.Options);
 				}, "json"
-			);
-			$('#programTasksTableContainer').jtable('load', {participantId: 0, programId: 0});
-			$('#programTasksTableContainer').find('.jtable-toolbar-item').css({visibility: 'hidden'});
+			).always(function() {
+				if (paramProgramId !== undefined) {
+					$('#program').val(paramProgramId).change();
+					delete paramProgramId;
+				} else {
+					$('#programTasksTableContainer').jtable('load', {participantId: 0, programId: 0});
+					$('#programTasksTableContainer').find('.jtable-toolbar-item').css({visibility: 'hidden'});
+				}
+			});
 		});
 			
 		$("#program").change(function() {
@@ -52,6 +66,8 @@
 				}, "json"
 			);
 		});
+		
+		
 	});
 </script>
 <div align="center">

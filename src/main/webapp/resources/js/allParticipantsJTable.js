@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $('#allParticipantsTableContainer').jtable({
         title: 'Participants',
-        defaultDateFormat: 'yyyy-mm-dd',
+        defaultDateFormat: 'yy-mm-dd',
         selecting: true,
         sorting: true,
         multiSorting: true,
@@ -76,16 +76,15 @@ $(document).ready(function() {
                                         },
                                         started: {
                                             title: 'Started on',
-                                            type: 'date',
-                                            displayFormat: 'yy-mm-dd'
+                                            type: 'date'
                                         }, 
                                         program: {
                                         	width: '2%',
                                         	display: function (program) {
-                                                var $img = $('<div class="jtable-program-goto-icon" title="View program"/>');
+                                                var $img = $('<div class="jtable-programtasks-goto-icon" title="View program"/>');
                                                 $img.click(function () {
-                                                	$('<form action="programs/getProgramById" method="POST">'
-                                                			+ '<input type="hidden" name="id" value="'+program.record.id+'">'
+                                                	$('<form action="program-tasks" method="POST">'
+                                                			+ '<input type="hidden" name="programId" value="'+program.record.id+'">'
                                             		+ '</form>').submit();
                                                 });
                                                 return $img;

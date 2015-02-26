@@ -33,6 +33,7 @@
 					createOptions('#program', data.Options);
  	            }, "json"
  	        );
+	 		$('#programTasksTableContainer').jtable('load', {participantId: 0, programId: 0});
 		});
 	 	
 	 	$("#program").change(function() {
@@ -50,16 +51,15 @@
 	 	});
 	});
 </script>
-<div align="center" style="margin: 20px;">
-	<div class="search-box">
-		<label for="participant">Participant</label>
-		<select id="participant" style="min-width: 200px"></select>
-		<label for="program">Program</label>
-		<select id="program" style="min-width: 200px"></select>
-	</div>
-	<div class="info-div">
-		<div id="output">
-		
+<div align="center">
+	<div id="search-box">
+		<div id="search-box-participant">
+			<label for="participant">Participant</label>
+			<select id="participant"></select>
+		</div>
+		<div id="search-box-program">
+			<label for="program">Program</label>
+			<select id="program"></select>
 		</div>
 	</div>
 	<div id="programTasksTableContainer">

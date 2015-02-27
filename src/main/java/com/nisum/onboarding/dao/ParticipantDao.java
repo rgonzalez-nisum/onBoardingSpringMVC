@@ -9,5 +9,5 @@ public interface ParticipantDao extends GenericDao<ParticipantDto, Long> {
 	public ParticipantDto findByEmail(String email);
 	
 	public List<ParticipantDto> findByNameOrLastname(String nameOrLastname);
-	
+
 }

@@ -157,8 +157,7 @@ public class ProgramHibernate implements Program {
 	@Override
 	public String toString() {
 		return "Program [id=" + id + ", participant=" + participant + ", description="
-				+ description + ", status=" + status + ", started=" + started + ", tasks="
-				+ tasks + "]";
+				+ description + ", status=" + status + ", started=" + started + "]";
 	}
 
 }

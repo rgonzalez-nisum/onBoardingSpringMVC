@@ -27,9 +27,9 @@ import com.nisum.onboarding.model.Task;
 import com.nisum.onboarding.model.TaskStatus;
 
 @NamedQueries({
-	@NamedQuery(name = "Task.findAll", query = "from Task"),
-	@NamedQuery(name = "Task.findByProgramId", query = "from Task where program.id = :programId"),
-	@NamedQuery(name = "Task.findByStatus", query = "from Task where status = :status") 
+	@NamedQuery(name = "Task.findAll", query = "from Task order by program.id, taskDay"),
+	@NamedQuery(name = "Task.findByProgramId", query = "from Task where program.id = :programId order by taskDay"),
+	@NamedQuery(name = "Task.findByStatus", query = "from Task where status = :status order by program.id, taskDay") 
 })
 @Entity(name = "Task")
 @Table(name = "task")

@@ -28,9 +28,9 @@
 				createOptions('#participant', data.Options);
 			}, "json"
 		).done(function() {
-			if (paramParticipantId !== undefined) {
+			if (paramParticipantId !== undefined && paramParticipantId !== '') {
 				$('#participant').val(paramParticipantId).change();
-				delete paramParticipantId;
+				paramParticipantId = undefined;
 			}
 		});
 		
@@ -43,9 +43,9 @@
 					createOptions('#program', data.Options);
 				}, "json"
 			).always(function() {
-				if (paramProgramId !== undefined) {
+				if (paramProgramId !== undefined && paramProgramId !== '') {
 					$('#program').val(paramProgramId).change();
-					delete paramProgramId;
+					paramProgramId = undefined;
 				} else {
 					$('#programTasksTableContainer').jtable('load', {participantId: 0, programId: 0});
 					$('#programTasksTableContainer').find('.jtable-toolbar-item').css({visibility: 'hidden'});

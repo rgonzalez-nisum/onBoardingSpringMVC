@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.nisum.onboarding.dao.AbstractHibernateDao;
 import com.nisum.onboarding.dao.TaskDao;
+import com.nisum.onboarding.dto.ParticipantTaskReportDto;
 import com.nisum.onboarding.dto.TaskDto;
+import com.nisum.onboarding.model.ProgramStatus;
 import com.nisum.onboarding.model.TaskStatus;
 import com.nisum.onboarding.model.hibernate.ProgramHibernate;
 import com.nisum.onboarding.model.hibernate.TaskHibernate;
@@ -25,6 +28,19 @@ public class TaskDaoHibernateImpl extends AbstractHibernateDao<TaskDto, Long> im
 	
 	private static final Logger LOG = Logger.getLogger(TaskDaoHibernateImpl.class);
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+	
+	private static final String REPORT_PARTICIPANT_TASK = ""
+			+ "SELECT participant.name, participant.lastname, "
+				+ "program.description, program.started, program.status, "
+				+ "COUNT(assignedTask), COUNT(startedTask), COUNT(inProgressTask), COUNT(completedTask) "
+			+ "FROM Participant As participant " 
+				+ "INNER JOIN participant.programs AS program "
+				+ "LEFT OUTER JOIN program.tasks AS assignedTask WITH (assignedTask.status = :assignedStatus) " 
+				+ "LEFT OUTER JOIN program.tasks AS startedTask WITH (startedTask.status = :startedStatus) "
+				+ "LEFT OUTER JOIN program.tasks AS inProgressTask WITH (inProgressTask.status = :inProgressStatus) " 
+				+ "LEFT OUTER JOIN program.tasks AS completedTask WITH (completedTask.status = :completedStatus) "
+			+ "GROUP BY participant, program "
+			+ "ORDER BY participant, program ";
 	
 	public TaskDaoHibernateImpl() {
 		super(TaskHibernate.class);
@@ -46,6 +62,34 @@ public class TaskDaoHibernateImpl extends AbstractHibernateDao<TaskDto, Long> im
 				.list();
 		
 		return persistentsToDtos(results);
+	}
+	
+	@Override
+	public List<ParticipantTaskReportDto> getParticipantsTaskReport() {
+		List<Object[]> results = getSession().createQuery(REPORT_PARTICIPANT_TASK)
+				.setParameter("assignedStatus", TaskStatus.ASSIGNED)
+				.setParameter("startedStatus", TaskStatus.STARTED)
+				.setParameter("inProgressStatus", TaskStatus.IN_PROGRESS)
+				.setParameter("completedStatus", TaskStatus.COMPLETED)
+				.list();
+		
+		List<ParticipantTaskReportDto> reportResults = new ArrayList<ParticipantTaskReportDto>();
+		
+		for (Object[] result : results) {
+			ParticipantTaskReportDto dto = new ParticipantTaskReportDto();
+			dto.setParticipantName((String) result[0]);
+			dto.setParticipantLastname((String) result[1]);
+			dto.setProgramDescription((String) result[2]);
+			dto.setProgramStarted((Date) result[3]);
+			dto.setProgramStatus((ProgramStatus) result[4]);
+			dto.setAssignedTasks((Long) result[5]);
+			dto.setStartedTasks((Long) result[6]);
+			dto.setInProgressTasks((Long) result[7]);
+			dto.setCompletedTasks((Long) result[8]);
+			reportResults.add(dto);
+		}
+		
+		return reportResults;
 	}
 
 	@Override
@@ -107,5 +151,5 @@ public class TaskDaoHibernateImpl extends AbstractHibernateDao<TaskDto, Long> im
 	private String formatDate(Date date) {
 		return date == null ? null : DATE_FORMAT.format(date);
 	}
-	
+
 }

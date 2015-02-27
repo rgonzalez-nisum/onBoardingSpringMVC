@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.nisum.onboarding.bo.TaskBo;
 import com.nisum.onboarding.dao.TaskDao;
+import com.nisum.onboarding.dto.ParticipantTaskReportDto;
 import com.nisum.onboarding.dto.TaskDto;
 import com.nisum.onboarding.model.TaskStatus;
 
@@ -49,6 +50,11 @@ public class TaskBoImpl implements TaskBo {
 	@Override
 	public List<TaskDto> findByStatus(TaskStatus status) {
 		return taskDao.findByStatus(status);
+	}
+
+	@Override
+	public List<ParticipantTaskReportDto> getParticipantsTaskReport() {
+		return taskDao.getParticipantsTaskReport();
 	}
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nisum.onboarding.bo.TaskBo;
+import com.nisum.onboarding.dto.ParticipantTaskReportDto;
 import com.nisum.onboarding.dto.TaskDto;
 import com.nisum.onboarding.exception.BeanException;
 import com.nisum.onboarding.model.TaskStatus;
@@ -117,6 +118,18 @@ public class TaskServiceImpl implements TaskService {
 			return taskBo.findByStatus(status);
 		} catch (Exception e) {
 			String message = "An exception has been thrown while finding task by status=" + status;
+			LOG.error(message, e);
+			throw new BeanException(message, e);
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<ParticipantTaskReportDto> getParticipantsTaskReport() throws BeanException {
+		try {
+			return taskBo.getParticipantsTaskReport();
+		} catch (Exception e) {
+			String message = "An exception has been thrown while retrieving information for Participant Tasks report";
 			LOG.error(message, e);
 			throw new BeanException(message, e);
 		}

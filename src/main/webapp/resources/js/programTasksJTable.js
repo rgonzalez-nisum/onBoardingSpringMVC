@@ -2,7 +2,7 @@ $(document).ready(function() {
 	var participantId;
 	
     $('#programTasksTableContainer').jtable({
-        title: 'Programs',
+        title: 'Tasks',
         defaultDateFormat: 'yy-mm-dd',
         selecting: true,
         sorting: true,

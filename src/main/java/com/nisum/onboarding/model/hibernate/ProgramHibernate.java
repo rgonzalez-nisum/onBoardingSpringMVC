@@ -69,7 +69,7 @@ public class ProgramHibernate implements Program {
 	private Date started;
 
 	@JsonManagedReference
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "program", orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "program")
 	private Set<TaskHibernate> tasks = new HashSet<TaskHibernate>();
 
 	public ProgramHibernate() {

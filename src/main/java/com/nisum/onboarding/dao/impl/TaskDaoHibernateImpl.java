@@ -77,8 +77,7 @@ public class TaskDaoHibernateImpl extends AbstractHibernateDao<TaskDto, Long> im
 		
 		for (Object[] result : results) {
 			ParticipantTaskReportDto dto = new ParticipantTaskReportDto();
-			dto.setParticipantName((String) result[0]);
-			dto.setParticipantLastname((String) result[1]);
+			dto.setParticipantName(((String) result[0]) + " " + ((String) result[1]));
 			dto.setProgramDescription((String) result[2]);
 			dto.setProgramStarted((Date) result[3]);
 			dto.setProgramStatus((ProgramStatus) result[4]);

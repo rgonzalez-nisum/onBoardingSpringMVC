@@ -9,7 +9,6 @@ public class ParticipantTaskReportDto implements SerializableDto {
 	private static final long serialVersionUID = -731570253379104030L;
 
 	private String participantName;
-	private String participantLastname;
 	private String programDescription;
 	private Date programStarted;
 	private ProgramStatus programStatus;
@@ -28,14 +27,6 @@ public class ParticipantTaskReportDto implements SerializableDto {
 
 	public void setParticipantName(String participantName) {
 		this.participantName = participantName;
-	}
-
-	public String getParticipantLastname() {
-		return participantLastname;
-	}
-
-	public void setParticipantLastname(String participantLastname) {
-		this.participantLastname = participantLastname;
 	}
 
 	public String getProgramDescription() {
@@ -92,6 +83,10 @@ public class ParticipantTaskReportDto implements SerializableDto {
 
 	public void setCompletedTasks(Long completedTasks) {
 		this.completedTasks = completedTasks;
+	}
+	
+	public Long getTotalTasks() {
+		return getAssignedTasks() + getStartedTasks() + getInProgressTasks() + getCompletedTasks();
 	}
 
 }

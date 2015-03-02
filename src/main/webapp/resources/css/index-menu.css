@@ -1,0 +1,42 @@
+#indexContainer {
+	margin: 50px auto;
+}
+
+#indexContainer .wrapper {
+    max-width: 500px;
+    height: auto;
+}
+
+#indexContainer .box {
+    display: inline-block;
+    position: relative;
+    width: 200px;
+    height: 200px;
+    background: #EFEFEF;
+    z-index: 0;
+    margin: 5px;
+    transition: all .15s ease-in-out;
+}
+
+#indexContainer .box:hover {
+    background: #9CC;
+    z-index: 100;
+    transform: scale(1.2,1.2);
+    box-shadow: 0 5px 10px 0 rgba(0,0,0,.2);
+}
+
+#indexContainer .box div {
+	height: 200px;
+	width: 200px;
+	display: table-cell;
+	vertical-align: middle;
+}
+
+#indexContainer .box a {
+	text-decoration: none;
+}
+
+#indexContainer .box img {
+	width: 100px;
+	height: 100px;
+}

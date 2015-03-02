@@ -20,12 +20,14 @@ repositories {
 }
 
 dependencies {
+	compile 'com.fasterxml.jackson.core:jackson-databind:2.5.1'
+	compile 'com.fasterxml.jackson.core:jackson-core:2.5.1'
 	compile 'jstl:jstl:1.2'
+	compile 'net.sf.jasperreports:jasperreports:4.5.0'
+	compile 'net.sourceforge.dynamicreports:dynamicreports-core:4.0.0'
 	compile 'org.apache.tiles:tiles-jsp:3.0.5'
 	compile 'org.apache.tiles:tiles-servlet:3.0.5'
 	compile 'org.apache.tiles:tiles-template:3.0.5'
-	compile 'com.fasterxml.jackson.core:jackson-databind:2.5.1'
-	compile 'com.fasterxml.jackson.core:jackson-core:2.5.1'
 	compile 'org.hibernate:hibernate-core:4.3.8.Final'
 	compile 'org.slf4j:slf4j-log4j12:1.7.10'
 	compile 'org.springframework:spring-context:4.1.4.RELEASE'
